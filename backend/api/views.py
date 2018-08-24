@@ -4,8 +4,8 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authentication import TokenAuthentication
 
-from .serializers import AccountSerializer
-from .models import Account
+from .serializers import AccountSerializer, MovieSerializer
+from .models import Account, Movie
 from .permissions import UpdateAccountPermission
 
 class AccountViewSet(ModelViewSet):
@@ -16,6 +16,10 @@ class AccountViewSet(ModelViewSet):
 
 class LoginViewSet(ViewSet):
     serializer_class = AuthTokenSerializer
-
+    
     def create(self, request):
         return ObtainAuthToken().post(request)
+
+class MovieViewSet(ModelViewSet):
+    serializer_class = MovieSerializer
+    queryset = Movie.objects.all()

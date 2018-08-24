@@ -6,6 +6,7 @@ class Account(AbstractUser):
     class Meta:
         verbose_name = 'Account'
     email = models.EmailField(unique=True)
+    completed_movies = models.ManyToManyField('Movie')
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
@@ -15,8 +16,6 @@ class Movie(models.Model):
     length = models.CharField(max_length=8)
     genres = models.CharField(max_length=80)
     imdb_url = models.URLField(max_length=50)
-    completed = models.BooleanField(default=False)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.title

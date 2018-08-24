@@ -6,7 +6,7 @@ class Account(AbstractUser):
     class Meta:
         verbose_name = 'Account'
     email = models.EmailField(unique=True)
-    completed_movies = models.ManyToManyField('Movie')
+    completed_movies = models.ManyToManyField('Movie', null=True, blank=True)
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)

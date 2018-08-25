@@ -1,7 +1,11 @@
 import { combineReducers } from 'redux';
 
-const rootReducer = combineReducers({
+import ToggleSignupReducer from './ToggleSignupReducer';
+import ToggleLoginReducer from './ToggleLoginReducer';
 
+const rootReducer = combineReducers({
+  displaySignup: ToggleSignupReducer,
+  displayLogin: ToggleLoginReducer
 });
 
 export default rootReducer;

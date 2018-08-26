@@ -4,8 +4,6 @@ from .confidential import SECRET_KEY, MYSQL_SETTINGS
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DEBUG = True
-
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -94,3 +92,9 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+# DEVELOPMENT SETTINGS #
+DEBUG = True
+INSTALLED_APPS += ['corsheaders']
+CORS_ORIGIN_WHITELIST = ('localhost:3000/', )
+MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware', 'django.middleware.common.CommonMiddleware']

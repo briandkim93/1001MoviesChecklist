@@ -5,6 +5,18 @@ import { connect } from 'react-redux';
 import { toggleLogin } from '../../actions';
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: '',
+      password: ''
+    }
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+  handleInputChange(event) {
+    this.setState({[event.target.id]: event.target.value});
+  }
   render() {
     if (this.props.displayLogin === true) {
       return (
@@ -18,11 +30,11 @@ class Login extends Component {
             <div className="mb-1">Log In</div>
             <div className="form-group">
               <label htmlFor="username">Username:</label>
-              <input type="text" className="form-control" id="username" />
+              <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handleInputChange} />
             </div>
             <div className="form-group">
-              <label htmlFor="password-1">Password:</label>
-              <input type="password" className="form-control" id="password-1" />
+              <label htmlFor="password">Password:</label>
+              <input type="password" className="form-control" id="password" value={this.state.password} onChange={this.handleInputChange} />
             </div>
             <button type="submit" className="btn btn-primary float-right">Login</button>
           </form>

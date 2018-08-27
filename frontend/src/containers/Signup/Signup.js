@@ -5,7 +5,23 @@ import { connect } from 'react-redux';
 import { toggleSignup } from '../../actions';
 
 class Signup extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: '',
+      email: '',
+      password1: '',
+      password2: '',
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+  handleInputChange(event) {
+    this.setState({[event.target.id]: event.target.value});
+  }
   render() {
+
     if (this.props.displaySignup === true) {
       return (
         <div className="row justify-content-center mt-5">
@@ -18,19 +34,19 @@ class Signup extends Component {
             <div className="mb-1">Sign Up</div>
             <div className="form-group">
               <label htmlFor="username">Username:</label>
-              <input type="text" className="form-control" id="username" />
+              <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handleInputChange} />
             </div>
             <div className="form-group">
               <label htmlFor="email">Email:</label>
-              <input type="email" className="form-control" id="email" />
+              <input type="email" className="form-control" id="email" value={this.state.email} onChange={this.handleInputChange} />
             </div>
             <div className="form-group">
-              <label htmlFor="password-1">Password:</label>
-              <input type="password" className="form-control" id="password-1" />
+              <label htmlFor="password1">Password:</label>
+              <input type="password" className="form-control" id="password1" value={this.state.password1} onChange={this.handleInputChange} />
             </div>
             <div className="form-group">
-              <label htmlFor="password-2">Confirm Password:</label>
-              <input type="password" className="form-control" id="password-2" />
+              <label htmlFor="password2">Confirm Password:</label>
+              <input type="password" className="form-control" id="password2" value={this.state.password2} onChange={this.handleInputChange} />
             </div>
             <button type="submit" className="btn btn-primary float-right">Sign Up</button>
           </form>

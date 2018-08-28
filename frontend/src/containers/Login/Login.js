@@ -21,7 +21,7 @@ class Login extends Component {
     if (this.props.displayLogin === true) {
       return (
         <div className="row justify-content-center mt-5">
-          <form className="col-11 col-sm-6 center-block position-absolute border p-3">
+          <form className="col-11 col-sm-6 center-block position-absolute border p-3" encType='multipart/form-data'>
             <div>
               <button type="button" className="close" onClick={this.props.toggleLogin}>
                 <span>&times;</span>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { toggleSignup } from '../../actions';
+import { toggleSignup, signup } from '../../actions';
 
 class Signup extends Component {
   constructor(props) {
@@ -12,20 +12,24 @@ class Signup extends Component {
       username: '',
       email: '',
       password1: '',
-      password2: '',
+      password2: ''
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
   handleInputChange(event) {
     this.setState({[event.target.id]: event.target.value});
   }
+  handleFormSubmit(event) {
+    event.preventDefault();
+    this.props.signup(this.state.username, this.state.email, this.state.password1);
+  }
   render() {
-
     if (this.props.displaySignup === true) {
       return (
         <div className="row justify-content-center mt-5">
-          <form className="col-11 col-sm-6 center-block position-absolute border p-3">
+          <form className="col-11 col-sm-6 center-block position-absolute border p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
             <div>
               <button type="button" className="close" onClick={this.props.toggleSignup}>
                 <span>&times;</span>
@@ -63,7 +67,7 @@ function mapPropsToState(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({toggleSignup: toggleSignup}, dispatch);
+  return bindActionCreators({toggleSignup: toggleSignup, signup: signup}, dispatch);
 }
 
 export default connect(mapPropsToState, mapDispatchToProps)(Signup);

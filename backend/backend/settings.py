@@ -96,5 +96,5 @@ STATIC_URL = '/static/'
 # DEVELOPMENT SETTINGS #
 DEBUG = True
 INSTALLED_APPS += ['corsheaders']
-CORS_ORIGIN_WHITELIST = ('localhost:3000/', )
+CORS_ORIGIN_WHITELIST = ('http://localhost:3000/', )
 MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware', 'django.middleware.common.CommonMiddleware']

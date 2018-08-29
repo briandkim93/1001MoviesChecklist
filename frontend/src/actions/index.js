@@ -35,7 +35,9 @@ export function signup(username, email, password) {
       email: email,
       password: password
     }
-  );
+  ).catch(error => {
+    return error.response;
+  });
   return {
     type: ACTION_TYPES.SIGNUP,
     payload: request

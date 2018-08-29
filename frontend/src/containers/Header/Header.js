@@ -33,8 +33,8 @@ class Header extends Component {
           </button>
           <div className="collapse navbar-collapse" id="navbarCollapse">
             <div className="navbar-nav ml-auto">
-              <a className="nav-item nav-link" href="#" onClick={this.handleToggleSignup}>Sign Up</a>
-              <a className="nav-item nav-link" href="#" onClick={this.handleToggleLogin}>Login</a>
+              <span className="nav-link btn" onClick={this.handleToggleSignup}>Sign Up</span>
+              <span className="nav-link btn" onClick={this.handleToggleLogin}>Login</span>
             </div>
           </div>
         </nav>

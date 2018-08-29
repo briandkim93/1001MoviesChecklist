@@ -14,7 +14,11 @@ import reducers from './reducers';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: []
+  blacklist: [
+    'displaySignup',
+    'displayLogin',
+    'signupStatus'
+  ]
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers);

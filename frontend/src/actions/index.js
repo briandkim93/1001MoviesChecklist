@@ -3,6 +3,8 @@ import axios from 'axios';
 import ACTION_TYPES from './types';
 import API_BASE_URL from '../api_info';
 
+axios.defaults.xsrfCookieName = 'csrftoken';
+
 export function toggleSignup() {
   return {
     type: ACTION_TYPES.TOGGLE_SIGNUP
@@ -28,7 +30,6 @@ export function closeLogin() {
 }
 
 export function signup(username, email, password) {
-  axios.defaults.xsrfCookieName = 'csrftoken';
   const request = axios.post(
     `${API_BASE_URL}account/`, {
       username: username,
@@ -40,6 +41,18 @@ export function signup(username, email, password) {
   });
   return {
     type: ACTION_TYPES.SIGNUP,
+    payload: request
+  }
+}
+
+export function login(username, password) {
+  axios.defaults.headers.common['Authorization'] = 'Basic ' + btoa(username + ':' + password);
+  const request = axios.post(`${API_BASE_URL}auth/login/`)
+  .catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.LOGIN,
     payload: request
   }
 }

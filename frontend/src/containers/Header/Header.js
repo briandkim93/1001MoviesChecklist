@@ -24,23 +24,47 @@ class Header extends Component {
     this.props.closeSignup();
   }
   render() {
-    return (
-      <div className="row">
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark col-12">
-          <span className="navbar-brand"><img className="mr-3" src={logo} alt="1001 Movies Checklist Logo" />Movies Checklist</span>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarCollapse">
-            <div className="navbar-nav ml-auto">
-              <span className="nav-link btn" onClick={this.handleToggleSignup}>Sign Up</span>
-              <span className="nav-link btn" onClick={this.handleToggleLogin}>Login</span>
+    if (this.props.token) {
+      return (
+        <div className="row">
+          <nav className="navbar navbar-expand-sm navbar-dark bg-dark col-12">
+            <span className="navbar-brand"><img className="mr-3" src={logo} alt="1001 Movies Checklist Logo" />Movies Checklist</span>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarCollapse">
+              <div className="navbar-nav ml-auto">
+                <span className="nav-link btn">Logout</span>
+              </div>
             </div>
-          </div>
-        </nav>
-      </div>
-    )
+          </nav>
+        </div>
+      );     
+    } else if (!this.props.token) {
+      return (
+        <div className="row">
+          <nav className="navbar navbar-expand-sm navbar-dark bg-dark col-12">
+            <span className="navbar-brand"><img className="mr-3" src={logo} alt="1001 Movies Checklist Logo" />Movies Checklist</span>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarCollapse">
+              <div className="navbar-nav ml-auto">
+                <span className="nav-link btn" onClick={this.handleToggleSignup}>Sign Up</span>
+                <span className="nav-link btn" onClick={this.handleToggleLogin}>Login</span>
+              </div>
+            </div>
+          </nav>
+        </div>
+      );
+    }
   }
+}
+
+function mapStateToProps(state) {
+  return {
+    token: state.token
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -52,4 +76,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

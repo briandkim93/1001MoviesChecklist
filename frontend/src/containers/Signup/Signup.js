@@ -17,8 +17,6 @@ class Signup extends Component {
       response: {status: 0, position: 0, message: ''}
     };
 
-    this.baseState = this.state;
-
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
@@ -27,7 +25,7 @@ class Signup extends Component {
   }
   handleFormSubmit(event) {
     event.preventDefault();
-    if (this.state.username !== '' && this.state.email !== '' && this.state.password1 !== '' && this.state.password2 !== '') {
+    if (this.state.username !== '' || this.state.email !== '' || this.state.password1 !== '' || this.state.password2 !== '') {
       if (this.state.username.match(/^[A-Za-z0-9\@\.\+\-\_]+$/)) {
         if (this.state.username.length <= 150) {
           if (this.state.password1.length <= 128) {
@@ -49,7 +47,7 @@ class Signup extends Component {
       } else if (!this.state.username.match(/^[A-Za-z0-9\@\.\+\-\_]+$/)) {
         this.setState({response: {status: 0, position: 1, message: 'Username may contain letters, numbers, and @ / . / + / - / _ only.'}});
       }
-    } else if (this.state.username === '' && this.state.email === '' && this.state.password1 === '' && this.state.password2 === '') {
+    } else if (this.state.username === '' || this.state.email === '' || this.state.password1 === '' || this.state.password2 === '') {
       this.setState({response: {status: 0, position: 4, message: 'Please do not leave any empty fields.'}});
     }
   }
@@ -75,6 +73,10 @@ class Signup extends Component {
       } else if (this.props.signupStatus.status === 400 && this.props.signupStatus.data.hasOwnProperty('email')) {
         this.setState({
           response: {status: 0, position: 2, message: this.props.signupStatus.data.email[0]}
+        });
+      } else if (this.props.signupStatus.status === 400 && this.props.signupStatus.data.hasOwnProperty('password')) {
+        this.setState({
+          response: {status: 0, position: 3, message: this.props.signupStatus.data.password[0]}
         });
       }
     }

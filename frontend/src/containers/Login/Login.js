@@ -10,8 +10,10 @@ class Login extends Component {
 
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      response: {status: 0, message: ''}
     }
+
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmitForm = this.handleSubmitForm.bind(this);
   }
@@ -20,7 +22,21 @@ class Login extends Component {
   }
   handleSubmitForm(event) {
     event.preventDefault();
-    this.props.login(this.state.username, this.state.password);
+    if (this.state.username !== '' || this.state.password !== '') {
+      this.props.login(this.state.username, this.state.password);
+    } else {
+      this.setState({response: {status: 0, message: 'Please do not leave any empty fields.'}});
+    }
+    this.setState({password: ''});
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.loginStatus !== prevProps.loginStatus) {
+      if (this.props.loginStatus.status === 200) {
+        this.props.toggleLogin();
+      } else {
+        this.setState({response: {status: 0, message: 'Invalid username or password. Please try again.'}});
+      }
+    }
   }
   render() {
     if (this.props.displayLogin === true) {
@@ -41,6 +57,9 @@ class Login extends Component {
               <label htmlFor="password">Password:</label>
               <input type="password" className="form-control" id="password" value={this.state.password} onChange={this.handleInputChange} />
             </div>
+            <div>
+              {this.state.response.status === 0 ? this.state.response.message : ''}
+            </div>
             <button type="submit" className="btn btn-primary float-right">Login</button>
           </form>
         </div>
@@ -52,7 +71,7 @@ class Login extends Component {
 }
 
 function mapPropsToState(state) {
-  return {displayLogin: state.displayLogin};
+  return {displayLogin: state.displayLogin, loginStatus: state.loginStatus};
 }
 
 function mapDispatchToProps(dispatch) {

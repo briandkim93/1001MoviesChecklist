@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import logo from '../../logo.png';
-import { toggleSignup, closeSignup, toggleLogin, closeLogin } from '../../actions';
+import { toggleSignup, closeSignup, toggleLogin, closeLogin, logout } from '../../actions';
 
 class Header extends Component {
   constructor(props) {
@@ -11,6 +11,7 @@ class Header extends Component {
 
     this.handleToggleSignup = this.handleToggleSignup.bind(this);
     this.handleToggleLogin = this.handleToggleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
   handleToggleSignup() {
     this.props.toggleSignup();
@@ -19,6 +20,9 @@ class Header extends Component {
   handleToggleLogin() {
     this.props.toggleLogin();
     this.props.closeSignup();
+  }
+  handleLogout() {
+    this.props.logout(this.props.token);
   }
   render() {
     if (this.props.token) {
@@ -31,7 +35,7 @@ class Header extends Component {
             </button>
             <div className="collapse navbar-collapse" id="navbarCollapse">
               <div className="navbar-nav ml-auto">
-                <span className="nav-link btn">Logout</span>
+                <span className="nav-link btn" onClick={this.handleLogout}>Logout</span>
               </div>
             </div>
           </nav>
@@ -69,7 +73,8 @@ function mapDispatchToProps(dispatch) {
     toggleSignup: toggleSignup,
     closeSignup: closeSignup,
     toggleLogin: toggleLogin,
-    closeLogin: closeLogin
+    closeLogin: closeLogin,
+    logout: logout,
   }, dispatch);
 }
 

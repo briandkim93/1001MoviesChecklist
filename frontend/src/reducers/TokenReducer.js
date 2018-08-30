@@ -5,8 +5,15 @@ function TokenReducer(state=null, action) {
     case ACTION_TYPES.LOGIN:
       if (action.payload.status === 200) {
         return action.payload.data.token;
+      } else {
+        return state;
       }
-      return state;
+    case ACTION_TYPES.LOGOUT:
+      if (action.payload.status === 204) {
+        return null;
+      } else {
+        return state;
+      }
     default:
       return state;
   }

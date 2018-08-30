@@ -60,7 +60,7 @@ export function login(username, password) {
 export function logout(token) {
   axios.defaults.headers.common['Authorization'] = 'Token ' + token;
   axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-  const request = axios.post(`${API_BASE_URL}auth/logout/`);
+  const request = axios.post(`${API_BASE_URL}auth/logoutall/`);
   return {
     type: ACTION_TYPES.LOGOUT,
     payload: request

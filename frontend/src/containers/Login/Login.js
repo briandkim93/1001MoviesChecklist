@@ -58,7 +58,7 @@ class Login extends Component {
               <input type="password" className="form-control" id="password" value={this.state.password} onChange={this.handleInputChange} />
             </div>
             <div className="text-danger small">
-              {this.state.response.status === 0 ? this.state.response.message : ''}
+              {this.state.response.status === 0 && this.state.response.message}
             </div>
             <button type="submit" className="btn btn-primary float-right">Login</button>
           </form>

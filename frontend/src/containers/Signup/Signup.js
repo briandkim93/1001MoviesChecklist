@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { toggleSignup, signup } from '../../actions';
-import './Signup.css';
 
 class Signup extends Component {
   constructor(props) {
@@ -97,28 +96,28 @@ class Signup extends Component {
                 <label htmlFor="username">Username:</label>
                 <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handleInputChange} />
               </div>
-              <div className="text-danger">
+              <div className="text-danger small">
                 {this.state.response.position === 1 ? this.state.response.message : ''}
               </div>
               <div className="form-group">
                 <label htmlFor="email">Email:</label>
                 <input type="email" className="form-control" id="email" value={this.state.email} onChange={this.handleInputChange} />
               </div>
-              <div className="text-danger">
+              <div className="text-danger small">
                 {this.state.response.position === 2 ? this.state.response.message : ''}
               </div>
               <div className="form-group">
                 <label htmlFor="password1">Password:</label>
                 <input type="password" className="form-control" id="password1" value={this.state.password1} onChange={this.handleInputChange} />
               </div>
-              <div className="text-danger">
+              <div className="text-danger small">
                 {this.state.response.position === 3 ? this.state.response.message : ''}
               </div>
               <div className="form-group">
                 <label htmlFor="password2">Confirm Password:</label>
                 <input type="password" className="form-control" id="password2" value={this.state.password2} onChange={this.handleInputChange} />
               </div>
-              <div className="text-danger">
+              <div className="text-danger small">
                 {this.state.response.position === 4 ? this.state.response.message : ''}
               </div>
               <button type="submit" className="btn btn-primary float-right">Sign Up</button>

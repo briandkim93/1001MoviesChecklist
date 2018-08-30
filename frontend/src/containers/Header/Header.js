@@ -3,10 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import logo from '../../logo.png';
-import { toggleSignup } from '../../actions';
-import { closeSignup } from '../../actions';
-import { toggleLogin } from '../../actions';
-import { closeLogin } from '../../actions';
+import { toggleSignup, closeSignup, toggleLogin, closeLogin } from '../../actions';
 
 class Header extends Component {
   constructor(props) {

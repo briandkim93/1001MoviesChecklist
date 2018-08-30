@@ -14,6 +14,8 @@ class Login extends Component {
       response: {status: 0, message: ''}
     }
 
+    this.baseState = this.state;
+
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmitForm = this.handleSubmitForm.bind(this);
   }
@@ -30,6 +32,9 @@ class Login extends Component {
     this.setState({password: ''});
   }
   componentDidUpdate(prevProps) {
+    if (this.props.token !== prevProps.token) {
+      this.setState(this.baseState);
+    }
     if (this.props.loginStatus !== prevProps.loginStatus) {
       if (this.props.loginStatus.status === 200) {
         this.props.toggleLogin();
@@ -71,7 +76,7 @@ class Login extends Component {
 }
 
 function mapPropsToState(state) {
-  return {displayLogin: state.displayLogin, loginStatus: state.loginStatus};
+  return {displayLogin: state.displayLogin, loginStatus: state.loginStatus, token: state.token};
 }
 
 function mapDispatchToProps(dispatch) {

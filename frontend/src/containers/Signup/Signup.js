@@ -16,6 +16,8 @@ class Signup extends Component {
       response: {status: 0, position: 0, message: ''}
     };
 
+    this.baseState = this.state;
+
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
@@ -51,6 +53,9 @@ class Signup extends Component {
     }
   }
   componentDidUpdate(prevProps) {
+    if (this.props.token !== prevProps.token) {
+      this.setState(this.baseState);
+    }
     if (this.props.signupStatus !== prevProps.signupStatus) {
       this.setState({
         password1: '',
@@ -148,7 +153,7 @@ class Signup extends Component {
 }
 
 function mapPropsToState(state) {
-  return {displaySignup: state.displaySignup, signupStatus: state.signupStatus};
+  return {displaySignup: state.displaySignup, signupStatus: state.signupStatus, token: state.token};
 }
 
 function mapDispatchToProps(dispatch) {

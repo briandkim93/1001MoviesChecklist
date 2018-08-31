@@ -1,14 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
+
 import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+
 import ReduxPromise from 'redux-promise';
 
 import storage from 'redux-persist/lib/storage'
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
-import { Provider } from 'react-redux';
 
+import { BrowserRouter } from 'react-router-dom';
+
+import App from './components/App/App';
 import reducers from './reducers';
 
 const persistConfig = {
@@ -29,7 +33,9 @@ const persistor = persistStore(store);
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </PersistGate>
   </Provider>, 
   document.getElementById('root')

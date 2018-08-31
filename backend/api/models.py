@@ -9,14 +9,19 @@ class Account(AbstractUser):
     class Meta:
         verbose_name = 'Account'
     username = models.CharField(_('username'), max_length=30, unique=True,
-    help_text=_('Required. 30 characters or fewer. Letters, digits, periods, and underscores only.'),
-    validators=[
-        RegexValidator(r'^[\w.]+$', _('Username may only contain letters, numbers, periods, and underscores.'), 'invalid'),
-    ],
-    error_messages={
-        'unique': _("Username already exists."),
-    })
-    email = models.EmailField(unique=True)
+        help_text=_('Required. 30 characters or fewer. Letters, digits, periods, and underscores only.'),
+        validators=[
+            RegexValidator(r'^[\w.]+$', _('Username may only contain letters, numbers, periods, and underscores.'), 'invalid'),
+        ],
+        error_messages={
+            'unique': _("Username is already taken."),
+        }
+    )
+    email = models.EmailField(unique=True, 
+        error_messages={
+            'unique': _("Email address is already taken."),
+        }
+    )
     completed_movies = models.ManyToManyField('Movie', blank=True)
 
 class Movie(models.Model):

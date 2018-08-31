@@ -1,10 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.core.validators import RegexValidator
+from django.utils.translation import ugettext_lazy as _
+
 
 class Account(AbstractUser):
     class Meta:
         verbose_name = 'Account'
+    username = models.CharField(_('username'), max_length=30, unique=True,
+    help_text=_('Required. 30 characters or fewer. Letters, digits, periods, and underscores only.'),
+    validators=[
+        RegexValidator(r'^[\w.]+$', _('Username may only contain letters, numbers, periods, and underscores.'), 'invalid'),
+    ],
+    error_messages={
+        'unique': _("Username already exists."),
+    })
     email = models.EmailField(unique=True)
     completed_movies = models.ManyToManyField('Movie', blank=True)
 

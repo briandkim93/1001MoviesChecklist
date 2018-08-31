@@ -27,29 +27,33 @@ class Signup extends Component {
   handleFormSubmit(event) {
     event.preventDefault();
     if (this.state.username !== '' || this.state.email !== '' || this.state.password1 !== '' || this.state.password2 !== '') {
-      if (this.state.username.match(/^[A-Za-z0-9\@\.\+\-\_]+$/)) {
-        if (this.state.username.length <= 150) {
-          if (this.state.password1.length <= 128) {
-            if (this.state.password1 === this.state.password2) {
-              this.props.signup(this.state.username.toLowerCase(), this.state.email.toLowerCase(), this.state.password1);
-            } else if (this.state.password1 !== this.state.password2) {
-              this.setState({
-                password1: '',
-                password2: '',
-                response: {status: 0, position: 4, message: 'Passwords did not match, please try again.'}
-              });
+      if (this.state.username.match(/^[\w\.\_]+$/)) {
+        if (this.state.username.length <= 30) {
+          if (this.state.password1.length >= 8) {
+            if (this.state.password1.length <= 128) {
+              if (this.state.password1 === this.state.password2) {
+                this.props.signup(this.state.username.toLowerCase(), this.state.email.toLowerCase(), this.state.password1);
+              } else if (this.state.password1 !== this.state.password2) {
+                this.setState({
+                  password1: '',
+                  password2: '',
+                  response: {status: 0, position: 4, message: 'Passwords did not match, please try again.'}
+                });
+              }
+            } else if (this.state.password1.length > 128) {
+              this.setState({response: {status: 0, position: 3, message: 'Password must not exceed 128 characters.'}});
             }
-          } else if (this.state.password1.length > 128) {
-            this.setState({response: {status: 0, position: 3, message: 'Password must not exceed 128 characters.'}});
+          } else if (this.state.password1.length < 8) {
+              this.setState({response: {status: 0, position: 3, message: 'Password must be at least 8 characters.'}});
           }
-        } else if (this.state.username.length > 150) {
-          this.setState({response: {status: 0, position: 1, message: 'Username must not exceed 150 characters.'}});
+        } else if (this.state.username.length > 30) {
+          this.setState({response: {status: 0, position: 1, message: 'Username must not exceed 30 characters.'}});
         }
-      } else if (!this.state.username.match(/^[A-Za-z0-9\@\.\+\-\_]+$/)) {
-        this.setState({response: {status: 0, position: 1, message: 'Username may contain letters, numbers, and @ / . / + / - / _ only.'}});
+      } else if (!this.state.username.match(/^[\w\.\_]+$/)) {
+        this.setState({response: {status: 0, position: 1, message: 'Username may only contain letters, numbers, periods, and underscores.'}});
       }
     } else if (this.state.username === '' || this.state.email === '' || this.state.password1 === '' || this.state.password2 === '') {
-      this.setState({response: {status: 0, position: 4, message: 'Please do not leave any empty fields.'}});
+      this.setState({response: {status: 0, position: 4, message: 'Please do not leave any blank fields.'}});
     }
   }
   componentDidUpdate(prevProps) {

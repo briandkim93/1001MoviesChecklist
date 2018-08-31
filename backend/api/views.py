@@ -13,7 +13,7 @@ class AccountViewSet(ModelViewSet):
     permission_classes = (UpdateAccountPermission, RetrieveAccountListPermission)
 
 class LoginView(KnoxLoginView):
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = (BasicAuthentication, )
 
 class MovieViewSet(ModelViewSet):
     serializer_class = MovieSerializer

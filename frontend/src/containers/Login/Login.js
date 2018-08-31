@@ -46,14 +46,15 @@ class Login extends Component {
   render() {
     if (this.props.displayLogin === true) {
       return (
-        <div className="row justify-content-center mt-5">
-          <form className="col-11 col-sm-6 center-block position-absolute border p-3" encType='multipart/form-data' onSubmit={this.handleSubmitForm}>
+        <div className="row justify-content-center">
+          <form className="absolute-form col-11 col-sm-6 center-block border p-3 bg-light position-absolute" encType='multipart/form-data' onSubmit={this.handleSubmitForm}>
             <div>
               <button type="button" className="close" onClick={this.props.toggleLogin}>
                 <span>&times;</span>
               </button>
             </div>
-            <div className="mb-1">Log In</div>
+            <h2 className="mb-1">Log In</h2>
+            <hr />
             <div className="form-group">
               <label htmlFor="username">Username:</label>
               <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handleInputChange} />
@@ -64,6 +65,9 @@ class Login extends Component {
             </div>
             <div className="text-danger small">
               {this.state.response.status === 0 && this.state.response.message}
+            </div>
+            <div>
+              <span className="text-primary btn btn-link btn-sm">(Forgot Username or Password?)</span>
             </div>
             <button type="submit" className="btn btn-primary float-right">Login</button>
           </form>

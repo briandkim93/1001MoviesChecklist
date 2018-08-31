@@ -93,14 +93,15 @@ class Signup extends Component {
     if (this.props.displaySignup === true) {
       if (this.state.response.status === 0) {
         return (
-          <div className="row justify-content-center mt-5">
-            <form className="col-11 col-sm-6 center-block position-absolute border p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+          <div className="row justify-content-center">
+            <form className="absolute-form col-11 col-sm-6 center-block position-absolute border p-3 bg-light" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
               <div>
                 <button type="button" className="close" onClick={this.props.toggleSignup}>
                   <span>&times;</span>
                 </button>
               </div>
-              <div className="mb-1">Sign Up</div>
+              <h2 className="mb-1">Sign Up</h2>
+              <hr />
               <div className="form-group">
                 <label htmlFor="username">Username:</label>
                 <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handleInputChange} />

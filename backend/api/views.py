@@ -2,7 +2,6 @@ from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.authentication import BasicAuthentication
 from knox.views import LoginView as KnoxLoginView
-from knox.auth import TokenAuthentication
 
 from .serializers import AccountSerializer, MovieSerializer
 from .models import Account, Movie
@@ -11,7 +10,6 @@ from .permissions import UpdateAccountPermission, RetrieveAccountListPermission,
 class AccountViewSet(ModelViewSet):
     serializer_class = AccountSerializer
     queryset = Account.objects.all()
-    authentication_classes = (TokenAuthentication, )
     permission_classes = (UpdateAccountPermission, RetrieveAccountListPermission)
 
 class LoginView(KnoxLoginView):
@@ -20,5 +18,4 @@ class LoginView(KnoxLoginView):
 class MovieViewSet(ModelViewSet):
     serializer_class = MovieSerializer
     queryset = Movie.objects.all()
-    authentication_classes = (TokenAuthentication, )
     permission_classes = (UpdateMoviesPermission, )

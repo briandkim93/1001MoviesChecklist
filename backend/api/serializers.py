@@ -1,4 +1,6 @@
-from rest_framework.serializers import ModelSerializer
+from django.core import exceptions
+from django.contrib.auth.password_validation import validate_password
+from rest_framework.serializers import ModelSerializer, ValidationError
 
 from .models import Account, Movie
 
@@ -10,13 +12,21 @@ class AccountSerializer(ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        new_account = Account(username = validated_data['username'], email = validated_data['email'])
-        new_account.set_password(validated_data['password'])
-        new_account.save()
-        return new_account
+        account = Account(username=validated_data['username'], email=validated_data['email'])
+        try:
+            validate_password(password=validated_data['password'])
+        except exceptions.ValidationError as e:
+            raise ValidationError({'password': eval(str(e))})
+        account.set_password(validated_data['password'])
+        account.save()
+        return account
 
     def update(self, instance, validated_data):
         instance.email = validated_data['email']
+        try:
+            validate_password(password=validated_data['password'])
+        except exceptions.ValidationError as e:
+            raise ValidationError({'password': eval(str(e))})
         instance.set_password(validated_data['password'])
         instance.save()
         return instance

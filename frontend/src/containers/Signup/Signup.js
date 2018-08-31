@@ -22,12 +22,12 @@ class Signup extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
   handleInputChange(event) {
-    this.setState({[event.target.id]: event.target.value});
+    this.setState({[event.target.id.replace('signup-', '')]: event.target.value});
   }
   handleFormSubmit(event) {
     event.preventDefault();
     if (this.state.username !== '' || this.state.email !== '' || this.state.password1 !== '' || this.state.password2 !== '') {
-      if (this.state.username.match(/^[\w\.\_]+$/)) {
+      if (this.state.username.match(/^[\w._]+$/)) {
         if (this.state.username.length <= 30) {
           if (this.state.password1.length >= 8) {
             if (this.state.password1.length <= 128) {
@@ -49,7 +49,7 @@ class Signup extends Component {
         } else if (this.state.username.length > 30) {
           this.setState({response: {status: 0, position: 1, message: 'Username must not exceed 30 characters.'}});
         }
-      } else if (!this.state.username.match(/^[\w\.\_]+$/)) {
+      } else if (!this.state.username.match(/^[\w._]+$/)) {
         this.setState({response: {status: 0, position: 1, message: 'Username may only contain letters, numbers, periods, and underscores.'}});
       }
     } else if (this.state.username === '' || this.state.email === '' || this.state.password1 === '' || this.state.password2 === '') {
@@ -94,7 +94,7 @@ class Signup extends Component {
       if (this.state.response.status === 0) {
         return (
           <div className="row justify-content-center">
-            <form className="absolute-form col-11 col-sm-6 center-block position-absolute border p-3 bg-light" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+            <form className="absolute-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
               <div>
                 <button type="button" className="close" onClick={this.props.toggleSignup}>
                   <span>&times;</span>
@@ -103,29 +103,29 @@ class Signup extends Component {
               <h2 className="mb-1">Sign Up</h2>
               <hr />
               <div className="form-group">
-                <label htmlFor="username">Username:</label>
-                <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handleInputChange} />
+                <label htmlFor="signup-username">Username:</label>
+                <input type="text" className="form-control" id="signup-username" value={this.state.username} onChange={this.handleInputChange} />
               </div>
               <div className="text-danger small">
                 {this.state.response.position === 1 && this.state.response.message}
               </div>
               <div className="form-group">
-                <label htmlFor="email">Email:</label>
-                <input type="email" className="form-control" id="email" value={this.state.email} onChange={this.handleInputChange} />
+                <label htmlFor="signup-email">Email:</label>
+                <input type="email" className="form-control" id="signup-email" value={this.state.email} onChange={this.handleInputChange} />
               </div>
               <div className="text-danger small">
                 {this.state.response.position === 2 && this.state.response.message}
               </div>
               <div className="form-group">
-                <label htmlFor="password1">Password:</label>
-                <input type="password" className="form-control" id="password1" value={this.state.password1} onChange={this.handleInputChange} />
+                <label htmlFor="signup-password1">Password:</label>
+                <input type="password" className="form-control" id="signup-password1" value={this.state.password1} onChange={this.handleInputChange} />
               </div>
               <div className="text-danger small">
                 {this.state.response.position === 3 && this.state.response.message}
               </div>
               <div className="form-group">
-                <label htmlFor="password2">Confirm Password:</label>
-                <input type="password" className="form-control" id="password2" value={this.state.password2} onChange={this.handleInputChange} />
+                <label htmlFor="signup-password2">Confirm Password:</label>
+                <input type="password" className="form-control" id="signup-password2" value={this.state.password2} onChange={this.handleInputChange} />
               </div>
               <div className="text-danger small">
                 {this.state.response.position === 4 && this.state.response.message}
@@ -136,14 +136,15 @@ class Signup extends Component {
         );     
       } else if (this.state.response.status === 1) {
         return (
-          <div className="row justify-content-center mt-5">
-            <form className="col-11 col-sm-6 center-block position-absolute border p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+          <div className="row justify-content-center">
+            <form className="absolute-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
               <div>
                 <button type="button" className="close" onClick={this.props.toggleSignup}>
                   <span>&times;</span>
                 </button>
               </div>
-              <div className="mb-1">Sign Up</div>
+              <h1 className="mb-1">Sign Up</h1>
+              <hr />
               <div>
                 {this.state.response.message}
               </div>

@@ -12,7 +12,7 @@ class App extends Component {
     return (
       <div className="container-fluid">
         <Header />
-        <div className="absolute-form-container">
+        <div className="absolute-form-container position-relative">
           <Signup />
           <Login />
         </div>

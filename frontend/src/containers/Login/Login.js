@@ -20,7 +20,7 @@ class Login extends Component {
     this.handleSubmitForm = this.handleSubmitForm.bind(this);
   }
   handleInputChange(event) {
-    this.setState({[event.target.id]: event.target.value});
+    this.setState({[event.target.id.replace('login-', '')]: event.target.value});
   }
   handleSubmitForm(event) {
     event.preventDefault();
@@ -47,7 +47,7 @@ class Login extends Component {
     if (this.props.displayLogin === true) {
       return (
         <div className="row justify-content-center">
-          <form className="absolute-form col-11 col-sm-6 center-block border p-3 bg-light position-absolute" encType='multipart/form-data' onSubmit={this.handleSubmitForm}>
+          <form className="absolute-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleSubmitForm}>
             <div>
               <button type="button" className="close" onClick={this.props.toggleLogin}>
                 <span>&times;</span>
@@ -56,12 +56,12 @@ class Login extends Component {
             <h2 className="mb-1">Log In</h2>
             <hr />
             <div className="form-group">
-              <label htmlFor="username">Username:</label>
-              <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handleInputChange} />
+              <label htmlFor="login-username">Username:</label>
+              <input type="text" className="form-control" id="login-username" value={this.state.username} onChange={this.handleInputChange} />
             </div>
             <div className="form-group">
-              <label htmlFor="password">Password:</label>
-              <input type="password" className="form-control" id="password" value={this.state.password} onChange={this.handleInputChange} />
+              <label htmlFor="login-password">Password:</label>
+              <input type="password" className="form-control" id="login-password" value={this.state.password} onChange={this.handleInputChange} />
             </div>
             <div className="text-danger small">
               {this.state.response.status === 0 && this.state.response.message}

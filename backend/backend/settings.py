@@ -27,7 +27,9 @@ REST_KNOX = {
     'USER_SERIALIZER': 'api.serializers.AccountSerializer',
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+REST_AUTH_SERIALIZERS = {
+    'PASSWORD_RESET_SERIALIZER': 'api.serializers.PasswordResetSerializer',
+}
 
 AUTH_USER_MODEL = 'api.Account'
 
@@ -46,7 +48,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'backend/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,3 +105,4 @@ DEBUG = True
 INSTALLED_APPS += ['corsheaders']
 CORS_ORIGIN_WHITELIST = ('http://localhost:3000/', )
 MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware', 'django.middleware.common.CommonMiddleware']
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

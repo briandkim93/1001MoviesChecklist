@@ -55,10 +55,18 @@ class Signup extends Component {
               });
           }
         } else if (this.state.username.length > 30) {
-          this.setState({response: {status: 0, position: 1, message: 'Username must not exceed 30 characters.'}});
+          this.setState({
+            password1: '',
+            password2: '',
+            response: {status: 0, position: 1, message: 'Username must not exceed 30 characters.'}
+          });
         }
       } else if (!this.state.username.match(/^[\w._]+$/)) {
-        this.setState({response: {status: 0, position: 1, message: 'Username may only contain letters, numbers, periods, and underscores.'}});
+        this.setState({
+          password1: '',
+          password2: '',
+          response: {status: 0, position: 1, message: 'Username may only contain letters, numbers, periods, and underscores.'}
+        });
       }
     } else if (this.state.username === '' || this.state.email === '' || this.state.password1 === '' || this.state.password2 === '') {
       this.setState({response: {status: 0, position: 4, message: 'Please do not leave any blank fields.'}});

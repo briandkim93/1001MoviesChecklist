@@ -35,11 +35,11 @@ class Login extends Component {
     this.setState(this.baseState);
   }
   componentDidUpdate(prevProps) {
-    if (this.props.passwordLinkStatusReducer !== prevProps.passwordLinkStatusReducer) {
-      if (this.props.passwordLinkStatusReducer.status === 200) {
+    if (this.props.passwordLinkStatus !== prevProps.passwordLinkStatus) {
+      if (this.props.passwordLinkStatus.status === 200) {
         this.setState({response: {status: 1, message: 'Email sent successfully. Check your inbox for a password reset link.'}});
       } else {
-        this.setState({response: {status: 0, message: 'Invalid username or password. Please try again.'}});
+        this.setState({response: {status: 0, message: 'Email address does not exist.'}});
       }
     }
   }
@@ -58,7 +58,7 @@ class Login extends Component {
               <hr />
               <div className="form-group">
                 <label htmlFor="reset-email">Email:</label>
-                <input type="text" className="form-control" id="reset-email" value={this.state.email} onChange={this.handleInputChange} />
+                <input type="email" className="form-control" id="reset-email" value={this.state.email} onChange={this.handleInputChange} />
               </div>
               <div className="text-danger small">
                 {this.state.response.status === 0 && this.state.response.message}
@@ -92,7 +92,7 @@ class Login extends Component {
 }
 
 function mapPropsToState(state) {
-  return {displayReset: state.displayReset, passwordLinkStatusReducer: state.passwordLinkStatusReducer};
+  return {displayReset: state.displayReset, passwordLinkStatus: state.passwordLinkStatus};
 }
 
 function mapDispatchToProps(dispatch) {

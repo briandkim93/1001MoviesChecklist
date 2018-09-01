@@ -41,10 +41,18 @@ class Signup extends Component {
                 });
               }
             } else if (this.state.password1.length > 128) {
-              this.setState({response: {status: 0, position: 3, message: 'Password must not exceed 128 characters.'}});
+              this.setState({
+                password1: '',
+                password2: '',
+                response: {status: 0, position: 3, message: 'Password must not exceed 128 characters.'}
+              });
             }
           } else if (this.state.password1.length < 8) {
-              this.setState({response: {status: 0, position: 3, message: 'Password must be at least 8 characters.'}});
+              this.setState({
+                password1: '',
+                password2: '',
+                response: {status: 0, position: 3, message: 'Password must be at least 8 characters.'}
+              });
           }
         } else if (this.state.username.length > 30) {
           this.setState({response: {status: 0, position: 1, message: 'Username must not exceed 30 characters.'}});

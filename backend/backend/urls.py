@@ -15,6 +15,7 @@ urlpatterns = [
     
     path('', include('django.contrib.auth.urls')),
     path('api/auth/password/reset/', rest_auth_views.PasswordResetView.as_view(), name='rest_auth_passwordreset'),
+    path('api/auth/password/reset/confirm', rest_auth_views.PasswordResetConfirmView.as_view(), name='rest_auth_passwordreset'),
     
     path(ADMIN_URL, admin.site.urls),
 ]

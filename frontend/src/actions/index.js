@@ -92,3 +92,20 @@ export function sendResetPasswordLink(email) {
     payload: request
   }
 }
+
+export function confirmResetPassword(password1, password2, uid, token) {
+  const request = axios.post(
+    `${API_BASE_URL}auth/password/reset/confirm`, {
+      new_password1: password1,
+      new_password2: password2,
+      uid: uid,
+      token: token,
+    }
+  ).catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.CONFIRM_RESET_PASSWORD,
+    payload: request
+  }
+}

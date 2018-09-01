@@ -5,7 +5,8 @@ import ToggleLoginReducer from './ToggleLoginReducer';
 import ToggleResetReducer from './ToggleResetReducer';
 import SignupStatusReducer from './SignupStatusReducer';
 import LoginStatusReducer from './LoginStatusReducer';
-import passwordLinkStatusReducer from './passwordLinkStatusReducer';
+import PasswordLinkStatusReducer from './PasswordLinkStatusReducer';
+import PasswordResetStatusReducer from './PasswordResetStatusReducer';
 import TokenReducer from './TokenReducer';
 
 const rootReducer = combineReducers({
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   displayReset: ToggleResetReducer,
   signupStatus: SignupStatusReducer,
   loginStatus: LoginStatusReducer,
-  passwordLinkStatusReducer: passwordLinkStatusReducer,
+  passwordLinkStatus: PasswordLinkStatusReducer,
+  passwordResetStatus: PasswordResetStatusReducer,
   token: TokenReducer
 });
 

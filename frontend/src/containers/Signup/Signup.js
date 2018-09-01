@@ -29,30 +29,38 @@ class Signup extends Component {
     if (this.state.username !== '' || this.state.email !== '' || this.state.password1 !== '' || this.state.password2 !== '') {
       if (this.state.username.match(/^[\w._]+$/)) {
         if (this.state.username.length <= 30) {
-          if (this.state.password1.length >= 8) {
-            if (this.state.password1.length <= 128) {
-              if (this.state.password1 === this.state.password2) {
-                this.props.signup(this.state.username.toLowerCase(), this.state.email.toLowerCase(), this.state.password1);
-              } else if (this.state.password1 !== this.state.password2) {
+          if (this.state.email.length <= 254) {
+            if (this.state.password1.length >= 8) {
+              if (this.state.password1.length <= 128) {
+                if (this.state.password1 === this.state.password2) {
+                  this.props.signup(this.state.username.toLowerCase(), this.state.email.toLowerCase(), this.state.password1);
+                } else if (this.state.password1 !== this.state.password2) {
+                  this.setState({
+                    password1: '',
+                    password2: '',
+                    response: {status: 0, position: 4, message: 'Passwords did not match, please try again.'}
+                  });
+                }
+              } else if (this.state.password1.length > 128) {
                 this.setState({
                   password1: '',
                   password2: '',
-                  response: {status: 0, position: 4, message: 'Passwords did not match, please try again.'}
+                  response: {status: 0, position: 3, message: 'Password must not exceed 128 characters.'}
                 });
               }
-            } else if (this.state.password1.length > 128) {
-              this.setState({
-                password1: '',
-                password2: '',
-                response: {status: 0, position: 3, message: 'Password must not exceed 128 characters.'}
-              });
-            }
-          } else if (this.state.password1.length < 8) {
+            } else if (this.state.password1.length < 8) {
               this.setState({
                 password1: '',
                 password2: '',
                 response: {status: 0, position: 3, message: 'Password must be at least 8 characters.'}
               });
+            }
+          } else if (this.state.email.length > 254) {
+            this.setState({
+              password1: '',
+              password2: '',
+              response: {status: 0, position: 2, message: 'Email must not exceed 254 characters.'}
+            });
           }
         } else if (this.state.username.length > 30) {
           this.setState({

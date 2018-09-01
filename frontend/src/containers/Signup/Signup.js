@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { toggleSignup, signup } from '../../actions';
+import { closeSignup, signup } from '../../actions';
 
 class Signup extends Component {
   constructor(props) {
@@ -96,7 +96,7 @@ class Signup extends Component {
           <div className="row justify-content-center">
             <form className="absolute-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
               <div>
-                <button type="button" className="close" onClick={this.props.toggleSignup}>
+                <button type="button" className="close" onClick={this.props.closeSignup}>
                   <span>&times;</span>
                 </button>
               </div>
@@ -139,7 +139,7 @@ class Signup extends Component {
           <div className="row justify-content-center">
             <form className="absolute-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
               <div>
-                <button type="button" className="close" onClick={this.props.toggleSignup}>
+                <button type="button" className="close" onClick={this.props.closeSignup}>
                   <span>&times;</span>
                 </button>
               </div>
@@ -163,7 +163,7 @@ function mapPropsToState(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({toggleSignup: toggleSignup, signup: signup}, dispatch);
+  return bindActionCreators({closeSignup: closeSignup, signup: signup}, dispatch);
 }
 
 export default connect(mapPropsToState, mapDispatchToProps)(Signup);

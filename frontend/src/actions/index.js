@@ -29,6 +29,18 @@ export function closeLogin() {
   }
 }
 
+export function toggleReset() {
+  return {
+    type: ACTION_TYPES.TOGGLE_RESET  
+  }
+}
+
+export function closeReset() {
+  return {
+    type: ACTION_TYPES.CLOSE_RESET  
+  }
+}
+
 export function signup(username, email, password) {
   const request = axios.post(
     `${API_BASE_URL}account/`, {
@@ -63,6 +75,20 @@ export function logout(token) {
   const request = axios.post(`${API_BASE_URL}auth/logoutall/`);
   return {
     type: ACTION_TYPES.LOGOUT,
+    payload: request
+  }
+}
+
+export function sendResetPasswordLink(email) {
+  const request = axios.post(
+    `${API_BASE_URL}auth/password/reset/`, {
+      email: email
+    }
+  ).catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.SEND_RESET_PASSWORD_LINK,
     payload: request
   }
 }

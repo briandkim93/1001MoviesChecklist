@@ -21,6 +21,7 @@ const persistConfig = {
   blacklist: [
     'displaySignup',
     'displayLogin',
+    'displayReset',
     'signupStatus',
     'loginStatus',
   ]

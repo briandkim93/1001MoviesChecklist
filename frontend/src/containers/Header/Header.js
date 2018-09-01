@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import logo from '../../logo.png';
-import { toggleSignup, closeSignup, toggleLogin, closeLogin, logout } from '../../actions';
+import { toggleSignup, closeSignup, toggleLogin, closeLogin, closeReset, logout } from '../../actions';
 
 class Header extends Component {
   constructor(props) {
@@ -16,10 +16,12 @@ class Header extends Component {
   handleToggleSignup() {
     this.props.toggleSignup();
     this.props.closeLogin();
+    this.props.closeReset();
   }
   handleToggleLogin() {
     this.props.toggleLogin();
     this.props.closeSignup();
+    this.props.closeReset();
   }
   handleLogout() {
     this.props.logout(this.props.token);
@@ -74,6 +76,7 @@ function mapDispatchToProps(dispatch) {
     closeSignup: closeSignup,
     toggleLogin: toggleLogin,
     closeLogin: closeLogin,
+    closeReset: closeReset,
     logout: logout,
   }, dispatch);
 }

@@ -48,7 +48,8 @@ export function signup(username, email, password) {
       email: email,
       password: password
     }
-  ).catch(error => {
+  )
+  .catch(error => {
     return error.response;
   });
   return {
@@ -58,8 +59,13 @@ export function signup(username, email, password) {
 }
 
 export function login(username, password) {
-  axios.defaults.headers.common['Authorization'] = 'Basic ' + btoa(username + ':' + password);
-  const request = axios.post(`${API_BASE_URL}auth/login/`)
+  const request = axios({
+    method: 'post',
+    url: `${API_BASE_URL}auth/login/`,
+    headers: {
+      'Authorization': `Basic ${btoa(username + ':' + password)}`,
+    }
+  })
   .catch(error => {
     return error.response;
   });
@@ -70,9 +76,14 @@ export function login(username, password) {
 }
 
 export function logout(token) {
-  axios.defaults.headers.common['Authorization'] = 'Token ' + token;
-  axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-  const request = axios.post(`${API_BASE_URL}auth/logoutall/`);
+  const request = axios({
+    method: 'post',
+    url: `${API_BASE_URL}auth/logoutall/`,
+    headers: {
+      'Authorization': `Token ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  });
   return {
     type: ACTION_TYPES.LOGOUT,
     payload: request
@@ -84,7 +95,8 @@ export function sendResetPasswordLink(email) {
     `${API_BASE_URL}auth/password/reset/`, {
       email: email
     }
-  ).catch(error => {
+  )
+  .catch(error => {
     return error.response;
   });
   return {
@@ -101,7 +113,8 @@ export function confirmResetPassword(password1, password2, uid, token) {
       uid: uid,
       token: token,
     }
-  ).catch(error => {
+  )
+  .catch(error => {
     return error.response;
   });
   return {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'
 
 import { confirmResetPassword } from '../../actions'
 
@@ -54,17 +55,19 @@ class PasswordReset extends Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.passwordResetStatus !== prevProps.passwordResetStatus) {
+      console.log(this.props.passwordResetStatus.status);
       this.setState({
         password1: '',
         password2: '',
         response: {status: 0, message: ''}
       });
-      if (this.props.passwordResetStatus.status === 201) {
+      if (this.props.passwordResetStatus.status === 200) {
         this.setState({
           password1: '',
           password2: '',
           response: {status: 1, message: 'Password reset successfully! Please login to continue.'}
         });
+        setTimeout(() => window.location = '/', 4000);
       } else if (this.props.passwordResetStatus.status === 400 && this.props.passwordResetStatus.data.hasOwnProperty('new_password1')) {
           this.setState({
             response: {status: 0, message: this.props.passwordResetStatus.data.new_password1[0]}
@@ -85,26 +88,43 @@ class PasswordReset extends Component {
     }
   }
   render() {
-    return (
-      <div className="row justify-content-center mt-3">
-        <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
-          <h1 className="mb-1">Password Reset</h1>
-          <hr />
-          <div className="form-group">
-            <label htmlFor="reset-password1">Password:</label>
-            <input type="password" className="form-control" id="reset-password1" value={this.state.password1} onChange={this.handleInputChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="reset-password2">Confirm Password:</label>
-            <input type="password" className="form-control" id="reset-password2" value={this.state.password2} onChange={this.handleInputChange} />
-          </div>
-          <div className="text-danger small">
-            {this.state.response.status === 0 && this.state.response.message}
-          </div>
-          <button type="submit" className="btn btn-primary float-right">Confirm</button>
-        </form>
-      </div>
-    );
+    if (this.state.response.status === 0) {
+      return (
+        <div className="row justify-content-center mt-3">
+          <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+            <h1 className="mb-1">Password Reset</h1>
+            <hr />
+            <div className="form-group">
+              <label htmlFor="reset-password1">Password:</label>
+              <input type="password" className="form-control" id="reset-password1" value={this.state.password1} onChange={this.handleInputChange} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="reset-password2">Confirm Password:</label>
+              <input type="password" className="form-control" id="reset-password2" value={this.state.password2} onChange={this.handleInputChange} />
+            </div>
+            <div className="text-danger small">
+              {this.state.response.status === 0 && this.state.response.message}
+            </div>
+            <button type="submit" className="btn btn-primary float-right">Confirm</button>
+          </form>
+        </div>
+      );
+    } else if (this.state.response.status === 1) {
+      return (
+        <div className="row justify-content-center mt-3">
+          <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+            <h1 className="mb-1">Password Reset</h1>
+            <hr />
+            <div>
+              {this.state.response.message}
+            </div>
+            <div>
+              <span>If you are not automatically redirected in 5 seconds, click <Link to='/'>here</Link> </span>
+            </div>
+          </form>
+        </div>
+      );
+    }
   }
 }
 

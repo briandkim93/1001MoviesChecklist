@@ -1,15 +1,17 @@
 from django.core import exceptions
+from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode as uid_decoder
 from django.utils.translation import gettext as _
-from rest_framework.serializers import ModelSerializer, ValidationError
+
+from rest_framework import serializers
 
 from .models import Account, Movie
 
-from rest_framework import serializers
-from django.contrib.auth.forms import PasswordResetForm
-from django.conf import settings
-
-class AccountSerializer(ModelSerializer):
+class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = '__all__'
@@ -32,11 +34,12 @@ class AccountSerializer(ModelSerializer):
         validate_password(password=value)
         return value
 
-class MovieSerializer(ModelSerializer):
+class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = '__all__'
 
+# Source: django-rest-auth
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password_reset_form_class = PasswordResetForm
@@ -59,7 +62,36 @@ class PasswordResetSerializer(serializers.Serializer):
         }
         self.reset_form.save(**opts)
 
+# Source: django-rest-auth
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    new_password1 = serializers.CharField(max_length=128)
+    new_password2 = serializers.CharField(max_length=128)
+    uid = serializers.CharField()
+    token = serializers.CharField()
 
+    set_password_form_class = SetPasswordForm
 
+    def custom_validation(self, attrs):
+        pass
 
+    def validate(self, attrs):
+        self._errors = {}
+        try:
+            uid = force_text(uid_decoder(attrs['uid']))
+            self.user = Account._default_manager.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, Account.DoesNotExist):
+            raise serializers.ValidationError({'uid': ['Invalid value']})
 
+        self.custom_validation(attrs)
+        self.set_password_form = self.set_password_form_class(
+            user=self.user, data=attrs
+        )
+        if not self.set_password_form.is_valid():
+            raise serializers.ValidationError(self.set_password_form.errors)
+        if not default_token_generator.check_token(self.user, attrs['token']):
+            raise serializers.ValidationError({'token': ['Invalid value']})
+
+        return attrs
+
+    def save(self):
+        return self.set_password_form.save()

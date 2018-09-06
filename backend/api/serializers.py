@@ -1,8 +1,13 @@
+from hashlib import sha256
+from secrets import token_bytes
+
 from django.core import exceptions
+from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
+from django.template.loader import render_to_string
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode as uid_decoder
 from django.utils.translation import gettext as _
@@ -15,13 +20,23 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = '__all__'
-        read_only_fields = ('id', 'last_login', 'is_superuser', 'first_name', 'last_name', 'is_staff', 'is_active', 'date_joined', 'groups', 'user_permissions')
+        read_only_fields = ('id', 'last_login', 'is_superuser', 'first_name', 'last_name', 'email_verified', 'email_verification_code', 'is_staff', 'is_active', 'date_joined', 'groups', 'user_permissions')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        account = Account(username=validated_data['username'], email=validated_data['email'])
+        salt = token_bytes(32).hex()
+        email_verification_code = sha256((salt + validated_data['email']).encode('utf-8')).hexdigest()
+        account = Account(username=validated_data['username'], email=validated_data['email'], email_verification_code=email_verification_code)
         account.set_password(validated_data['password'])
         account.save()
+        message = render_to_string('email-verification-message.txt', {'email_verification_code': email_verification_code})
+        send_mail(
+            'Welcome to 1001 Movies Checklist',
+            message,
+            getattr(settings, 'DEFAULT_FROM_EMAIL'),
+            (validated_data['email'], ),
+            fail_silently=True
+        )
         return account
 
     def update(self, instance, validated_data):
@@ -57,7 +72,7 @@ class PasswordResetSerializer(serializers.Serializer):
         opts = {
             'use_https': request.is_secure(),
             'from_email': getattr(settings, 'DEFAULT_FROM_EMAIL'),
-            'email_template_name': 'password-reset-message.txt',
+            'email_template_name': 'password_reset_message.txt',
             'request': request,
         }
         self.reset_form.save(**opts)
@@ -81,7 +96,6 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
             self.user = Account._default_manager.get(pk=uid)
         except (TypeError, ValueError, OverflowError, Account.DoesNotExist):
             raise serializers.ValidationError({'uid': ['Invalid value']})
-
         self.custom_validation(attrs)
         self.set_password_form = self.set_password_form_class(
             user=self.user, data=attrs
@@ -90,7 +104,6 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
             raise serializers.ValidationError(self.set_password_form.errors)
         if not default_token_generator.check_token(self.user, attrs['token']):
             raise serializers.ValidationError({'token': ['Invalid value']})
-
         return attrs
 
     def save(self):

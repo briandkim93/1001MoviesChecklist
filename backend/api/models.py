@@ -1,7 +1,7 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -22,6 +22,8 @@ class Account(AbstractUser):
             'unique': _("Email address is already taken."),
         }
     )
+    email_verified = models.BooleanField(default=False)
+    email_verification_code = models.CharField(max_length=255)
     completed_movies = models.ManyToManyField('Movie', blank=True)
 
 class Movie(models.Model):

@@ -67,7 +67,7 @@ class PasswordReset extends Component {
           password2: '',
           response: {status: 1, message: 'Password reset successfully! Please login to continue.'}
         });
-        setTimeout(() => window.location = '/', 4000);
+        setTimeout(() => window.location = '/', 3000);
       } else if (this.props.passwordResetStatus.status === 400 && this.props.passwordResetStatus.data.hasOwnProperty('new_password1')) {
           this.setState({
             response: {status: 0, message: this.props.passwordResetStatus.data.new_password1[0]}
@@ -80,10 +80,12 @@ class PasswordReset extends Component {
           this.setState({
             response: {status: 0, message: 'This link has expired.'}
           });
+          setTimeout(() => window.location = '/', 2000);
       } else if (this.props.passwordResetStatus.status === 400 && this.props.passwordResetStatus.data.hasOwnProperty('token')) {
           this.setState({
             response: {status: 0, message: 'This link has expired.'}
           });
+          setTimeout(() => window.location = '/', 2000);
       }
     }
   }
@@ -119,7 +121,7 @@ class PasswordReset extends Component {
               {this.state.response.message}
             </div>
             <div>
-              <span>If you are not automatically redirected in 5 seconds, click <Link to='/'>here</Link> </span>
+              <span>If you are not automatically redirected in 5 seconds, click <Link to='/'>here</Link></span>
             </div>
           </form>
         </div>

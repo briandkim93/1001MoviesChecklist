@@ -29,7 +29,7 @@ class AccountSerializer(serializers.ModelSerializer):
         account = Account(username=validated_data['username'], email=validated_data['email'], email_verification_code=email_verification_code)
         account.set_password(validated_data['password'])
         account.save()
-        message = render_to_string('email-verification-message.txt', {'email_verification_code': email_verification_code})
+        message = render_to_string('email_verification_message.txt', {'email_verification_code': email_verification_code})
         send_mail(
             'Welcome to 1001 Movies Checklist',
             message,
@@ -54,6 +54,36 @@ class MovieSerializer(serializers.ModelSerializer):
         model = Movie
         fields = '__all__'
 
+class EmailVerifySerializer(serializers.Serializer):
+    def save(self):
+        request = self.context.get("request")
+        account = Account.objects.get(username=request.user)
+        try:
+            message = render_to_string('email_verification_message.txt', {'email_verification_code': account.email_verification_code})
+            send_mail(
+                'Verify your 1001 Movies Checklist account',
+                message,
+                getattr(settings, 'DEFAULT_FROM_EMAIL'),
+                (account.email, ),
+                fail_silently=True
+            )
+            return 200
+        except AttributeError:
+            return 401
+
+class EmailVerifyConfirmSerializer(serializers.Serializer):
+    email_verification_code = serializers.CharField(max_length=255)
+    def save(self):
+        request = self.context.get("request")
+        try:
+            account = Account.objects.get(email_verification_code=self.data.get('email_verification_code'))
+            account.email_verified = True
+            account.email_verification_code = ''
+            account.save()
+            return 200
+        except Account.DoesNotExist:
+            return 404
+
 # Source: django-rest-auth
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -64,7 +94,7 @@ class PasswordResetSerializer(serializers.Serializer):
         if not self.reset_form.is_valid():
             raise serializers.ValidationError(_('Error'))
         if not Account.objects.filter(email=value).exists():
-            raise serializers.ValidationError(_('Invalid e-mail address'))
+            raise serializers.ValidationError(_('Invalid email address'))
         return value
 
     def save(self):

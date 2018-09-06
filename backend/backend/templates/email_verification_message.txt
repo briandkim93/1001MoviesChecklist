@@ -1,12 +1,9 @@
 {% load i18n %}{% autoescape off %}
-{% blocktrans %}You're receiving this email because you registered your user account at 1001 Movies Checklist.{% endblocktrans %}
+{% trans "Thanks for using 1001 Movies Checklist!" %}
 
 {% trans "Please go to the following page and verify your email address:" %} 
-
 {% block email_verification_link %}
 http://localhost:3000/verify/{{email_verification_code}}/
 {% endblock %}
-
-{% trans "Thanks for using 1001 Movies Checklist!" %}
 
 {% endautoescape %}

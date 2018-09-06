@@ -18,3 +18,6 @@ class UpdateMoviesPermission(BasePermission):
         if request.user.is_staff:
             return True
 
+class SendVerificationEmailPermission(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return request.user.id == obj.id

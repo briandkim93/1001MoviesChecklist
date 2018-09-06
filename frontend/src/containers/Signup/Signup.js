@@ -112,6 +112,11 @@ class Signup extends Component {
         });
       }
     }
+    if (this.props.displaySignup !== prevProps.displaySignup) {
+      if (this.props.displaySignup === false) {
+        this.setState(this.baseState);
+      }
+    }
   }
   render() {
     if (this.props.displaySignup === true) {

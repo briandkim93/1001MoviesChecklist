@@ -48,6 +48,11 @@ class Login extends Component {
         this.setState({response: {status: 0, message: 'Invalid username or password. Please try again.'}});
       }
     }
+    if (this.props.displayLogin !== prevProps.displayLogin) {
+      if (this.props.displayLogin === false) {
+        this.setState(this.baseState);
+      }
+    }
   }
   render() {
     if (this.props.displayLogin === true) {

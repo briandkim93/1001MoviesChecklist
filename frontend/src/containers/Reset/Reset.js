@@ -42,6 +42,11 @@ class Login extends Component {
         this.setState({response: {status: 0, message: 'Email address does not exist.'}});
       }
     }
+    if (this.props.displayReset !== prevProps.displayReset) {
+      if (this.props.displayReset === false) {
+        this.setState(this.baseState);
+      }
+    }
   }
   render() {
     if (this.props.displayReset === true) {

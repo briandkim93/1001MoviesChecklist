@@ -26,7 +26,6 @@ class Header extends Component {
   }
   handleLogout() {
     this.props.logout(this.props.token);
-    window.location = '/';
   }
   render() {
     if (this.props.token) {
@@ -40,7 +39,7 @@ class Header extends Component {
             <div className="collapse navbar-collapse" id="navbarCollapse">
               <div className="navbar-nav ml-auto">
                 <span><Link to='/account/settings' className="nav-link btn">Account</Link></span>
-                <span className="nav-link btn" onClick={this.handleLogout}>Logout</span>
+                <span><Link to='/' className="nav-link btn" onClick={this.handleLogout}>Logout</Link></span>
               </div>
             </div>
           </nav>

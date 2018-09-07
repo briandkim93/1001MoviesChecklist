@@ -41,6 +41,11 @@ class EmailVerifyView(GenericAPIView):
                 {"detail": _("Verification email has been sent.")},
                 status=status.HTTP_200_OK
             )
+        elif (serializer.save() == 400):
+            return Response(
+                {"detail": _("This email is already verified.")},
+                status=status.HTTP_202_ACCEPTED
+            )
         else:
             return Response(
                 {"detail": _("Authentication credentials were not provided.")},

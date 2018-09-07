@@ -55,7 +55,7 @@ export function signup(username, email, password) {
   return {
     type: ACTION_TYPES.SIGNUP,
     payload: request
-  }
+  };
 }
 
 export function login(username, password) {
@@ -72,7 +72,7 @@ export function login(username, password) {
   return {
     type: ACTION_TYPES.LOGIN,
     payload: request
-  }
+  };
 }
 
 export function logout(token) {
@@ -87,7 +87,7 @@ export function logout(token) {
   return {
     type: ACTION_TYPES.LOGOUT,
     payload: request
-  }
+  };
 }
 
 export function confirmVerifyEmail(token) {
@@ -102,7 +102,7 @@ export function confirmVerifyEmail(token) {
   return {
     type: ACTION_TYPES.CONFIRM_VERIFY_EMAIL,
     payload: request
-  }
+  };
 }
 
 export function sendResetPasswordLink(email) {
@@ -137,3 +137,39 @@ export function confirmResetPassword(password1, password2, uid, token) {
     payload: request
   }
 }
+
+export function changePassword(username, email, password0, password1, uid, token) {
+  const passwordConfirmRequest = axios({
+    method: 'options',
+    url: `${API_BASE_URL}auth/login/`,
+    headers: {
+      'Authorization': `Basic ${btoa(username + ':' + password0)}`,
+    }
+  });
+  const passwordChangeRequest = axios({
+    method: 'put',
+    url: `${API_BASE_URL}account/${uid}/`,
+    headers: {
+      'Authorization': `Token ${token}`,
+    },
+    data: {
+      username: username,
+      password: password1,
+      email: email
+    }
+  });
+  const request = Promise.all([passwordConfirmRequest, passwordChangeRequest])
+  .catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.CHANGE_PASSWORD,
+    payload: request
+  }
+}
+
+
+
+
+
+

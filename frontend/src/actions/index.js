@@ -90,6 +90,21 @@ export function logout(token) {
   }
 }
 
+export function confirmVerifyEmail(token) {
+  const request = axios.post(
+    `${API_BASE_URL}auth/email/verify/confirm/`, {
+      email_verification_code: token,
+    }
+  )
+  .catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.CONFIRM_VERIFY_EMAIL,
+    payload: request
+  }
+}
+
 export function sendResetPasswordLink(email) {
   const request = axios.post(
     `${API_BASE_URL}auth/password/reset/`, {
@@ -107,7 +122,7 @@ export function sendResetPasswordLink(email) {
 
 export function confirmResetPassword(password1, password2, uid, token) {
   const request = axios.post(
-    `${API_BASE_URL}auth/password/reset/confirm`, {
+    `${API_BASE_URL}auth/password/reset/confirm/`, {
       new_password1: password1,
       new_password2: password2,
       uid: uid,

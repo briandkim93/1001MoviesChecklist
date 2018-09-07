@@ -55,7 +55,6 @@ class PasswordReset extends Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.passwordResetStatus !== prevProps.passwordResetStatus) {
-      console.log(this.props.passwordResetStatus.status);
       this.setState({
         password1: '',
         password2: '',

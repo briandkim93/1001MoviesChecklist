@@ -24,6 +24,9 @@ const persistConfig = {
     'displayReset',
     'signupStatus',
     'loginStatus',
+    'emailVerificationStatus',
+    'passwordLinkStatus',
+    'passwordResetStatus'
   ]
 }
 

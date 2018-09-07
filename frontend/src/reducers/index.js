@@ -9,6 +9,7 @@ import EmailVerificationStatusReducer from './EmailVerificationStatusReducer';
 import PasswordLinkStatusReducer from './PasswordLinkStatusReducer';
 import PasswordResetStatusReducer from './PasswordResetStatusReducer';
 import TokenReducer from './TokenReducer';
+import UserInfoReducer from './UserInfoReducer';
 
 const rootReducer = combineReducers({
   displaySignup: ToggleSignupReducer,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   emailVerificationStatus: EmailVerificationStatusReducer,
   passwordLinkStatus: PasswordLinkStatusReducer,
   passwordResetStatus: PasswordResetStatusReducer,
-  token: TokenReducer
+  token: TokenReducer,
+  userInfo: UserInfoReducer
 });
 
 export default rootReducer;

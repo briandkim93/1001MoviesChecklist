@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import logo from '../../logo.png';
 import { toggleSignup, closeSignup, toggleLogin, closeLogin, closeReset, logout } from '../../actions';
@@ -25,6 +26,7 @@ class Header extends Component {
   }
   handleLogout() {
     this.props.logout(this.props.token);
+    window.location = '/';
   }
   render() {
     if (this.props.token) {
@@ -37,6 +39,7 @@ class Header extends Component {
             </button>
             <div className="collapse navbar-collapse" id="navbarCollapse">
               <div className="navbar-nav ml-auto">
+                <span><Link to='/account/settings' className="nav-link btn">Account</Link></span>
                 <span className="nav-link btn" onClick={this.handleLogout}>Logout</span>
               </div>
             </div>

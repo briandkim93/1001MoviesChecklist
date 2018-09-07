@@ -10,10 +10,10 @@ urlpatterns = [
     path('api/', include('api.urls')),
 
     path('api/auth/email/verify/', EmailVerifyView.as_view(), name='email_verify'),
-    path('api/auth/email/verify/confirm', EmailVerifyConfirmView.as_view(), name='email_verify_confirm'),
+    path('api/auth/email/verify/confirm/', EmailVerifyConfirmView.as_view(), name='email_verify_confirm'),
     
     path('api/auth/password/reset/', PasswordResetView.as_view(), name='password_reset'),
-    path('api/auth/password/reset/confirm', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('api/auth/password/reset/confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
     path('api/auth/login/', LoginView.as_view(), name='knox_login'),
     path('api/auth/logout/', knox_views.LogoutView.as_view(), name='knox_logout'),

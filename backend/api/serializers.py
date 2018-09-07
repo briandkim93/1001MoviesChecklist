@@ -19,8 +19,8 @@ from .models import Account, Movie
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = '__all__'
-        read_only_fields = ('id', 'last_login', 'is_superuser', 'first_name', 'last_name', 'email_verified', 'email_verification_code', 'is_staff', 'is_active', 'date_joined', 'groups', 'user_permissions')
+        fields = ('id', 'username', 'password', 'email', 'email_verified', 'email_verification_code', 'completed_movies', 'last_login', 'is_superuser', 'is_staff', 'is_active', 'date_joined')
+        read_only_fields = ('id', 'email_verified', 'email_verification_code', 'last_login', 'is_superuser', 'is_staff', 'is_active', 'date_joined')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -40,6 +40,11 @@ class AccountSerializer(serializers.ModelSerializer):
         return account
 
     def update(self, instance, validated_data):
+        if (instance.email != validated_data['email']):
+            instance.email_verified = False
+            salt = token_bytes(32).hex()
+            email_verification_code = sha256((salt + validated_data['email']).encode('utf-8')).hexdigest()
+            instance.email_verification_code = email_verification_code
         instance.email = validated_data['email']
         instance.set_password(validated_data['password'])
         instance.save()

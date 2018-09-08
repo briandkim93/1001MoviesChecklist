@@ -29,7 +29,7 @@ export function closeLogin() {
   }
 }
 
-export function toggleReset() {
+export function togglePasswordResetRequest() {
   return {
     type: ACTION_TYPES.TOGGLE_RESET  
   }
@@ -90,7 +90,7 @@ export function logout(token) {
   };
 }
 
-export function confirmVerifyEmail(token) {
+export function confirmEmailVerify(token) {
   const request = axios.post(
     `${API_BASE_URL}auth/email/verify/confirm/`, {
       email_verification_code: token,
@@ -100,12 +100,12 @@ export function confirmVerifyEmail(token) {
     return error.response;
   });
   return {
-    type: ACTION_TYPES.CONFIRM_VERIFY_EMAIL,
+    type: ACTION_TYPES.CONFIRM_EMAIL_VERIFY,
     payload: request
   };
 }
 
-export function sendResetPasswordLink(email) {
+export function sendPasswordResetLink(email) {
   const request = axios.post(
     `${API_BASE_URL}auth/password/reset/`, {
       email: email
@@ -115,7 +115,7 @@ export function sendResetPasswordLink(email) {
     return error.response;
   });
   return {
-    type: ACTION_TYPES.SEND_RESET_PASSWORD_LINK,
+    type: ACTION_TYPES.SEND_PASSWORD_RESET_LINK,
     payload: request
   }
 }
@@ -174,6 +174,23 @@ export function changeEmail(email, uid, token) {
   });
   return {
     type: ACTION_TYPES.CHANGE_EMAIL,
+    payload: request
+  }
+}
+
+export function sendEmailVerifyLink(token) {
+  const request = axios({
+    method: 'post',
+    url: `${API_BASE_URL}auth/email/verify/`,
+    headers: {
+      'Authorization': `Token ${token}`,
+    }
+  })
+  .catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.SEND_EMAIL_VERIFY_LINK,
     payload: request
   }
 }

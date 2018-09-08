@@ -2,10 +2,11 @@ import { combineReducers } from 'redux';
 
 import ToggleSignupReducer from './ToggleSignupReducer';
 import ToggleLoginReducer from './ToggleLoginReducer';
-import ToggleResetReducer from './ToggleResetReducer';
+import TogglePasswordResetRequestReducer from './TogglePasswordResetRequestReducer';
 import SignupStatusReducer from './SignupStatusReducer';
 import LoginStatusReducer from './LoginStatusReducer';
 import EmailVerifyStatusReducer from './EmailVerifyStatusReducer';
+import EmailVerifyRequestStatusReducer from './EmailVerifyRequestStatusReducer';
 import PasswordResetRequestStatusReducer from './PasswordResetRequestStatusReducer';
 import PasswordResetStatusReducer from './PasswordResetStatusReducer';
 import PasswordChangeStatusReducer from './PasswordChangeStatusReducer';
@@ -16,10 +17,11 @@ import UserInfoReducer from './UserInfoReducer';
 const rootReducer = combineReducers({
   displaySignup: ToggleSignupReducer,
   displayLogin: ToggleLoginReducer,
-  displayReset: ToggleResetReducer,
+  displayReset: TogglePasswordResetRequestReducer,
   signupStatus: SignupStatusReducer,
   loginStatus: LoginStatusReducer,
   emailVerifyStatus: EmailVerifyStatusReducer,
+  emailVerifyRequestStatus: EmailVerifyRequestStatusReducer,
   passwordResetRequestStatus: PasswordResetRequestStatusReducer,
   passwordResetStatus: PasswordResetStatusReducer,
   passwordChangeStatus: PasswordChangeStatusReducer,

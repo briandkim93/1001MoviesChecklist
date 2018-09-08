@@ -25,15 +25,15 @@ class AccountInfo extends Component {
                 </li>
                 <li className="list-group-item">
                   Password: &#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;
-                  <Link to='settings/password' className='small float-right'>Change</Link>
+                  <Link to='/account/settings/password' className='small float-right'>Change</Link>
                 </li>
                 <li className="list-group-item">
                   Email: {this.props.userInfo.email}
-                  <Link to='settings/email' className='small float-right'>Change</Link>
+                  <Link to='/account/settings/email' className='small float-right'>Change</Link>
                 </li>
                 <li className="list-group-item">
                   Email Verified: {this.props.userInfo.emailVerified ? 'Yes' : 'No'}
-                  <Link to='settings/verify' className='small float-right'>Resend</Link>
+                  <Link to='/account/settings/verify' className='small float-right'>Resend</Link>
                 </li>
                 <li className="list-group-item">
                   Date Joined: {this.props.userInfo.dateJoined}

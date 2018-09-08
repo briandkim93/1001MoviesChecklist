@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { toggleSignup, closeSignup, closeLogin, toggleReset, closeReset, login } from '../../actions';
+import { toggleSignup, closeSignup, closeLogin, togglePasswordResetRequest, closeReset, login } from '../../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -16,12 +16,12 @@ class Login extends Component {
 
     this.baseState = this.state;
 
-    this.handleToggleReset = this.handleToggleReset.bind(this);
+    this.handleTogglePasswordResetRequest = this.handleTogglePasswordResetRequest.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmitForm = this.handleSubmitForm.bind(this);
   }
-  handleToggleReset() {
-    this.props.toggleReset();
+  handleTogglePasswordResetRequest() {
+    this.props.togglePasswordResetRequest();
     this.props.closeSignup();
     this.props.closeLogin();
   }
@@ -78,7 +78,7 @@ class Login extends Component {
               {this.state.response.status === 0 && this.state.response.message}
             </div>
             <div>
-              <span className="text-primary btn btn-link btn-sm p-0" onClick={this.handleToggleReset}>(Forgot Username or Password?)</span>
+              <span className="text-primary btn btn-link btn-sm p-0" onClick={this.handleTogglePasswordResetRequest}>(Forgot Username or Password?)</span>
             </div>
             <button type="submit" className="btn btn-primary float-right">Login</button>
           </form>
@@ -95,7 +95,7 @@ function mapPropsToState(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({toggleSignup: toggleSignup, closeSignup: closeSignup, closeLogin: closeLogin, toggleReset: toggleReset, closeReset: closeReset, login: login}, dispatch);
+  return bindActionCreators({toggleSignup: toggleSignup, closeSignup: closeSignup, closeLogin: closeLogin, togglePasswordResetRequest: togglePasswordResetRequest, closeReset: closeReset, login: login}, dispatch);
 }
 
 export default connect(mapPropsToState, mapDispatchToProps)(Login);

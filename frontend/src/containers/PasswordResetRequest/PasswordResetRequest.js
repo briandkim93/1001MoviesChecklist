@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { closeReset, sendResetPasswordLink } from '../../actions';
+import { closeReset, sendPasswordResetLink } from '../../actions';
 
-class Reset extends Component {
+class PasswordResetRequest extends Component {
   constructor(props) {
     super(props);
 
@@ -25,7 +25,7 @@ class Reset extends Component {
   handleSubmitForm(event) {
     event.preventDefault();
     if (this.state.email !== '') {
-      this.props.sendResetPasswordLink(this.state.email);
+      this.props.sendPasswordResetLink(this.state.email);
     } else {
       this.setState({response: {status: 0, message: 'Please enter an email address.'}});
     }
@@ -101,7 +101,7 @@ function mapPropsToState(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({closeReset: closeReset, sendResetPasswordLink: sendResetPasswordLink}, dispatch);
+  return bindActionCreators({closeReset: closeReset, sendPasswordResetLink: sendPasswordResetLink}, dispatch);
 }
 
-export default connect(mapPropsToState, mapDispatchToProps)(Reset);
+export default connect(mapPropsToState, mapDispatchToProps)(PasswordResetRequest);

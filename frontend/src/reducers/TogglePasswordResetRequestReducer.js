@@ -1,6 +1,6 @@
 import ACTION_TYPES from '../actions/types';
 
-function ToggleResetReducer(state=false, action) {
+function TogglePasswordResetRequestReducer(state=false, action) {
   switch (action.type) {
     case ACTION_TYPES.TOGGLE_RESET:
       if (state === false) {
@@ -15,4 +15,4 @@ function ToggleResetReducer(state=false, action) {
   }
 }
 
-export default ToggleResetReducer;
+export default TogglePasswordResetRequestReducer;

@@ -15,7 +15,7 @@ function UserInfoReducer(state={}, action) {
       } else {
         return state;
       }
-    case ACTION_TYPES.CONFIRM_VERIFY_EMAIL:
+    case ACTION_TYPES.CONFIRM_EMAIL_VERIFY:
       if (action.payload.status === 200) {
         return {
           uid: state.uid,

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 
-import { confirmVerifyEmail } from '../../actions'
+import { confirmEmailVerify } from '../../actions'
 
 class EmailVerify extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class EmailVerify extends Component {
     }
   }
   componentDidMount() {
-    this.props.confirmVerifyEmail(this.props.match.params.token);
+    this.props.confirmEmailVerify(this.props.match.params.token);
   }
   componentDidUpdate(prevProps) {
     if (this.props.emailVerifyStatus !== prevProps.emailVerifyStatus) {
@@ -79,7 +79,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({confirmVerifyEmail: confirmVerifyEmail}, dispatch)
+  return bindActionCreators({confirmEmailVerify: confirmEmailVerify}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmailVerify);

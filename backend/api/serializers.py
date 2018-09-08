@@ -81,7 +81,7 @@ class EmailVerifySerializer(serializers.Serializer):
                 fail_silently=True
             )
             return 200
-        except AttributeError:
+        except (AttributeError, Account.DoesNotExist):
             return 401
 
 class EmailVerifyConfirmSerializer(serializers.Serializer):

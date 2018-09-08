@@ -75,43 +75,57 @@ class PasswordChange extends Component {
     }
   }
   render() {
-    if (this.state.response.status === 0) {
-      return (
-        <div className="row justify-content-center mt-3">
-          <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
-            <h1 className="mb-1">Account Settings</h1>
-            <hr />
-            <div className="form-group">
-              <label htmlFor="change-password1">New Password:</label>
-              <input type="password" className="form-control" id="change-password1" value={this.state.password1} onChange={this.handleInputChange} />
+    if (this.props.token) {
+      if (this.state.response.status === 0) {
+        return (
+          <div className="row justify-content-center mt-3">
+            <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+              <h1 className="mb-1">Account Settings</h1>
+              <hr />
+              <div className="form-group">
+                <label htmlFor="change-password1">New Password:</label>
+                <input type="password" className="form-control" id="change-password1" value={this.state.password1} onChange={this.handleInputChange} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="change-password2">Confirm New Password:</label>
+                <input type="password" className="form-control" id="change-password2" value={this.state.password2} onChange={this.handleInputChange} />
+              </div>
+              <div className="text-danger small">
+                {this.state.response.status === 0 && this.state.response.message}
+              </div>
+              <button type="submit" className="btn btn-primary float-right">Confirm</button>
+            </form>
+            <div>
+              <Link to='/account/settings'>Back to Settings</Link>
             </div>
-            <div className="form-group">
-              <label htmlFor="change-password2">Confirm New Password:</label>
-              <input type="password" className="form-control" id="change-password2" value={this.state.password2} onChange={this.handleInputChange} />
-            </div>
-            <div className="text-danger small">
-              {this.state.response.status === 0 && this.state.response.message}
-            </div>
-            <button type="submit" className="btn btn-primary float-right">Confirm</button>
-          </form>
-          <div>
-            <Link to='/account/settings'>Back to Settings</Link>
           </div>
-        </div>
-      );
-    } else if (this.state.response.status === 1) {
+        );
+      } else if (this.state.response.status === 1) {
+        return (
+          <div className="row justify-content-center mt-3">
+            <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+              <h1 className="mb-1">Account Settings</h1>
+              <hr />
+              <div>
+                {this.state.response.message}
+              </div>
+              <div>
+                <span>If you are not automatically redirected in 5 seconds, click <a href='/account/settings'>here</a></span>
+              </div>
+            </form>
+          </div>
+        );
+      }
+    } else {
       return (
         <div className="row justify-content-center mt-3">
-          <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+          <div className="col-11 center-block p-3">
             <h1 className="mb-1">Account Settings</h1>
             <hr />
             <div>
-              {this.state.response.message}
+              You must be logged in to view this page.
             </div>
-            <div>
-              <span>If you are not automatically redirected in 5 seconds, click <a href='/account/settings'>here</a></span>
-            </div>
-          </form>
+          </div>
         </div>
       );
     }

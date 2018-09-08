@@ -4,7 +4,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.debug import sensitive_post_parameters
 
 from rest_framework import status
-from rest_framework.authentication import BasicAuthentication
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -12,6 +11,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from knox.views import LoginView as KnoxLoginView
 
+from .authentications import BasicAuthentication403
 from .models import Account, Movie
 from .permissions import UpdateAccountPermission, RetrieveAccountListPermission, UpdateMoviesPermission, SendVerificationEmailPermission
 from .serializers import AccountSerializer, MovieSerializer, EmailVerifySerializer, EmailVerifyConfirmSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer
@@ -22,7 +22,7 @@ class AccountViewSet(ModelViewSet):
     permission_classes = (UpdateAccountPermission, RetrieveAccountListPermission)
 
 class LoginView(KnoxLoginView):
-    authentication_classes = (BasicAuthentication, )
+    authentication_classes = (BasicAuthentication403, )
 
 class MovieViewSet(ModelViewSet):
     serializer_class = MovieSerializer

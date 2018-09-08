@@ -32,7 +32,7 @@ class Header extends Component {
       return (
         <div className="row">
           <nav className="navbar navbar-expand-sm navbar-dark bg-dark col-12">
-            <span className="navbar-brand"><img className="mr-3" src={logo} alt="1001 Movies Checklist Logo" />Movies Checklist</span>
+            <span className="navbar-brand"><Link to='/'><img className="mr-3" src={logo} alt="1001 Movies Checklist Logo" /></Link>Movies Checklist</span>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
               <span className="navbar-toggler-icon"></span>
             </button>
@@ -49,7 +49,7 @@ class Header extends Component {
       return (
         <div className="row">
           <nav className="navbar navbar-expand-sm navbar-dark bg-dark col-12">
-            <span className="navbar-brand"><img className="mr-3" src={logo} alt="1001 Movies Checklist Logo" />Movies Checklist</span>
+            <span className="navbar-brand"><Link to='/'><img className="mr-3" src={logo} alt="1001 Movies Checklist Logo" /></Link>Movies Checklist</span>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
               <span className="navbar-toggler-icon"></span>
             </button>

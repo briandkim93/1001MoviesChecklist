@@ -140,15 +140,13 @@ export function confirmResetPassword(password1, password2, uid, token) {
 
 export function changePassword(username, email, password, uid, token) {
   const request = axios({
-    method: 'put',
+    method: 'patch',
     url: `${API_BASE_URL}account/${uid}/`,
     headers: {
       'Authorization': `Token ${token}`,
     },
     data: {
-      username: username,
       password: password,
-      email: email
     }
   })
   .catch(error => {
@@ -159,9 +157,3 @@ export function changePassword(username, email, password, uid, token) {
     payload: request
   }
 }
-
-
-
-
-
-

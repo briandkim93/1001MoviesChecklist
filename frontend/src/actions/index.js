@@ -211,6 +211,11 @@ export function confirmCredentials(username, password, context) {
       type: ACTION_TYPES.CONFIRM_CREDENTIALS_DELETE_ACCOUNT,
       payload: request
     };
+  } else if (context === 'passwordChange') {
+    return {
+      type: ACTION_TYPES.CONFIRM_CREDENTIALS_CHANGE_PASSWORD,
+      payload: request
+    };
   }
 }
 

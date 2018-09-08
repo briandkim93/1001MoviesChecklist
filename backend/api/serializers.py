@@ -40,13 +40,19 @@ class AccountSerializer(serializers.ModelSerializer):
         return account
 
     def update(self, instance, validated_data):
-        if (instance.email != validated_data['email']):
-            instance.email_verified = False
-            salt = token_bytes(32).hex()
-            email_verification_code = sha256((salt + validated_data['email']).encode('utf-8')).hexdigest()
-            instance.email_verification_code = email_verification_code
-        instance.email = validated_data['email']
-        instance.set_password(validated_data['password'])
+        try: 
+            if instance.email != validated_data['email']:
+                instance.email_verified = False
+                salt = token_bytes(32).hex()
+                email_verification_code = sha256((salt + validated_data['email']).encode('utf-8')).hexdigest()
+                instance.email_verification_code = email_verification_code
+                instance.email = validated_data['email']
+        except KeyError:
+            pass;
+        try:
+            instance.set_password(validated_data['password'])
+        except KeyError:
+            pass;
         instance.save()
         return instance
 

@@ -1,6 +1,6 @@
 import ACTION_TYPES from '../actions/types';
 
-function PasswordLinkStatusReducer(state={}, action) {
+function PasswordResetRequestStatusReducer(state={}, action) {
   switch (action.type) {
     case ACTION_TYPES.SEND_RESET_PASSWORD_LINK:
       return action.payload;
@@ -9,4 +9,4 @@ function PasswordLinkStatusReducer(state={}, action) {
   }
 }
 
-export default PasswordLinkStatusReducer;
+export default PasswordResetRequestStatusReducer;

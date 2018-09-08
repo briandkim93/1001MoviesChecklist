@@ -35,8 +35,8 @@ class Reset extends Component {
     this.setState(this.baseState);
   }
   componentDidUpdate(prevProps) {
-    if (this.props.passwordLinkStatus !== prevProps.passwordLinkStatus) {
-      if (this.props.passwordLinkStatus.status === 200) {
+    if (this.props.passwordResetRequestStatus !== prevProps.passwordResetRequestStatus) {
+      if (this.props.passwordResetRequestStatus.status === 200) {
         this.setState({response: {status: 1, message: 'Email sent successfully. Check your inbox for a password reset link.'}});
       } else {
         this.setState({response: {status: 0, message: 'Email address does not exist.'}});
@@ -97,7 +97,7 @@ class Reset extends Component {
 }
 
 function mapPropsToState(state) {
-  return {displayReset: state.displayReset, passwordLinkStatus: state.passwordLinkStatus};
+  return {displayReset: state.displayReset, passwordResetRequestStatus: state.passwordResetRequestStatus};
 }
 
 function mapDispatchToProps(dispatch) {

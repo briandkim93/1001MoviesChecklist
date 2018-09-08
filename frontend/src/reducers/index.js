@@ -6,7 +6,7 @@ import ToggleResetReducer from './ToggleResetReducer';
 import SignupStatusReducer from './SignupStatusReducer';
 import LoginStatusReducer from './LoginStatusReducer';
 import EmailVerifyStatusReducer from './EmailVerifyStatusReducer';
-import PasswordLinkStatusReducer from './PasswordLinkStatusReducer';
+import PasswordResetRequestStatusReducer from './PasswordResetRequestStatusReducer';
 import PasswordResetStatusReducer from './PasswordResetStatusReducer';
 import PasswordChangeStatusReducer from './PasswordChangeStatusReducer';
 import EmailChangeStatusReducer from './EmailChangeStatusReducer';
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   signupStatus: SignupStatusReducer,
   loginStatus: LoginStatusReducer,
   emailVerifyStatus: EmailVerifyStatusReducer,
-  passwordLinkStatus: PasswordLinkStatusReducer,
+  passwordResetRequestStatus: PasswordResetRequestStatusReducer,
   passwordResetStatus: PasswordResetStatusReducer,
   passwordChangeStatus: PasswordChangeStatusReducer,
   emailChangeStatus: EmailChangeStatusReducer,

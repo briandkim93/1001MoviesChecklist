@@ -68,10 +68,10 @@ class MovieSerializer(serializers.ModelSerializer):
 class EmailVerifySerializer(serializers.Serializer):
     def save(self):
         request = self.context.get("request")
-        account = Account.objects.get(username=request.user)
-        if account.email_verified == True:
-            return 400
         try:
+            account = Account.objects.get(username=request.user)
+            if account.email_verified == True:
+                return 400
             message = render_to_string('email_verification_message.txt', {'email_verification_code': account.email_verification_code})
             send_mail(
                 'Verify your 1001 Movies Checklist account',

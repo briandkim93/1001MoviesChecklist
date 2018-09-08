@@ -15,6 +15,19 @@ function UserInfoReducer(state={}, action) {
       } else {
         return state;
       }
+    case ACTION_TYPES.CONFIRM_VERIFY_EMAIL:
+      if (action.payload.status === 200) {
+        return {
+          uid: state.uid,
+          username: state.username,
+          email: state.email,
+          emailVerified: true,
+          completedMovies: state.completedMovies,
+          dateJoined: state.dateJoined
+        };
+      } else {
+        return state;
+      }
     case ACTION_TYPES.LOGOUT:
       if (action.payload.status === 204) {
         return null;

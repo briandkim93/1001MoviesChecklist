@@ -47,6 +47,8 @@ function UserInfoReducer(state={}, action) {
       } else {
         return state;
       }
+    case ACTION_TYPES.DELETE_ACCOUNT:
+      return null;
     default:
       return state;
   }

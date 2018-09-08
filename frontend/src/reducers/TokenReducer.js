@@ -14,6 +14,8 @@ function TokenReducer(state=null, action) {
       } else {
         return state;
       }
+    case ACTION_TYPES.DELETE_ACCOUNT:
+      return null;
     default:
       return state;
   }

@@ -194,3 +194,39 @@ export function sendEmailVerifyLink(token) {
     payload: request
   }
 }
+
+export function confirmCredentials(username, password, context) {
+  const request = axios({
+    method: 'options',
+    url: `${API_BASE_URL}auth/login/`,
+    headers: {
+      'Authorization': `Basic ${btoa(username + ':' + password)}`,
+    }
+  })
+  .catch(error => {
+    return error.response;
+  });
+  if (context === 'accountDelete') {
+    return {
+      type: ACTION_TYPES.CONFIRM_CREDENTIALS_DELETE_ACCOUNT,
+      payload: request
+    };
+  }
+}
+
+export function deleteAccount(uid, token) {
+  const request = axios({
+    method: 'delete',
+    url: `${API_BASE_URL}account/${uid}/`,
+    headers: {
+      'Authorization': `Token ${token}`,
+    }
+  })
+  .catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.DELETE_ACCOUNT,
+    payload: request
+  };
+}

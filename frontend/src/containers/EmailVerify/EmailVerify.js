@@ -3,71 +3,88 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 
-import { confirmEmailVerify } from '../../actions'
+import { confirmCredentials, confirmEmailVerify } from '../../actions'
 
 class EmailVerify extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      username: '',
+      password: '',
       response: {status: 0, message: ''}
     }
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
-  componentDidMount() {
-    this.props.confirmEmailVerify(this.props.match.params.token);
+  handleInputChange(event) {
+    this.setState({[event.target.id.replace('verify-', '')]: event.target.value});
+  }
+  handleFormSubmit(event) {
+    event.preventDefault();
+    if (this.state.username !== '' && this.state.password !== '') {
+      this.props.confirmCredentials(this.state.username, this.state.password, 'emailVerify');
+    } else {
+      this.setState({response: {status: 0, message: 'Please do not leave any empty fields.'}});
+    }
+    this.setState({password: ''});
   }
   componentDidUpdate(prevProps) {
+    if (this.props.confirmCredentialsStatus && this.props.confirmCredentialsStatus !== prevProps.confirmCredentialsStatus) {
+      if (this.props.confirmCredentialsStatus.data.context === 'emailVerify') {
+        if (this.props.confirmCredentialsStatus.status === 200) {
+          this.props.confirmEmailVerify(this.props.match.params.token);;
+        } else {
+          this.setState({response: {status: 0, message: 'Invalid username or password. Please try again.'}});
+        }
+      }
+    }
     if (this.props.emailVerifyStatus !== prevProps.emailVerifyStatus) {
       if (this.props.emailVerifyStatus.status === 200) {
         this.setState({response: {status: 1, message: 'Your email address has been successfully verified.'}});
         setTimeout(() => window.location = '/', 3000);
-      } else if (this.props.emailVerifyStatus.status === 400 || this.props.emailVerifyStatus.status === 404) {
+      } else {
         this.setState({response: {status: 0, message: 'This link has expired.'}});
         setTimeout(() => window.location = '/', 3000);
       }
     }
   }
   render() {
-    if (this.state.response.status === 0 && this.state.response.message === '') {
+    if (this.state.response.status === 0) {
       return (
         <div className="row justify-content-center mt-3">
-          <div className="col-11 center-block p-3">
-            <h1 className="mb-1">Email Verification</h1>
+          <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+            <h1 className="mb-1">Account Settings</h1>
             <hr />
-            <div>
-              Please wait...
+            <div className="form-group">
+              <label htmlFor="verify-username">Username:</label>
+              <input type="text" className="form-control" id="verify-username" value={this.state.username} onChange={this.handleInputChange} />
             </div>
-          </div>
-        </div>
-      );
-    } else if (this.state.response.status === 0 && this.state.response.message !== '') { 
-      return (
-        <div className="row justify-content-center mt-3">
-          <div className="col-11 center-block p-3">
-            <h1 className="mb-1">Email Verification</h1>
-            <hr />
-            <div>
-              {this.state.response.message}
+            <div className="form-group">
+              <label htmlFor="verify-password">Password:</label>
+              <input type="password" className="form-control" id="verify-password" value={this.state.password} onChange={this.handleInputChange} />
             </div>
-            <div>
-              <span>If you are not automatically redirected in 5 seconds, click <a href='/'>here</a></span>
+            <div className="text-danger small">
+              {this.state.response.status === 0 && this.state.response.message}
             </div>
-          </div>
+            <button type="submit" className="btn btn-primary float-right">Verify Email</button>
+          </form>
         </div>
       );
     } else if (this.state.response.status === 1) {
       return (
         <div className="row justify-content-center mt-3">
-          <div className="col-11 center-block p-3">
-            <h1 className="mb-1">Email Verification</h1>
+          <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+            <h1 className="mb-1">Account Settings</h1>
             <hr />
             <div>
               {this.state.response.message}
             </div>
             <div>
-              <span>If you are not automatically redirected in 5 seconds, click <a href='/'>here</a></span>
+              <span>If you are not automatically redirected in 5 seconds, click <a href='/account/settings'>here</a></span>
             </div>
-          </div>
+          </form>
         </div>
       );
     }
@@ -75,11 +92,11 @@ class EmailVerify extends Component {
 }
 
 function mapStateToProps(state) {
-  return {emailVerifyStatus: state.emailVerifyStatus}
+  return {emailVerifyStatus: state.emailVerifyStatus, confirmCredentialsStatus: state.confirmCredentialsStatus}
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({confirmEmailVerify: confirmEmailVerify}, dispatch)
+  return bindActionCreators({confirmCredentials: confirmCredentials, confirmEmailVerify: confirmEmailVerify}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmailVerify);

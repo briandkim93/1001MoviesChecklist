@@ -41,6 +41,7 @@ class AccountInfo extends Component {
                 <li className="list-group-item text-center">
                   <Link to='/account/settings/delete'>Delete Account</Link>
                 </li>
+                <hr />
               </ul>
             </div>
           </div>

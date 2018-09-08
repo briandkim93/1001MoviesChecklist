@@ -120,7 +120,7 @@ class PasswordReset extends Component {
               {this.state.response.message}
             </div>
             <div>
-              <span>If you are not automatically redirected in 5 seconds, click <Link to='/'>here</Link></span>
+              <span>If you are not automatically redirected in 5 seconds, click <a href='/'>here</a></span>
             </div>
           </form>
         </div>

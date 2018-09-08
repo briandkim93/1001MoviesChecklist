@@ -138,15 +138,8 @@ export function confirmResetPassword(password1, password2, uid, token) {
   }
 }
 
-export function changePassword(username, email, password0, password1, uid, token) {
-  const passwordConfirmRequest = axios({
-    method: 'options',
-    url: `${API_BASE_URL}auth/login/`,
-    headers: {
-      'Authorization': `Basic ${btoa(username + ':' + password0)}`,
-    }
-  });
-  const passwordChangeRequest = axios({
+export function changePassword(username, email, password, uid, token) {
+  const request = axios({
     method: 'put',
     url: `${API_BASE_URL}account/${uid}/`,
     headers: {
@@ -154,11 +147,10 @@ export function changePassword(username, email, password0, password1, uid, token
     },
     data: {
       username: username,
-      password: password1,
+      password: password,
       email: email
     }
-  });
-  const request = Promise.all([passwordConfirmRequest, passwordChangeRequest])
+  })
   .catch(error => {
     return error.response;
   });

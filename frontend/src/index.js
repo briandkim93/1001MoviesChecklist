@@ -26,7 +26,9 @@ const persistConfig = {
     'loginStatus',
     'emailVerificationStatus',
     'passwordLinkStatus',
-    'passwordResetStatus'
+    'passwordResetStatus',
+    'passwordChangeStatus',
+    'emailChangeStatus'
   ]
 }
 

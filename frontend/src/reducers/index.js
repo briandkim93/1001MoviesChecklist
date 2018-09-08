@@ -9,6 +9,7 @@ import EmailVerificationStatusReducer from './EmailVerificationStatusReducer';
 import PasswordLinkStatusReducer from './PasswordLinkStatusReducer';
 import PasswordResetStatusReducer from './PasswordResetStatusReducer';
 import PasswordChangeStatusReducer from './PasswordChangeStatusReducer';
+import EmailChangeStatusReducer from './EmailChangeStatusReducer';
 import TokenReducer from './TokenReducer';
 import UserInfoReducer from './UserInfoReducer';
 
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   passwordLinkStatus: PasswordLinkStatusReducer,
   passwordResetStatus: PasswordResetStatusReducer,
   passwordChangeStatus: PasswordChangeStatusReducer,
+  emailChangeStatus: EmailChangeStatusReducer,
   token: TokenReducer,
   userInfo: UserInfoReducer
 });

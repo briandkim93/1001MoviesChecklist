@@ -3,15 +3,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 
-import { changePassword } from '../../actions'
+import { changeEmail } from '../../actions'
 
-class PasswordChange extends Component {
+class EmailChange extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      password1: '',
-      password2: '',
+      email1: '',
+      email2: '',
       response: {status: 0, message: ''}
     }
 
@@ -23,53 +23,41 @@ class PasswordChange extends Component {
   }
   handleFormSubmit(event) {
     event.preventDefault();
-    if (this.state.password1 !== '' || this.state.password2 !== '') {
-      if (this.state.password1.length >= 8) {
-        if (this.state.password1.length <= 128) {
-          if (this.state.password1 === this.state.password2) {
-            this.props.changePassword(this.state.password1, this.props.userInfo['uid'], this.props.token);
-          } else if (this.state.password1 !== this.state.password2) {
+    if (this.state.email1 !== '' || this.state.email2 !== '') {
+        if (this.state.email1.length <= 254) {
+          if (this.state.email1 === this.state.email2) {
+            this.props.changeEmail(this.state.email1, this.props.userInfo['uid'], this.props.token);
+          } else if (this.state.email1 !== this.state.email2) {
             this.setState({
-              password1: '',
-              password2: '',
-              response: {status: 0, message: 'Passwords did not match, please try again.'}
+              email1: '',
+              email2: '',
+              response: {status: 0, message: 'Emails did not match, please try again.'}
             });
           }
-        } else if (this.state.password1.length > 128) {
+        } else if (this.state.email1.length > 254) {
           this.setState({
-            password1: '',
-            password2: '',
-            response: {status: 0, message: 'Password must not exceed 128 characters.'}
+            response: {status: 0, message: 'Email must not exceed 254 characters.'}
           });
         }
-      } else if (this.state.password1.length < 8) {
-          this.setState({
-            password1: '',
-            password2: '',
-            response: {status: 0, message: 'Password must be at least 8 characters.'}
-          });
-      }
-    } else if (this.state.password1 === '' || this.state.password2 === '') {
+    } else if (this.state.email1 === '' || this.state.email2 === '') {
       this.setState({response: {status: 0, message: 'Please do not leave any blank fields.'}});
     }
   }
   componentDidUpdate(prevProps) {
-    if (this.props.passwordChangeStatus !== prevProps.passwordChangeStatus) {
+    if (this.props.emailChangeStatus !== prevProps.emailChangeStatus) {
       this.setState({
-        password1: '',
-        password2: '',
         response: {status: 0, message: ''}
       });
-        if (this.props.passwordChangeStatus.status === 200) {
+        if (this.props.emailChangeStatus.status === 200) {
           this.setState({
-            password1: '',
-            password2: '',
-            response: {status: 1, message: 'Password has been changed successfully!'}
+            email1: '',
+            email2: '',
+            response: {status: 1, message: 'Email has been changed successfully!'}
           });
           setTimeout(() => window.location = '/account/settings', 3000);
-        } else if (this.props.passwordChangeStatus.status === 400 && this.props.passwordChangeStatus.data.hasOwnProperty('password')) {
+        } else if (this.props.emailChangeStatus.status === 400 && this.props.emailChangeStatus.data.hasOwnProperty('email')) {
             this.setState({
-              response: {status: 0, message: this.props.passwordChangeStatus.data.password[0]}
+              response: {status: 0, message: this.props.emailChangeStatus.data.email[0]}
             });
         }
     }
@@ -82,12 +70,12 @@ class PasswordChange extends Component {
             <h1 className="mb-1">Account Settings</h1>
             <hr />
             <div className="form-group">
-              <label htmlFor="change-password1">New Password:</label>
-              <input type="password" className="form-control" id="change-password1" value={this.state.password1} onChange={this.handleInputChange} />
+              <label htmlFor="change-email1">New Email:</label>
+              <input type="email" className="form-control" id="change-email1" value={this.state.email1} onChange={this.handleInputChange} />
             </div>
             <div className="form-group">
-              <label htmlFor="change-password2">Confirm New Password:</label>
-              <input type="password" className="form-control" id="change-password2" value={this.state.password2} onChange={this.handleInputChange} />
+              <label htmlFor="change-email2">Confirm New Email:</label>
+              <input type="email" className="form-control" id="change-email2" value={this.state.email2} onChange={this.handleInputChange} />
             </div>
             <div className="text-danger small">
               {this.state.response.status === 0 && this.state.response.message}
@@ -119,11 +107,11 @@ class PasswordChange extends Component {
 }
 
 function mapStateToProps(state) {
-  return {passwordChangeStatus: state.passwordChangeStatus, userInfo: state.userInfo, token: state.token}
+  return {emailChangeStatus: state.emailChangeStatus, userInfo: state.userInfo, token: state.token}
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({changePassword: changePassword}, dispatch)
+  return bindActionCreators({changeEmail: changeEmail}, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PasswordChange);
+export default connect(mapStateToProps, mapDispatchToProps)(EmailChange);

@@ -138,7 +138,7 @@ export function confirmResetPassword(password1, password2, uid, token) {
   }
 }
 
-export function changePassword(username, email, password, uid, token) {
+export function changePassword(password, uid, token) {
   const request = axios({
     method: 'patch',
     url: `${API_BASE_URL}account/${uid}/`,
@@ -154,6 +154,26 @@ export function changePassword(username, email, password, uid, token) {
   });
   return {
     type: ACTION_TYPES.CHANGE_PASSWORD,
+    payload: request
+  }
+}
+
+export function changeEmail(email, uid, token) {
+  const request = axios({
+    method: 'patch',
+    url: `${API_BASE_URL}account/${uid}/`,
+    headers: {
+      'Authorization': `Token ${token}`,
+    },
+    data: {
+      email: email,
+    }
+  })
+  .catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.CHANGE_EMAIL,
     payload: request
   }
 }

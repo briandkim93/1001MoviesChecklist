@@ -17,11 +17,11 @@ class EmailVerify extends Component {
     this.props.confirmVerifyEmail(this.props.match.params.token);
   }
   componentDidUpdate(prevProps) {
-    if (this.props.emailVerificationStatus !== prevProps.emailVerificationStatus) {
-      if (this.props.emailVerificationStatus.status === 200) {
+    if (this.props.emailVerifyStatus !== prevProps.emailVerifyStatus) {
+      if (this.props.emailVerifyStatus.status === 200) {
         this.setState({response: {status: 1, message: 'Your email address has been successfully verified.'}});
         setTimeout(() => window.location = '/', 3000);
-      } else if (this.props.emailVerificationStatus.status === 400 || this.props.emailVerificationStatus.status === 404) {
+      } else if (this.props.emailVerifyStatus.status === 400 || this.props.emailVerifyStatus.status === 404) {
         this.setState({response: {status: 0, message: 'This link has expired.'}});
         setTimeout(() => window.location = '/', 3000);
       }
@@ -75,7 +75,7 @@ class EmailVerify extends Component {
 }
 
 function mapStateToProps(state) {
-  return {emailVerificationStatus: state.emailVerificationStatus}
+  return {emailVerifyStatus: state.emailVerifyStatus}
 }
 
 function mapDispatchToProps(dispatch) {

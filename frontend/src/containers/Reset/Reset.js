@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { closeReset, sendResetPasswordLink } from '../../actions';
 
-class Login extends Component {
+class Reset extends Component {
   constructor(props) {
     super(props);
 
@@ -104,4 +104,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({closeReset: closeReset, sendResetPasswordLink: sendResetPasswordLink}, dispatch);
 }
 
-export default connect(mapPropsToState, mapDispatchToProps)(Login);
+export default connect(mapPropsToState, mapDispatchToProps)(Reset);

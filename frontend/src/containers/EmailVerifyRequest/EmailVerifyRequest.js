@@ -12,7 +12,6 @@ class EmailVerifyRequest extends Component {
     this.state = {response: {status: 0, message: 'Email verification link has failed to send.'}};
   }
   componentDidMount() {
-    console.log(this.props.token)
     this.props.sendEmailVerifyLink(this.props.token);
   }
   componentDidUpdate(prevProps) {

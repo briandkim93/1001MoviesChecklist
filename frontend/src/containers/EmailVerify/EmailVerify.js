@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 
-import { confirmCredentials, confirmEmailVerify } from '../../actions'
+import { confirmEmailVerify } from '../../actions'
 
 class EmailVerify extends Component {
   constructor(props) {
@@ -24,26 +24,19 @@ class EmailVerify extends Component {
   handleFormSubmit(event) {
     event.preventDefault();
     if (this.state.username !== '' && this.state.password !== '') {
-      this.props.confirmCredentials(this.state.username, this.state.password, 'emailVerify');
+      this.props.confirmEmailVerify(this.state.username, this.state.password, this.props.match.params.email_verification_code);
     } else {
       this.setState({response: {status: 0, message: 'Please do not leave any empty fields.'}});
     }
     this.setState({password: ''});
   }
   componentDidUpdate(prevProps) {
-    if (this.props.confirmCredentialsStatus && this.props.confirmCredentialsStatus !== prevProps.confirmCredentialsStatus) {
-      if (this.props.confirmCredentialsStatus.data.context === 'emailVerify') {
-        if (this.props.confirmCredentialsStatus.status === 200) {
-          this.props.confirmEmailVerify(this.props.match.params.token);;
-        } else {
-          this.setState({response: {status: 0, message: 'Invalid username or password. Please try again.'}});
-        }
-      }
-    }
     if (this.props.emailVerifyStatus !== prevProps.emailVerifyStatus) {
       if (this.props.emailVerifyStatus.status === 200) {
         this.setState({response: {status: 1, message: 'Your email address has been successfully verified.'}});
         setTimeout(() => window.location = '/', 3000);
+      } else if (this.props.emailVerifyStatus.status === 400 && this.props.emailVerifyStatus.data.hasOwnProperty('token')) {
+        this.setState({response: {status: 0, message: 'Invalid username or password. Please try again.'}});
       } else {
         this.setState({response: {status: 0, message: 'This link has expired.'}});
         setTimeout(() => window.location = '/', 3000);
@@ -92,11 +85,11 @@ class EmailVerify extends Component {
 }
 
 function mapStateToProps(state) {
-  return {emailVerifyStatus: state.emailVerifyStatus, confirmCredentialsStatus: state.confirmCredentialsStatus}
+  return {emailVerifyStatus: state.emailVerifyStatus,}
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({confirmCredentials: confirmCredentials, confirmEmailVerify: confirmEmailVerify}, dispatch)
+  return bindActionCreators({confirmEmailVerify: confirmEmailVerify}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmailVerify);

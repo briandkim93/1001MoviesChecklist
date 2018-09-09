@@ -90,10 +90,12 @@ export function logout(token) {
   };
 }
 
-export function confirmEmailVerify(token) {
+export function confirmEmailVerify(username, password, email_verification_code) {
   const request = axios.post(
     `${API_BASE_URL}auth/email/verify/confirm/`, {
-      email_verification_code: token,
+      username: username,
+      password: password,
+      email_verification_code: email_verification_code,
     }
   )
   .catch(error => {
@@ -214,11 +216,6 @@ export function confirmCredentials(username, password, context) {
   } else if (context === 'passwordChange') {
     return {
       type: ACTION_TYPES.CONFIRM_CREDENTIALS_CHANGE_PASSWORD,
-      payload: request
-    };
-  } else if (context === 'emailVerify') {
-    return {
-      type: ACTION_TYPES.CONFIRM_CREDENTIALS_VERIFY_EMAIL,
       payload: request
     };
   }

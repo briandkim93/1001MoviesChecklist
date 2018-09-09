@@ -9,7 +9,7 @@ class EmailVerifyRequest extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {response: {status: 0, message: 'Email verification link has failed to send.'}};
+    this.state = {response: {status: 0, message: ''}};
   }
   componentDidMount() {
     this.props.sendEmailVerifyLink(this.props.token);
@@ -21,10 +21,14 @@ class EmailVerifyRequest extends Component {
             response: {status: 1, message: 'Email verification link has been sent successfully!'}
           });
           setTimeout(() => window.location = '/account/settings', 3000);
-        } else if (this.props.emailVerifyRequestStatus.status === 401 || this.props.emailVerifyRequestStatus.status === 405) {
-            this.setState({
-              response: {status: 0, message: this.props.emailVerifyRequestStatus.data.detail}
-            });
+        } else if (this.props.emailVerifyRequestStatus.status === 400 && this.props.emailVerifyRequestStatus.data.hasOwnProperty('email_verified')) {
+          this.setState({
+            response: {status: 0, message: 'This email address has already been verified.'}
+          });
+        } else {
+          this.setState({
+            response: {status: 0, message: 'Email verification link has failed to send.'}
+          });
         }
     }
   }
@@ -37,7 +41,7 @@ class EmailVerifyRequest extends Component {
               <h1 className="mb-1">Account Settings</h1>
               <hr />
               <div>
-                {this.state.response.status === 0 && this.state.response.message}
+                {this.state.response.message}
               </div>
             </div>
             <div>

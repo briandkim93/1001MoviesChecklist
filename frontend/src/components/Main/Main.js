@@ -11,7 +11,7 @@ const Main = () => (
     <Switch>
       <Route exact path="/" component={Home} />
       <Route path="/account/settings" component={AccountSettings} />
-      <Route path="/verify/:token" component={EmailVerify} />
+      <Route path="/verify/:email_verification_code" component={EmailVerify} />
       <Route path="/reset/:uid/:token" component={PasswordReset} />
     </Switch>
   </main>

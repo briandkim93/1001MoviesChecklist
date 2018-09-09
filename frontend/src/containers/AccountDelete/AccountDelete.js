@@ -50,7 +50,7 @@ class AccountDelete extends Component {
     }
   }
   render() {
-    if (this.state.token) {
+    if (this.props.token) {
       if (this.state.response.status === 0) {
         return (
           <div className="row justify-content-center mt-3">

@@ -36,21 +36,11 @@ class EmailVerifyView(GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        if (serializer.save() == 200):
-            return Response(
-                {"detail": _("Verification email has been sent.")},
-                status=status.HTTP_200_OK
-            )
-        elif (serializer.save() == 400):
-            return Response(
-                {"detail": _("This email is already verified.")},
-                status=status.HTTP_202_ACCEPTED
-            )
-        else:
-            return Response(
-                {"detail": _("Authentication credentials were not provided.")},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
+        serializer.save()
+        return Response(
+            {"detail": _("Verification email has been sent.")},
+            status=status.HTTP_200_OK
+        )
 
 class EmailVerifyConfirmView(GenericAPIView):
     serializer_class = EmailVerifyConfirmSerializer
@@ -59,16 +49,11 @@ class EmailVerifyConfirmView(GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        if (serializer.save() == 200):
-            return Response(
-                {"detail": _("Email has been verified.")},
-                status=status.HTTP_200_OK
-            )
-        else:
-            return Response(
-                {"detail": _("Verification link has expired.")},
-                status=status.HTTP_404_NOT_FOUND
-            )
+        serializer.save()
+        return Response(
+            {"detail": _("Email has been verified.")},
+            status=status.HTTP_200_OK
+        )
 
 # Source: django-rest-auth
 sensitive_post_parameters_m = method_decorator(

@@ -68,34 +68,42 @@ class MovieSerializer(serializers.ModelSerializer):
 class EmailVerifySerializer(serializers.Serializer):
     def save(self):
         request = self.context.get("request")
+        account = Account.objects.get(username=request.user)
+        message = render_to_string('email_verification_message.txt', {'email_verification_code': account.email_verification_code})
+        send_mail(
+            'Verify your 1001 Movies Checklist account',
+            message,
+            getattr(settings, 'DEFAULT_FROM_EMAIL'),
+            (account.email, ),
+            fail_silently=True
+        )
+    def validate(self, data):
         try:
+            request = self.context.get("request")
             account = Account.objects.get(username=request.user)
             if account.email_verified == True:
-                return 400
-            message = render_to_string('email_verification_message.txt', {'email_verification_code': account.email_verification_code})
-            send_mail(
-                'Verify your 1001 Movies Checklist account',
-                message,
-                getattr(settings, 'DEFAULT_FROM_EMAIL'),
-                (account.email, ),
-                fail_silently=True
-            )
-            return 200
+                raise serializers.ValidationError({'email_verified': _('This email has already been verified.')})
         except (AttributeError, Account.DoesNotExist):
-            return 401
+            raise serializers.ValidationError({'token': ['Authentication credentials were not provided.']})
+        return data
 
 class EmailVerifyConfirmSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=255)
+    password = serializers.CharField(max_length=255)
     email_verification_code = serializers.CharField(max_length=255)
     def save(self):
-        request = self.context.get("request")
+        account = Account.objects.get(email_verification_code=self.data.get('email_verification_code'))
+        account.email_verified = True
+        account.email_verification_code = ''
+        account.save()
+    def validate(self, data):
         try:
-            account = Account.objects.get(email_verification_code=self.data.get('email_verification_code'))
-            account.email_verified = True
-            account.email_verification_code = ''
-            account.save()
-            return 200
+            account = Account.objects.get(email_verification_code=self.initial_data.get('email_verification_code'))
         except Account.DoesNotExist:
-            return 404
+            raise serializers.ValidationError({'email_verification_code': ['Authentication credentials were not provided.']})
+        if account.username != data.get('username') or not account.check_password(data.get('password')):
+            raise serializers.ValidationError({'token': ['Invalid username or password.']})
+        return data
 
 # Source: django-rest-auth
 class PasswordResetSerializer(serializers.Serializer):

@@ -9,13 +9,13 @@ function TokenReducer(state=null, action) {
         return state;
       }
     case ACTION_TYPES.LOGOUT:
+      return null;
+    case ACTION_TYPES.DELETE_ACCOUNT:
       if (action.payload.status === 204) {
         return null;
       } else {
         return state;
       }
-    case ACTION_TYPES.DELETE_ACCOUNT:
-      return null;
     default:
       return state;
   }

@@ -17,38 +17,29 @@ function UserInfoReducer(state={}, action) {
       }
     case ACTION_TYPES.CONFIRM_EMAIL_VERIFY:
       if (action.payload.status === 200) {
-        return {
-          uid: state.uid,
-          username: state.username,
-          email: state.email,
-          emailVerified: true,
-          completedMovies: state.completedMovies,
-          dateJoined: state.dateJoined
-        };
+        const updatedState = state;
+        updatedState.emailVerified = true;
+        return updatedState;
       } else {
         return state;
       }
     case ACTION_TYPES.CHANGE_EMAIL:
       if (action.payload.status === 200) {
-        return {
-          uid: state.uid,
-          username: state.username,
-          email: action.payload.data.email,
-          emailVerified: action.payload.data.email_verified,
-          completedMovies: state.completedMovies,
-          dateJoined: state.dateJoined
-        };
+        const updatedState = state;
+        updatedState.email = action.payload.data.user.email;
+        updatedState.emailVerified = false;
+        return updatedState;
       } else {
         return state;
       }
     case ACTION_TYPES.LOGOUT:
+      return {};
+    case ACTION_TYPES.DELETE_ACCOUNT:
       if (action.payload.status === 204) {
-        return null;
+        return {};
       } else {
         return state;
       }
-    case ACTION_TYPES.DELETE_ACCOUNT:
-      return null;
     default:
       return state;
   }

@@ -8,7 +8,9 @@ from django.utils.translation import ugettext_lazy as _
 class Account(AbstractUser):
     class Meta:
         verbose_name = 'Account'
-    username = models.CharField(_('username'), max_length=30, unique=True,
+    username = models.CharField(
+        max_length=30, 
+        unique=True,
         help_text=_('Required. 30 characters or fewer. Letters, digits, periods, and underscores only.'),
         validators=[
             RegexValidator(r'^[\w.]+$', _('Username may only contain letters, numbers, periods, and underscores.'), 'invalid'),
@@ -17,7 +19,8 @@ class Account(AbstractUser):
             'unique': _("Username is already taken."),
         }
     )
-    email = models.EmailField(unique=True, 
+    email = models.EmailField(
+        unique=True, 
         error_messages={
             'unique': _("Email address is already taken."),
         }

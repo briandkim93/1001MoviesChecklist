@@ -31,13 +31,13 @@ export function closeLogin() {
 
 export function togglePasswordResetRequest() {
   return {
-    type: ACTION_TYPES.TOGGLE_RESET  
+    type: ACTION_TYPES.TOGGLE_PASSWORD_RESET_REQUEST
   }
 }
 
-export function closeReset() {
+export function closePasswordResetRequest() {
   return {
-    type: ACTION_TYPES.CLOSE_RESET  
+    type: ACTION_TYPES.CLOSE_PASSWORD_RESET_REQUEST
   }
 }
 
@@ -90,6 +90,23 @@ export function logout(token) {
   };
 }
 
+export function sendEmailVerifyLink(token) {
+  const request = axios({
+    method: 'post',
+    url: `${API_BASE_URL}auth/email/verify/`,
+    headers: {
+      'Authorization': `Token ${token}`,
+    }
+  })
+  .catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.SEND_EMAIL_VERIFY_LINK,
+    payload: request
+  }
+}
+
 export function confirmEmailVerify(username, password, email_verification_code) {
   const request = axios.post(
     `${API_BASE_URL}auth/email/verify/confirm/`, {
@@ -135,8 +152,32 @@ export function confirmResetPassword(password1, password2, uid, token) {
     return error.response;
   });
   return {
-    type: ACTION_TYPES.CONFIRM_RESET_PASSWORD,
+    type: ACTION_TYPES.CONFIRM_PASSWORD_RESET,
     payload: request
+  }
+}
+
+export function confirmCredentials(username, password, context) {
+  const request = axios({
+    method: 'options',
+    url: `${API_BASE_URL}auth/login/`,
+    headers: {
+      'Authorization': `Basic ${btoa(username + ':' + password)}`,
+    }
+  })
+  .catch(error => {
+    return error.response;
+  });
+  if (context === 'accountDelete') {
+    return {
+      type: ACTION_TYPES.CONFIRM_CREDENTIALS_DELETE_ACCOUNT,
+      payload: request
+    };
+  } else if (context === 'passwordChange') {
+    return {
+      type: ACTION_TYPES.CONFIRM_CREDENTIALS_CHANGE_PASSWORD,
+      payload: request
+    };
   }
 }
 
@@ -177,47 +218,6 @@ export function changeEmail(email, uid, token) {
   return {
     type: ACTION_TYPES.CHANGE_EMAIL,
     payload: request
-  }
-}
-
-export function sendEmailVerifyLink(token) {
-  const request = axios({
-    method: 'post',
-    url: `${API_BASE_URL}auth/email/verify/`,
-    headers: {
-      'Authorization': `Token ${token}`,
-    }
-  })
-  .catch(error => {
-    return error.response;
-  });
-  return {
-    type: ACTION_TYPES.SEND_EMAIL_VERIFY_LINK,
-    payload: request
-  }
-}
-
-export function confirmCredentials(username, password, context) {
-  const request = axios({
-    method: 'options',
-    url: `${API_BASE_URL}auth/login/`,
-    headers: {
-      'Authorization': `Basic ${btoa(username + ':' + password)}`,
-    }
-  })
-  .catch(error => {
-    return error.response;
-  });
-  if (context === 'accountDelete') {
-    return {
-      type: ACTION_TYPES.CONFIRM_CREDENTIALS_DELETE_ACCOUNT,
-      payload: request
-    };
-  } else if (context === 'passwordChange') {
-    return {
-      type: ACTION_TYPES.CONFIRM_CREDENTIALS_CHANGE_PASSWORD,
-      payload: request
-    };
   }
 }
 

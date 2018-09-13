@@ -1,6 +1,6 @@
 import ACTION_TYPES from '../actions/types'
 
-function SignupStatusReducer(state={}, action) {
+function SignupStatusReducer(state=null, action) {
   switch (action.type) {
     case ACTION_TYPES.SIGNUP:
       return action.payload;

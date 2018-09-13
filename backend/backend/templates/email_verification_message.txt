@@ -1,9 +1,9 @@
 {% load i18n %}{% autoescape off %}
-{% trans "Thanks for using 1001 Movies Checklist!" %}
-
+{% blocktrans %}
+Thanks for using 1001 Movies Checklist!
+{% endblocktrans %}
 {% trans "Please go to the following page and verify your email address:" %} 
 {% block email_verification_link %}
 http://localhost:3000/verify/{{email_verification_code}}/
 {% endblock %}
-
 {% endautoescape %}

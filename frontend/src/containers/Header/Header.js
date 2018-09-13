@@ -4,65 +4,60 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import logo from '../../logo.png';
-import { toggleSignup, closeSignup, toggleLogin, closeLogin, closeReset, logout } from '../../actions';
+import { toggleSignup, closeSignup, toggleLogin, closeLogin, closePasswordResetRequest, logout } from '../../actions';
 
 class Header extends Component {
   constructor(props) {
     super(props);
-
+    
     this.handleToggleSignup = this.handleToggleSignup.bind(this);
     this.handleToggleLogin = this.handleToggleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
+  
   handleToggleSignup() {
     this.props.toggleSignup();
     this.props.closeLogin();
-    this.props.closeReset();
+    this.props.closePasswordResetRequest();
   }
+
   handleToggleLogin() {
     this.props.toggleLogin();
     this.props.closeSignup();
-    this.props.closeReset();
+    this.props.closePasswordResetRequest();
   }
+
   handleLogout() {
     this.props.logout(this.props.token);
   }
+
   render() {
-    if (this.props.token) {
-      return (
-        <div className="row">
-          <nav className="navbar navbar-expand-sm navbar-dark bg-dark col-12">
-            <span className="navbar-brand"><Link to='/'><img className="mr-3" src={logo} alt="1001 Movies Checklist Logo" /></Link>Movies Checklist</span>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarCollapse">
-              <div className="navbar-nav ml-auto">
-                <span><Link to='/account/settings' className="nav-link btn">Account</Link></span>
-                <span><Link to='/' className="nav-link btn" onClick={this.handleLogout}>Logout</Link></span>
-              </div>
-            </div>
-          </nav>
-        </div>
-      );     
-    } else if (!this.props.token) {
-      return (
-        <div className="row">
-          <nav className="navbar navbar-expand-sm navbar-dark bg-dark col-12">
-            <span className="navbar-brand"><Link to='/'><img className="mr-3" src={logo} alt="1001 Movies Checklist Logo" /></Link>Movies Checklist</span>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarCollapse">
-              <div className="navbar-nav ml-auto">
-                <span className="nav-link btn" onClick={this.handleToggleSignup}>Sign Up</span>
-                <span className="nav-link btn" onClick={this.handleToggleLogin}>Login</span>
-              </div>
-            </div>
-          </nav>
-        </div>
-      );
-    }
+    return (
+      <div className="row">
+        <nav className="navbar navbar-expand-sm navbar-dark bg-dark col-12">
+          <span className="navbar-brand"><Link to='/'><img className="mr-3" src={logo} alt="1001 Movies Checklist Logo" /></Link>Movies Checklist</span>
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarCollapse">
+          {this.props.token
+              ? (
+                <div className="navbar-nav ml-auto">
+                  <span><Link className="nav-link btn" to='/account/settings'>Account</Link></span>
+                  <span><Link className="nav-link btn" to='/' onClick={this.handleLogout}>Logout</Link></span>
+                </div>
+              )
+              : (
+                <div className="navbar-nav ml-auto">
+                  <span className="nav-link btn" onClick={this.handleToggleSignup}>Sign Up</span>
+                  <span className="nav-link btn" onClick={this.handleToggleLogin}>Login</span>
+                </div>
+              )
+          }
+          </div>
+        </nav>
+      </div>
+    );     
   }
 }
 
@@ -78,7 +73,7 @@ function mapDispatchToProps(dispatch) {
     closeSignup: closeSignup,
     toggleLogin: toggleLogin,
     closeLogin: closeLogin,
-    closeReset: closeReset,
+    closePasswordResetRequest: closePasswordResetRequest,
     logout: logout,
   }, dispatch);
 }

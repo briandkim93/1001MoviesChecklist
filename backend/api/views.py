@@ -13,13 +13,13 @@ from knox.views import LoginView as KnoxLoginView
 
 from .authentications import BasicAuthentication403
 from .models import Account, Movie
-from .permissions import UpdateAccountPermission, RetrieveAccountListPermission, UpdateMoviesPermission, SendVerificationEmailPermission
+from .permissions import AccountListPermission, AccountPermission, MoviesPermission, SendVerificationEmailPermission
 from .serializers import AccountSerializer, MovieSerializer, EmailVerifySerializer, EmailVerifyConfirmSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer
 
 class AccountViewSet(ModelViewSet):
     serializer_class = AccountSerializer
     queryset = Account.objects.all()
-    permission_classes = (UpdateAccountPermission, RetrieveAccountListPermission)
+    permission_classes = (AccountListPermission, AccountPermission)
 
 class LoginView(KnoxLoginView):
     authentication_classes = (BasicAuthentication403, )
@@ -27,7 +27,7 @@ class LoginView(KnoxLoginView):
 class MovieViewSet(ModelViewSet):
     serializer_class = MovieSerializer
     queryset = Movie.objects.all()
-    permission_classes = (UpdateMoviesPermission, )
+    permission_classes = (MoviesPermission, )
 
 class EmailVerifyView(GenericAPIView):
     serializer_class = EmailVerifySerializer
@@ -37,10 +37,7 @@ class EmailVerifyView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(
-            {"detail": _("Verification email has been sent.")},
-            status=status.HTTP_200_OK
-        )
+        return Response({"detail": _("Verification email has been sent.")})
 
 class EmailVerifyConfirmView(GenericAPIView):
     serializer_class = EmailVerifyConfirmSerializer
@@ -50,19 +47,19 @@ class EmailVerifyConfirmView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(
-            {"detail": _("Email has been verified.")},
-            status=status.HTTP_200_OK
-        )
+        return Response({"detail": _("Email has been verified.")})
 
-# Source: django-rest-auth
+# Source: django-rest-auth (https://github.com/Tivix/django-rest-auth)
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
-        'password', 'old_password', 'new_password1', 'new_password2'
+        'password', 
+        'old_password', 
+        'new_password1', 
+        'new_password2'
     )
 )
 
-# Source: django-rest-auth
+# Source: django-rest-auth (https://github.com/Tivix/django-rest-auth)
 class PasswordResetView(GenericAPIView):
     serializer_class = PasswordResetSerializer
     permission_classes = (AllowAny, )
@@ -70,14 +67,10 @@ class PasswordResetView(GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         serializer.save()
-        return Response(
-            {"detail": _("Password reset email has been sent.")},
-            status=status.HTTP_200_OK
-        )
+        return Response({"detail": _("Password reset email has been sent.")})
 
-# Source: django-rest-auth
+# Source: django-rest-auth (https://github.com/Tivix/django-rest-auth)
 class PasswordResetConfirmView(GenericAPIView):
     serializer_class = PasswordResetConfirmSerializer
     permission_classes = (AllowAny, )
@@ -90,6 +83,4 @@ class PasswordResetConfirmView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(
-            {"detail": _("Password has been reset with the new password.")}
-        )
+        return Response({"detail": _("Password has been reset with the new password.")})

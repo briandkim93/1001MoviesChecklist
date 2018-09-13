@@ -26,10 +26,6 @@ REST_KNOX = {
     'USER_SERIALIZER': 'api.serializers.AccountSerializer',
 }
 
-REST_AUTH_SERIALIZERS = {
-    'PASSWORD_RESET_SERIALIZER': 'api.serializers.PasswordResetSerializer',
-}
-
 AUTH_USER_MODEL = 'api.Account'
 
 MIDDLEWARE = [

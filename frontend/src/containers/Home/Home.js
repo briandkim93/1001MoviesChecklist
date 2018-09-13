@@ -6,8 +6,9 @@ class Home extends Component {
   constructor(props) {
     super(props);
   }
+  
   render() {
-    return <div></div>
+    return <div></div>;
   }
 }
 

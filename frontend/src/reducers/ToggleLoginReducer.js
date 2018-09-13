@@ -3,10 +3,10 @@ import ACTION_TYPES from '../actions/types';
 function ToggleLoginReducer(state=false, action) {
   switch (action.type) {
     case ACTION_TYPES.TOGGLE_LOGIN:
-      if (state === false) {
-        return true;
-      } else {
+      if (state) {
         return false;
+      } else {
+        return true;
       }
     case ACTION_TYPES.CLOSE_LOGIN:
       return false;

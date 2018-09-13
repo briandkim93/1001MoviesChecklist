@@ -24,11 +24,12 @@ const persistConfig = {
     'displayReset',
     'signupStatus',
     'loginStatus',
-    'emailVerifyStatus',
     'emailVerifyRequestStatus',
+    'emailVerifyStatus',
     'passwordResetRequestStatus',
     'passwordResetStatus',
     'passwordChangeStatus',
+    'emailChangeStatus',
     'confirmCredentialsStatus',
     'accountDeleteStatus'
   ]

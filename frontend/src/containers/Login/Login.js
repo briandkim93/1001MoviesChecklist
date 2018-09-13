@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { toggleSignup, closeSignup, closeLogin, togglePasswordResetRequest, closeReset, login } from '../../actions';
+import { toggleSignup, closeSignup, closeLogin, togglePasswordResetRequest, closePasswordResetRequest, login } from '../../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -11,54 +11,71 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
-      response: {status: 0, message: ''}
-    }
-
+      response: {
+        status: 0, 
+        message: ''
+      }
+    };
     this.baseState = this.state;
-
+    
     this.handleTogglePasswordResetRequest = this.handleTogglePasswordResetRequest.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmitForm = this.handleSubmitForm.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
+
   handleTogglePasswordResetRequest() {
     this.props.togglePasswordResetRequest();
     this.props.closeSignup();
     this.props.closeLogin();
   }
+
   handleInputChange(event) {
-    this.setState({[event.target.id.replace('login-', '')]: event.target.value});
+    this.setState({
+      [event.target.id.replace('login-', '')]: event.target.value
+    });
   }
-  handleSubmitForm(event) {
+
+  handleFormSubmit(event) {
     event.preventDefault();
-    if (this.state.username !== '' || this.state.password !== '') {
+    if (this.state.username !== '' && this.state.password !== '') {
       this.props.login(this.state.username, this.state.password);
     } else {
-      this.setState({response: {status: 0, message: 'Please do not leave any empty fields.'}});
+      this.setState({
+        response: {
+          status: 0, 
+          message: 'Please do not leave any empty fields.'
+        }
+      });
     }
-    this.setState({password: ''});
   }
+
   componentDidUpdate(prevProps) {
-    if (this.props.token !== prevProps.token) {
-      this.setState(this.baseState);
-    }
-    if (this.props.loginStatus !== prevProps.loginStatus) {
-      if (this.props.loginStatus.status === 200) {
-        this.props.closeLogin();
-      } else {
-        this.setState({response: {status: 0, message: 'Invalid username or password. Please try again.'}});
-      }
-    }
     if (this.props.displayLogin !== prevProps.displayLogin) {
-      if (this.props.displayLogin === false) {
+      if (!this.props.displayLogin) {
         this.setState(this.baseState);
       }
     }
+    if (this.props.loginStatus !== prevProps.loginStatus) {
+      if (this.props.loginStatus.status === 200) {
+        this.setState(this.baseState);
+        this.props.closeLogin();
+      } else {
+        this.setState({
+          password: '',
+          response: {
+            status: 0, 
+            message: 'Invalid username or password. Please try again.'
+          }
+        });
+      }
+    }
   }
+
   render() {
-    if (this.props.displayLogin === true) {
+    if (this.props.displayLogin) {
       return (
         <div className="row justify-content-center">
-          <form className="absolute-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleSubmitForm}>
+          <form className="absolute-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
             <div>
               <button type="button" className="close" onClick={this.props.closeLogin}>
                 <span>&times;</span>
@@ -75,7 +92,7 @@ class Login extends Component {
               <input type="password" className="form-control" id="login-password" value={this.state.password} onChange={this.handleInputChange} />
             </div>
             <div className="text-danger small">
-              {this.state.response.status === 0 && this.state.response.message}
+              {this.state.response.message}
             </div>
             <div>
               <span className="text-primary btn btn-link btn-sm p-0" onClick={this.handleTogglePasswordResetRequest}>(Forgot Username or Password?)</span>
@@ -91,11 +108,22 @@ class Login extends Component {
 }
 
 function mapPropsToState(state) {
-  return {displayLogin: state.displayLogin, loginStatus: state.loginStatus, token: state.token};
+  return {
+    displayLogin: state.displayLogin, 
+    loginStatus: state.loginStatus, 
+    token: state.token
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({toggleSignup: toggleSignup, closeSignup: closeSignup, closeLogin: closeLogin, togglePasswordResetRequest: togglePasswordResetRequest, closeReset: closeReset, login: login}, dispatch);
+  return bindActionCreators({
+    toggleSignup: toggleSignup, 
+    closeSignup: closeSignup, 
+    closeLogin: closeLogin, 
+    togglePasswordResetRequest: togglePasswordResetRequest, 
+    closePasswordResetRequest: closePasswordResetRequest, 
+    login: login
+  }, dispatch);
 }
 
 export default connect(mapPropsToState, mapDispatchToProps)(Login);

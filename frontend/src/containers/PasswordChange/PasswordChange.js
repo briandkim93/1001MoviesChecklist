@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-import { changePassword, confirmCredentials } from '../../actions'
+import { changePassword, confirmCredentials } from '../../actions';
 
 class PasswordChange extends Component {
   constructor(props) {
@@ -13,47 +13,88 @@ class PasswordChange extends Component {
       password0: '',
       password1: '',
       password2: '',
-      response: {status: 0, position: 0, message: ''}
-    }
+      response: {
+        status: 0, 
+        position: 0, 
+        message: ''
+      }
+    };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
+
   handleInputChange(event) {
-    this.setState({[event.target.id.replace('change-', '')]: event.target.value});
+    this.setState({
+      [event.target.id.replace('change-', '')]: event.target.value
+    });
   }
-  handleFormSubmit(event) {
-    event.preventDefault();
-    if (this.state.password0 !== '' && this.state.password1 !== '' && this.state.password2 !== '') {
-      if (this.state.password1.length >= 8) {
-        if (this.state.password1.length <= 128) {
-          if (this.state.password1 === this.state.password2) {
-            this.props.confirmCredentials(this.props.userInfo['username'], this.state.password0, 'passwordChange');
-          } else if (this.state.password1 !== this.state.password2) {
-            this.setState({
-              password1: '',
-              password2: '',
-              response: {status: 0, position: 2, message: 'Passwords did not match, please try again.'}
-            });
+
+  validate(password0, password1, password2) {
+    if (password0 !== '' && password1 !== '' && password2 !== '') {
+      if (password1.length >= 8) {
+        if (password1.length <= 128) {
+          if (password1 === password2) {
+            return {
+              response: {
+                status: 2, 
+              }
+            };
+          } else if (password1 !== password2) {
+            return {
+              response: {
+                status: 0, 
+                position: 2, 
+                message: 'Passwords did not match, please try again.'
+              }
+            };
           }
-        } else if (this.state.password1.length > 128) {
-          this.setState({
-            password1: '',
-            password2: '',
-            response: {status: 0, position: 2, message: 'Password must not exceed 128 characters.'}
-          });
+        } else if (password1.length > 128) {
+          return {
+            response: {
+              status: 0, 
+              position: 2, 
+              message: 'Password must not exceed 128 characters.'
+            }
+          };
         }
-      } else if (this.state.password1.length < 8) {
-          this.setState({
-            password1: '',
-            password2: '',
-            response: {status: 0, position: 2, message: 'Password must be at least 8 characters.'}
-          });
+      } else if (password1.length < 8) {
+          return {
+            response: {
+              status: 0, 
+              position: 2, 
+              message: 'Password must be at least 8 characters.'
+            }
+          };
       }
-    } else if (this.state.password1 === '' || this.state.password2 === '') {
-      this.setState({response: {status: 0, position: 2, message: 'Please do not leave any blank fields.'}});
+    } else if (password0 === '' || password1 === '' || password2 === '') {
+      return {
+        response: {
+          status: 0, 
+          position: 2, 
+          essage: 'Please do not leave any blank fields.'
+        }
+      };
     }
   }
+
+  handleFormSubmit(event) {
+    event.preventDefault();
+    this.setState({
+      password0: '',
+      password1: '',
+      password2: '',
+    });
+    const validation_response = this.validate(this.state.password0, this.state.password1, this.state.password2).response;
+    if (validation_response.status === 2) {
+      this.props.confirmCredentials(this.props.userInfo['username'], this.state.password0, 'passwordChange');
+    } else {
+      this.setState({
+        response: validation_response
+      });
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.confirmCredentialsStatus && this.props.confirmCredentialsStatus !== prevProps.confirmCredentialsStatus) {
       if (this.props.confirmCredentialsStatus.data.context === 'passwordChange') {
@@ -61,107 +102,110 @@ class PasswordChange extends Component {
           this.props.changePassword(this.state.password1, this.props.userInfo['uid'], this.props.token);
         } else {
           this.setState({
-            password0: '',
-            password1: '',
-            password2: '',
-            response: {status: 0, position: 1, message: 'Invalid password. Please try again.'}
+            response: {
+              status: 0, 
+              position: 1, 
+              message: 'Invalid password. Please try again.'
+            }
           });
         }
       }
     }
     if (this.props.passwordChangeStatus !== prevProps.passwordChangeStatus) {
-      this.setState({
-        password0: '',
-        password1: '',
-        password2: '',
-        response: {status: 0, position: 2, message: ''}
-      });
-        if (this.props.passwordChangeStatus.status === 200) {
+      if (this.props.passwordChangeStatus.status === 200) {
+        this.setState({
+          response: {
+            status: 1, 
+            message: 'Password has been changed successfully!'
+          }
+        });
+      } else if (this.props.passwordChangeStatus.status === 400 && this.props.passwordChangeStatus.data.hasOwnProperty('password')) {
           this.setState({
-            password0: '',
-            password1: '',
-            password2: '',
-            response: {status: 1, message: 'Password has been changed successfully!'}
+            response: {
+              status: 0, 
+              position: 2, 
+              message: this.props.passwordChangeStatus.data.password[0]
+            }
           });
-          setTimeout(() => window.location = '/account/settings', 3000);
-        } else if (this.props.passwordChangeStatus.status === 400 && this.props.passwordChangeStatus.data.hasOwnProperty('password')) {
-            this.setState({
-              response: {status: 0, position: 2, message: this.props.passwordChangeStatus.data.password[0]}
-            });
-        }
+      }
     }
   }
+  
   render() {
-    if (this.props.token) {
-      if (this.state.response.status === 0) {
-        return (
-          <div className="row justify-content-center mt-3">
-            <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
-              <h1 className="mb-1">Account Settings</h1>
-              <hr />
-              <div className="form-group">
-                <label htmlFor="change-password0">Current Password:</label>
-                <input type="password" className="form-control" id="change-password0" value={this.state.password0} onChange={this.handleInputChange} />
-              </div>
-              <div className="text-danger small">
-                {this.state.response.status === 0 && this.state.response.position === 1 && this.state.response.message}
-              </div>
-              <div className="form-group">
-                <label htmlFor="change-password1">New Password:</label>
-                <input type="password" className="form-control" id="change-password1" value={this.state.password1} onChange={this.handleInputChange} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="change-password2">Confirm New Password:</label>
-                <input type="password" className="form-control" id="change-password2" value={this.state.password2} onChange={this.handleInputChange} />
-              </div>
-              <div className="text-danger small">
-                {this.state.response.status === 0 && this.state.response.position === 2 && this.state.response.message}
-              </div>
-              <button type="submit" className="btn btn-primary float-right">Confirm</button>
-            </form>
-            <div>
-              <Link to='/account/settings'>Back to Settings</Link>
-            </div>
-          </div>
-        );
-      } else if (this.state.response.status === 1) {
-        return (
-          <div className="row justify-content-center mt-3">
-            <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
-              <h1 className="mb-1">Account Settings</h1>
-              <hr />
+    return (
+      <div className="row justify-content-center mt-3">
+        <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+          <h1 className="mb-1">Account Settings</h1>
+          <hr />
+          {this.props.token && (this.state.response.status === 1
+            ? (
               <div>
                 {this.state.response.message}
               </div>
+            )
+            : (    
               <div>
-                <span>If you are not automatically redirected in 5 seconds, click <a href='/account/settings'>here</a></span>
+                <div className="form-group">
+                  <label htmlFor="change-password0">Current Password:</label>
+                  <input type="password" className="form-control" id="change-password0" value={this.state.password0} onChange={this.handleInputChange} />
+                </div>
+                <div className="text-danger small">
+                  {this.state.response.position === 1 && this.state.response.message}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="change-password1">New Password:</label>
+                  <input type="password" className="form-control" id="change-password1" value={this.state.password1} onChange={this.handleInputChange} />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="change-password2">Confirm New Password:</label>
+                  <input type="password" className="form-control" id="change-password2" value={this.state.password2} onChange={this.handleInputChange} />
+                </div>
+                <div className="text-danger small">
+                  {this.state.response.position === 2 && this.state.response.message}
+                </div>
+                <button type="submit" className="btn btn-primary float-right">Confirm</button>
               </div>
-            </form>
-          </div>
-        );
-      }
-    } else {
-      return (
-        <div className="row justify-content-center mt-3">
-          <div className="col-11 center-block p-3">
-            <h1 className="mb-1">Account Settings</h1>
-            <hr />
+            )
+          )}
+          {!this.props.token && 
+            (
+              <div>
+                You must be logged in to view this page.
+              </div>
+            )
+          }
+        </form>
+        {this.props.token
+          ? (
             <div>
-              You must be logged in to view this page.
+              <Link to='/account/settings'>Back to Settings</Link>
             </div>
-          </div>
-        </div>
-      );
-    }
+          )
+          : (
+            <div>
+              <Link to='/'>Back to Homepage</Link>
+            </div>
+          )
+        }
+      </div>
+    );
   }
 }
 
 function mapStateToProps(state) {
-  return {confirmCredentialsStatus: state.confirmCredentialsStatus, passwordChangeStatus: state.passwordChangeStatus, userInfo: state.userInfo, token: state.token}
+  return {
+    confirmCredentialsStatus: state.confirmCredentialsStatus, 
+    passwordChangeStatus: state.passwordChangeStatus, 
+    token: state.token,
+    userInfo: state.userInfo
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({changePassword: changePassword, confirmCredentials: confirmCredentials}, dispatch)
+  return bindActionCreators({
+    changePassword: changePassword, 
+    confirmCredentials: confirmCredentials
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PasswordChange);

@@ -3,8 +3,8 @@ from django.urls import path, include
 
 from knox import views as knox_views
 
-from api.views import LoginView, EmailVerifyView, EmailVerifyConfirmView, PasswordResetView, PasswordResetConfirmView
 from .confidential import ADMIN_URL
+from api.views import EmailVerifyView, EmailVerifyConfirmView, PasswordResetView, PasswordResetConfirmView, LoginView
 
 urlpatterns = [
     path('api/', include('api.urls')),

@@ -31,7 +31,7 @@ const persistConfig = {
     'passwordChangeStatus',
     'emailChangeStatus',
     'confirmCredentialsStatus',
-    'accountDeleteStatus'
+    'accountDeactivateStatus'
   ]
 }
 

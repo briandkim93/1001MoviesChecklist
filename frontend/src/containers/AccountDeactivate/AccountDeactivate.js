@@ -3,9 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { confirmCredentials, deleteAccount } from '../../actions';
+import { confirmCredentials, deactivateAccount } from '../../actions';
 
-class AccountDelete extends Component {
+class AccountDeactivate extends Component {
   constructor(props) {
     super(props);
 
@@ -24,7 +24,7 @@ class AccountDelete extends Component {
 
   handleInputChange(event) {
     this.setState({
-      [event.target.id.replace('delete-', '')]: event.target.value
+      [event.target.id.replace('deactivate-', '')]: event.target.value
     });
   }
 
@@ -34,7 +34,7 @@ class AccountDelete extends Component {
       password: ''
     });
     if (this.state.username !== '' && this.state.password !== '') {
-      this.props.confirmCredentials(this.state.username, this.state.password, 'accountDelete');
+      this.props.confirmCredentials(this.state.username, this.state.password, 'accountDeactivate');
     } else {
       this.setState({
         response: {
@@ -47,9 +47,9 @@ class AccountDelete extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.confirmCredentialsStatus && this.props.confirmCredentialsStatus !== prevProps.confirmCredentialsStatus) {
-      if (this.props.confirmCredentialsStatus.data.context === 'accountDelete') {
+      if (this.props.confirmCredentialsStatus.data.context === 'accountDeactivate') {
         if (this.props.confirmCredentialsStatus.status === 200) {
-          this.props.deleteAccount(this.props.userInfo['uid'], this.props.token);
+          this.props.deactivateAccount(this.props.userInfo['uid'], this.props.token);
         } else {
           this.setState({
             response: {
@@ -60,19 +60,19 @@ class AccountDelete extends Component {
         }
       }
     }
-    if (this.props.accountDeleteStatus !== prevProps.accountDeleteStatus) {
-        if (this.props.accountDeleteStatus.status === 204) {
+    if (this.props.accountDeactivateStatus !== prevProps.accountDeactivateStatus) {
+        if (this.props.accountDeactivateStatus.status === 200) {
           this.setState({
             response: {
               status: 1, 
-              message: 'Account deleted successfully.'
+              message: 'Account successfully deactivated.'
             }
           });
         } else {
           this.setState({
             response: {
               status: 0, 
-              message: 'We were unable to delete your account at this time. Please try again at a later time.'
+              message: 'We were unable to deactivate your account. Please try again at a later time.'
             }
           });
         }
@@ -89,17 +89,17 @@ class AccountDelete extends Component {
             (
               <div>          
                 <div className="form-group">
-                  <label htmlFor="delete-username">Username:</label>
-                  <input type="text" className="form-control" id="delete-username" value={this.state.username} onChange={this.handleInputChange} />
+                  <label htmlFor="deactivate-username">Username:</label>
+                  <input type="text" className="form-control" id="deactivate-username" value={this.state.username} onChange={this.handleInputChange} />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="delete-password">Password:</label>
-                  <input type="password" className="form-control" id="delete-password" value={this.state.password} onChange={this.handleInputChange} />
+                  <label htmlFor="deactivate-password">Password:</label>
+                  <input type="password" className="form-control" id="deactivate-password" value={this.state.password} onChange={this.handleInputChange} />
                 </div>
                 <div className="text-danger small">
                   {this.state.response.status === 0 && this.state.response.message}
                 </div>
-                <button type="submit" className="btn btn-danger float-right">Delete Account</button>
+                <button type="submit" className="btn btn-danger float-right">Deactivate Account</button>
               </div>
             )
           }
@@ -135,7 +135,7 @@ class AccountDelete extends Component {
 
 function mapStateToProps(state) {
   return {
-    accountDeleteStatus: state.accountDeleteStatus, 
+    accountDeactivateStatus: state.accountDeactivateStatus, 
     confirmCredentialsStatus: state.confirmCredentialsStatus, 
     token: state.token,
     userInfo: state.userInfo
@@ -145,8 +145,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     confirmCredentials: confirmCredentials, 
-    deleteAccount: deleteAccount
+    deactivateAccount: deactivateAccount
   }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountDelete);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountDeactivate);

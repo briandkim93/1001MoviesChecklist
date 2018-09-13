@@ -10,8 +10,8 @@ function TokenReducer(state=null, action) {
       }
     case ACTION_TYPES.LOGOUT:
       return null;
-    case ACTION_TYPES.DELETE_ACCOUNT:
-      if (action.payload.status === 204) {
+    case ACTION_TYPES.DEACTIVATE_ACCOUNT:
+      if (action.payload.status === 200) {
         return null;
       } else {
         return state;

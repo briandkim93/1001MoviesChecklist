@@ -43,7 +43,7 @@ class AccountInfo extends Component {
                     Date Joined: {this.props.userInfo.dateJoined}
                   </li>
                   <li className="list-group-item text-center">
-                    <Link className="text-danger" to='/account/settings/delete'>Delete Account</Link>
+                    <Link className="text-danger" to='/account/settings/deactivate'>Deactivate Account</Link>
                   </li>
                   <hr />
                 </ul>

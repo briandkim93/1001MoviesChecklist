@@ -28,6 +28,7 @@ class Account(AbstractUser):
     email_verified = models.BooleanField(default=False)
     email_verification_code = models.CharField(max_length=255)
     completed_movies = models.ManyToManyField('Movie', blank=True)
+    active = models.BooleanField(default=True)
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)

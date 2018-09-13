@@ -8,37 +8,37 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 export function toggleSignup() {
   return {
     type: ACTION_TYPES.TOGGLE_SIGNUP
-  }
+  };
 }
 
 export function closeSignup() {
   return {
     type: ACTION_TYPES.CLOSE_SIGNUP
-  }
+  };
 }
 
 export function toggleLogin() {
   return {
     type: ACTION_TYPES.TOGGLE_LOGIN
-  }
+  };
 }
 
 export function closeLogin() {
   return {
     type: ACTION_TYPES.CLOSE_LOGIN
-  }
+  };
 }
 
 export function togglePasswordResetRequest() {
   return {
     type: ACTION_TYPES.TOGGLE_PASSWORD_RESET_REQUEST
-  }
+  };
 }
 
 export function closePasswordResetRequest() {
   return {
     type: ACTION_TYPES.CLOSE_PASSWORD_RESET_REQUEST
-  }
+  };
 }
 
 export function signup(username, email, password) {
@@ -104,7 +104,7 @@ export function sendEmailVerifyLink(token) {
   return {
     type: ACTION_TYPES.SEND_EMAIL_VERIFY_LINK,
     payload: request
-  }
+  };
 }
 
 export function confirmEmailVerify(username, password, email_verification_code) {
@@ -136,7 +136,7 @@ export function sendPasswordResetLink(email) {
   return {
     type: ACTION_TYPES.SEND_PASSWORD_RESET_LINK,
     payload: request
-  }
+  };
 }
 
 export function confirmResetPassword(password1, password2, uid, token) {
@@ -154,7 +154,7 @@ export function confirmResetPassword(password1, password2, uid, token) {
   return {
     type: ACTION_TYPES.CONFIRM_PASSWORD_RESET,
     payload: request
-  }
+  };
 }
 
 export function confirmCredentials(username, password, context) {
@@ -168,9 +168,9 @@ export function confirmCredentials(username, password, context) {
   .catch(error => {
     return error.response;
   });
-  if (context === 'accountDelete') {
+  if (context === 'accountDeactivate') {
     return {
-      type: ACTION_TYPES.CONFIRM_CREDENTIALS_DELETE_ACCOUNT,
+      type: ACTION_TYPES.CONFIRM_CREDENTIALS_DEACTIVATE_ACCOUNT,
       payload: request
     };
   } else if (context === 'passwordChange') {
@@ -189,7 +189,7 @@ export function changePassword(password, uid, token) {
       'Authorization': `Token ${token}`,
     },
     data: {
-      password: password,
+      password: password
     }
   })
   .catch(error => {
@@ -198,7 +198,7 @@ export function changePassword(password, uid, token) {
   return {
     type: ACTION_TYPES.CHANGE_PASSWORD,
     payload: request
-  }
+  };
 }
 
 export function changeEmail(email, uid, token) {
@@ -209,7 +209,7 @@ export function changeEmail(email, uid, token) {
       'Authorization': `Token ${token}`,
     },
     data: {
-      email: email,
+      email: email
     }
   })
   .catch(error => {
@@ -218,22 +218,45 @@ export function changeEmail(email, uid, token) {
   return {
     type: ACTION_TYPES.CHANGE_EMAIL,
     payload: request
-  }
+  };
 }
 
-export function deleteAccount(uid, token) {
+export function deactivateAccount(uid, token) {
   const request = axios({
-    method: 'delete',
+    method: 'patch',
     url: `${API_BASE_URL}account/${uid}/`,
     headers: {
       'Authorization': `Token ${token}`,
+    },
+    data: {
+      active: false
     }
   })
   .catch(error => {
     return error.response;
   });
   return {
-    type: ACTION_TYPES.DELETE_ACCOUNT,
+    type: ACTION_TYPES.DEACTIVATE_ACCOUNT,
+    payload: request
+  };
+}
+
+export function reactivateAccount(uid, token) {
+  const request = axios({
+    method: 'patch',
+    url: `${API_BASE_URL}account/${uid}/`,
+    headers: {
+      'Authorization': `Token ${token}`,
+    },
+    data: {
+      active: true
+    }
+  })
+  .catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.REACTIVATE_ACCOUNT,
     payload: request
   };
 }

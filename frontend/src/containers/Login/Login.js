@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { toggleSignup, closeSignup, closeLogin, togglePasswordResetRequest, closePasswordResetRequest, login } from '../../actions';
+import { toggleSignup, closeSignup, closeLogin, togglePasswordResetRequest, closePasswordResetRequest, login, reactivateAccount } from '../../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -59,6 +59,7 @@ class Login extends Component {
       if (this.props.loginStatus.status === 200) {
         this.setState(this.baseState);
         this.props.closeLogin();
+        this.props.reactivateAccount(this.props.userInfo['uid'], this.props.token);
       } else {
         this.setState({
           password: '',
@@ -111,7 +112,8 @@ function mapPropsToState(state) {
   return {
     displayLogin: state.displayLogin, 
     loginStatus: state.loginStatus, 
-    token: state.token
+    token: state.token,
+    userInfo: state.userInfo
   };
 }
 
@@ -122,7 +124,8 @@ function mapDispatchToProps(dispatch) {
     closeLogin: closeLogin, 
     togglePasswordResetRequest: togglePasswordResetRequest, 
     closePasswordResetRequest: closePasswordResetRequest, 
-    login: login
+    login: login,
+    reactivateAccount: reactivateAccount
   }, dispatch);
 }
 

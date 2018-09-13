@@ -31,7 +31,7 @@ class AccountSerializer(serializers.ModelSerializer):
             'last_login', 
             'is_superuser', 
             'is_staff', 
-            'is_active'
+            'active'
         )
         read_only_fields = (
             'id', 
@@ -40,8 +40,7 @@ class AccountSerializer(serializers.ModelSerializer):
             'date_joined', 
             'last_login', 
             'is_superuser', 
-            'is_staff', 
-            'is_active'
+            'is_staff'
         )
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -80,6 +79,11 @@ class AccountSerializer(serializers.ModelSerializer):
             pass;
         try:
             instance.set_password(validated_data['password'])
+        except KeyError:
+            pass;
+        try: 
+            if instance.active != validated_data['active']:
+                instance.active = validated_data['active']
         except KeyError:
             pass;
         instance.save()

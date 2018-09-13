@@ -34,8 +34,8 @@ function UserInfoReducer(state={}, action) {
       }
     case ACTION_TYPES.LOGOUT:
       return {};
-    case ACTION_TYPES.DELETE_ACCOUNT:
-      if (action.payload.status === 204) {
+    case ACTION_TYPES.DEACTIVATE_ACCOUNT:
+      if (action.payload.status === 200) {
         return {};
       } else {
         return state;

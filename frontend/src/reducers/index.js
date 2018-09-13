@@ -14,7 +14,7 @@ import PasswordResetStatusReducer from './PasswordResetStatusReducer';
 import ConfirmCredentialsStatusReducer from './ConfirmCredentialsStatusReducer';
 import PasswordChangeStatusReducer from './PasswordChangeStatusReducer';
 import EmailChangeStatusReducer from './EmailChangeStatusReducer';
-import AccountDeleteStatusReducer from './AccountDeleteStatusReducer';
+import AccountDeactivateStatusReducer from './AccountDeactivateStatusReducer';
 
 const rootReducer = combineReducers({
   displaySignup: ToggleSignupReducer,
@@ -31,7 +31,7 @@ const rootReducer = combineReducers({
   confirmCredentialsStatus: ConfirmCredentialsStatusReducer,
   passwordChangeStatus: PasswordChangeStatusReducer,
   emailChangeStatus: EmailChangeStatusReducer,
-  accountDeleteStatus: AccountDeleteStatusReducer
+  accountDeactivateStatus: AccountDeactivateStatusReducer
 });
 
 export default rootReducer;

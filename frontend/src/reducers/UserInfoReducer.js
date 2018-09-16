@@ -30,18 +30,27 @@ function UserInfoReducer(state={}, action) {
       }
     case ACTION_TYPES.CONFIRM_EMAIL_VERIFY:
       if (action.payload.status === 200) {
-        const updatedState = state;
-        updatedState.emailVerified = true;
-        return updatedState;
+        return {
+          uid: state.uid,
+          username: state.username,
+          email: state.email,
+          emailVerified: true,
+          dateJoined: state.dateJoined,
+          provider: state.provider
+        };
       } else {
         return state;
       }
     case ACTION_TYPES.CHANGE_EMAIL:
       if (action.payload.status === 200) {
-        const updatedState = state;
-        updatedState.email = action.payload.data.email;
-        updatedState.emailVerified = false;
-        return updatedState;
+        return {
+          uid: state.uid,
+          username: state.username,
+          email: action.payload.data.email,
+          emailVerified: false,
+          dateJoined: state.dateJoined,
+          provider: state.provider
+        };
       } else {
         return state;
       }

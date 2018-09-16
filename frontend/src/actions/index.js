@@ -46,7 +46,7 @@ export function closePasswordResetRequest() {
 export function signup(username, email, password) {
   const request = axios({
     method: 'post',
-    url: `${API_BASE_URL}account/`, 
+    url: `${API_BASE_URL}auth/account/`, 
     data: {
       username: username,
       email: email,
@@ -224,7 +224,7 @@ export function confirmCredentials(username, password, context) {
 export function changePassword(password, uid, token) {
   const request = axios({
     method: 'patch',
-    url: `${API_BASE_URL}account/${uid}/`,
+    url: `${API_BASE_URL}auth/account/${uid}/`,
     headers: {
       'Authorization': `Token ${token}`,
     },
@@ -244,7 +244,7 @@ export function changePassword(password, uid, token) {
 export function changeEmail(email, uid, token) {
   const request = axios({
     method: 'patch',
-    url: `${API_BASE_URL}account/${uid}/`,
+    url: `${API_BASE_URL}auth/account/${uid}/`,
     headers: {
       'Authorization': `Token ${token}`,
     },
@@ -264,7 +264,7 @@ export function changeEmail(email, uid, token) {
 export function deactivateAccount(uid, token) {
   const request = axios({
     method: 'patch',
-    url: `${API_BASE_URL}account/${uid}/`,
+    url: `${API_BASE_URL}auth/account/${uid}/`,
     headers: {
       'Authorization': `Token ${token}`,
     },

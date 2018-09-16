@@ -1,11 +1,9 @@
 from hashlib import sha256
 from secrets import token_bytes
 
-from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.tokens import default_token_generator
-from django.core import exceptions
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.encoding import force_text
@@ -83,6 +81,7 @@ class AccountSerializer(serializers.ModelSerializer):
                 instance.email_verified = False
                 email_verification_code = self.create_verification_code(validated_data['email'])
                 instance.email_verification_code = email_verification_code
+                print(instance.email_verification_code)
                 message = render_to_string('email_verification_message.txt', {'email_verification_code': email_verification_code})
                 send_mail(
                     'Welcome to 1001 Movies Checklist',

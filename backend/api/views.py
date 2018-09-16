@@ -1,18 +1,15 @@
 import json
 
 from django.contrib.auth.signals import user_logged_in
-from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.debug import sensitive_post_parameters
 
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
 
 from knox.models import AuthToken
 from knox.settings import knox_settings
@@ -24,13 +21,30 @@ from rest_framework_social_oauth2.views import ConvertTokenView
 
 from .authentications import BasicAuthentication403
 from .models import Account, Movie
-from .permissions import AccountListPermission, AccountPermission, MoviesPermission, SendVerificationEmailPermission
+from .permissions import AccountListPermission, AccountDetailPermission, MoviePermission, SendVerificationEmailPermission
 from .serializers import AccountSerializer, MovieSerializer, EmailVerifySerializer, EmailVerifyConfirmSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer
 
-class AccountViewSet(ModelViewSet):
+class AccountListView(ListCreateAPIView):
     serializer_class = AccountSerializer
     queryset = Account.objects.all()
-    permission_classes = (AccountListPermission, AccountPermission)
+    permission_classes = (AccountListPermission, )
+
+class AccountDetailView(RetrieveUpdateDestroyAPIView):
+    serializer_class = AccountSerializer
+    permission_classes = (AccountDetailPermission, )
+
+    def get_queryset(self):
+        return Account.objects.all().filter(username=self.request.user)
+
+class MovieListView(ListCreateAPIView):
+    serializer_class = MovieSerializer
+    queryset = Movie.objects.all()
+    permission_classes = (MoviePermission, )
+
+class MovieDetailView(RetrieveUpdateDestroyAPIView):
+    serializer_class = MovieSerializer
+    queryset = Movie.objects.all()
+    permission_classes = (MoviePermission, )
 
 # Source: django-rest-knox v3.1.5 (https://github.com/James1345/django-rest-knox)
 class LoginView(APIView):
@@ -49,11 +63,6 @@ class LoginView(APIView):
             'user': UserSerializer(request.user, context=context).data,
             'token': token,
         })
-
-class MovieViewSet(ModelViewSet):
-    serializer_class = MovieSerializer
-    queryset = Movie.objects.all()
-    permission_classes = (MoviesPermission, )
 
 class EmailVerifyView(GenericAPIView):
     serializer_class = EmailVerifySerializer
@@ -148,6 +157,7 @@ class ConvertTokenFBView(ConvertTokenView):
                 request._request.POST[key] = value
             url, headers, body, status = self.create_token_response(request._request)
             response = Response(data=json.loads(body), status=status)
+            print(response.data)
             account = AccessToken.objects.get(token=response.data['access_token']).user
             account.facebook_id = request.data['facebook_id']
             account.email_verified = True

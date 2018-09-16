@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 import ACTION_TYPES from './types';
-import API_BASE_URL from '../api_info';
+import API_BASE_URL from '../apiInfo';
+
+import { SOCIAL_CLIENT_ID, SOCIAL_CLIENT_SECRET } from '../confidential';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 
@@ -42,13 +44,15 @@ export function closePasswordResetRequest() {
 }
 
 export function signup(username, email, password) {
-  const request = axios.post(
-    `${API_BASE_URL}account/`, {
+  const request = axios({
+    method: 'post',
+    url: `${API_BASE_URL}account/`, 
+    data: {
       username: username,
       email: email,
       password: password
     }
-  )
+  })
   .catch(error => {
     return error.response;
   });
@@ -63,7 +67,7 @@ export function login(username, password) {
     method: 'post',
     url: `${API_BASE_URL}auth/login/`,
     headers: {
-      'Authorization': `Basic ${btoa(username + ':' + password)}`,
+      'Authorization': `Basic ${btoa(username + ':' + password)}`
     }
   })
   .catch(error => {
@@ -75,10 +79,35 @@ export function login(username, password) {
   };
 }
 
+export function concludeFacebookLoginRender() {
+  return {
+    type: ACTION_TYPES.CONCLUDE_FACEBOOK_LOGIN_RENDER,
+    payload: false
+  };
+}
+
+export function facebookLogin(accessToken, facebook_id, email) {
+  const request = axios({
+    method: 'post',
+    url: `${API_BASE_URL}auth/social/convert-token/?grant_type=convert_token&backend=facebook&client_id=${SOCIAL_CLIENT_ID}&client_secret=${SOCIAL_CLIENT_SECRET}&token=${accessToken}`,
+    data: {
+      email: email,
+      facebook_id: facebook_id
+    }
+  })
+  .catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.FACEBOOK_LOGIN,
+    payload: request
+  };
+}
+
 export function logout(token) {
   const request = axios({
     method: 'post',
-    url: `${API_BASE_URL}auth/logoutall/`,
+    url: `${API_BASE_URL}auth/logout/`,
     headers: {
       'Authorization': `Token ${token}`,
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -86,6 +115,17 @@ export function logout(token) {
   });
   return {
     type: ACTION_TYPES.LOGOUT,
+    payload: request
+  };
+}
+
+export function facebookLogout(token) {
+  const request = axios({
+    method: 'post',
+    url: `${API_BASE_URL}auth/social/revoke-token/?client_id=${SOCIAL_CLIENT_ID}&client_secret=${SOCIAL_CLIENT_SECRET}&token=${token}`
+  });
+  return {
+    type: ACTION_TYPES.FACEBOOK_LOGOUT,
     payload: request
   };
 }
@@ -237,26 +277,6 @@ export function deactivateAccount(uid, token) {
   });
   return {
     type: ACTION_TYPES.DEACTIVATE_ACCOUNT,
-    payload: request
-  };
-}
-
-export function reactivateAccount(uid, token) {
-  const request = axios({
-    method: 'patch',
-    url: `${API_BASE_URL}account/${uid}/`,
-    headers: {
-      'Authorization': `Token ${token}`,
-    },
-    data: {
-      active: true
-    }
-  })
-  .catch(error => {
-    return error.response;
-  });
-  return {
-    type: ACTION_TYPES.REACTIVATE_ACCOUNT,
     payload: request
   };
 }

@@ -20,7 +20,7 @@ class AccountInfo extends Component {
         <div className="col-11 center-block p-3">
           <h1 className="mb-1">Account Settings</h1>
           <hr />
-          {this.props.token
+          {this.props.token && this.props.userInfo.provider !== 'facebook'
             ? (
               <div>
                 <ul className="list-group list-group-flush">
@@ -51,13 +51,13 @@ class AccountInfo extends Component {
             )
             : (
               <div>
-                You must be logged in to view this page.
+                You do not have access to this page.
               </div>
             )
           }
-        </div>
-        <div>
-          <Link to='/'>Back to Homepage</Link>
+          <div className="text-center">
+            <Link to='/'>Back to Homepage</Link>
+          </div>
         </div>
       </div>
     );

@@ -9,8 +9,21 @@ function UserInfoReducer(state={}, action) {
           username: action.payload.data.user.username,
           email: action.payload.data.user.email,
           emailVerified: action.payload.data.user.email_verified,
-          completedMovies: action.payload.data.user.completed_movies,
-          dateJoined: action.payload.data.user.date_joined
+          dateJoined: action.payload.data.user.date_joined,
+          provider: action.payload.data.user.provider
+        };
+      } else {
+        return state;
+      }
+    case ACTION_TYPES.FACEBOOK_LOGIN:
+      if (action.payload.status === 200) {
+        return {
+          uid: action.payload.data.user.id,
+          username: action.payload.data.user.username,
+          email: action.payload.data.user.email,
+          emailVerified: action.payload.data.user.email_verified,
+          dateJoined: action.payload.data.user.date_joined,
+          provider: action.payload.data.user.provider
         };
       } else {
         return state;
@@ -26,7 +39,7 @@ function UserInfoReducer(state={}, action) {
     case ACTION_TYPES.CHANGE_EMAIL:
       if (action.payload.status === 200) {
         const updatedState = state;
-        updatedState.email = action.payload.data.user.email;
+        updatedState.email = action.payload.data.email;
         updatedState.emailVerified = false;
         return updatedState;
       } else {

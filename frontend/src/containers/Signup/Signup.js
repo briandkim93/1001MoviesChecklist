@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import './Signup.css';
 import { closeSignup, signup } from '../../actions';
 
 class Signup extends Component {
@@ -18,7 +19,7 @@ class Signup extends Component {
         message: ''
       }
     };
-    this.baseState = this.state;
+
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
@@ -123,8 +124,18 @@ class Signup extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.displaySignup !== prevProps.displaySignup) {
-      if (this.props.displaySignup === false) {
-        this.setState(this.baseState);
+      if (!this.props.displaySignup) {
+        this.setState({
+          username: '',
+          email: '',
+          password1: '',
+          password2: '',
+          response: {
+            status: 0, 
+            position: 0, 
+            message: ''
+          }
+        });
       }
     }
     if (this.props.signupStatus !== prevProps.signupStatus) {
@@ -164,74 +175,91 @@ class Signup extends Component {
         });
       }
     }
+    if (this.props.facebookLoginStatus !== prevProps.facebookLoginStatus) {
+      if (this.props.facebookLoginStatus.status === 200) {
+        this.setState({
+          username: '',
+          password: '',
+          response: {
+            status: 0, 
+            message: ''
+          }
+        });
+        this.props.closeSignup();
+      }
+    }
   }
 
   render() {
-    if (this.props.displaySignup) {
-      return (
-        <div className="row justify-content-center">
-          <form className="absolute-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
-            <div>
-              <button type="button" className="close" onClick={this.props.closeSignup}>
-                <span>&times;</span>
-              </button>
+    return (
+      <div className={`row justify-content-center ${!this.props.displaySignup && "d-none"}`}>
+        <form className="absolute-form signup-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+          <div>
+            <button type="button" className="close" onClick={this.props.closeSignup}>
+              <span>&times;</span>
+            </button>
+          </div>
+          <h2 className="mb-1">Sign Up</h2>
+          <hr />
+          <div className={`${this.state.response.status === 0 && "d-none"}`}>
+            {this.state.response.message}
+          </div>
+          <div className={`${this.state.response.status === 1 && "d-none"}`}>
+            <div className="form-group">
+              <label htmlFor="signup-username">Username:</label>
+              <input type="text" className="form-control" id="signup-username" value={this.state.username} onChange={this.handleInputChange} />
             </div>
-            <h2 className="mb-1">Sign Up</h2>
-            <hr />
-            {this.state.response.status === 1
-              ? (
-                <div>
-                  {this.state.response.message}
-                </div>
-              )
-              : (
-                <div>
-                  <div className="form-group">
-                    <label htmlFor="signup-username">Username:</label>
-                    <input type="text" className="form-control" id="signup-username" value={this.state.username} onChange={this.handleInputChange} />
-                  </div>
-                  <div className="text-danger small">
-                    {this.state.response.position === 1 && this.state.response.message}
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="signup-email">Email:</label>
-                    <input type="email" className="form-control" id="signup-email" value={this.state.email} onChange={this.handleInputChange} />
-                  </div>
-                  <div className="text-danger small">
-                    {this.state.response.position === 2 && this.state.response.message}
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="signup-password1">Password:</label>
-                    <input type="password" className="form-control" id="signup-password1" value={this.state.password1} onChange={this.handleInputChange} />
-                  </div>
-                  <div className="text-danger small">
-                    {this.state.response.position === 3 && this.state.response.message}
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="signup-password2">Confirm Password:</label>
-                    <input type="password" className="form-control" id="signup-password2" value={this.state.password2} onChange={this.handleInputChange} />
-                  </div>
-                  <div className="text-danger small">
-                    {this.state.response.position === 4 && this.state.response.message}
-                  </div>
-                  <button type="submit" className="btn btn-primary float-right">Sign Up</button>
-                </div>
-              )
-            }
-          </form>
-        </div>
-      );
-    } else {
-      return <div></div>;
-    }
+            <div className="text-danger small">
+              {this.state.response.position === 1 && this.state.response.message}
+            </div>
+            <div className="form-group">
+              <label htmlFor="signup-email">Email:</label>
+              <input type="email" className="form-control" id="signup-email" value={this.state.email} onChange={this.handleInputChange} />
+            </div>
+            <div className="text-danger small">
+              {this.state.response.position === 2 && this.state.response.message}
+            </div>
+            <div className="form-group">
+              <label htmlFor="signup-password1">Password:</label>
+              <input type="password" className="form-control" id="signup-password1" value={this.state.password1} onChange={this.handleInputChange} />
+            </div>
+            <div className="text-danger small">
+              {this.state.response.position === 3 && this.state.response.message}
+            </div>
+            <div className="form-group">
+              <label htmlFor="signup-password2">Confirm Password:</label>
+              <input type="password" className="form-control" id="signup-password2" value={this.state.password2} onChange={this.handleInputChange} />
+            </div>
+            <div className="text-danger small">
+              {this.state.response.position === 4 && this.state.response.message}
+            </div>
+            <div className="w-100 overflow-auto mt-2">
+              <button type="submit" className="btn btn-primary float-right">Sign Up</button>
+            </div>
+            <div className="clear-both">
+              <p className="form-seperator w-100 font-weight-bold text-center my-4">
+                <span className="bg-light px-1">OR</span>
+              </p>
+            </div>
+            {this.props.facebookLoginRenderStatus ? <div className="loader fbsdk-loader position-absolute"></div> : ''}
+            <div className="text-center">
+              <div className="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" data-scope="email" />
+            </div>
+          </div>
+        </form>
+      </div>
+    );
   }
 }
 
 function mapPropsToState(state) {
   return {
     displaySignup: state.displaySignup, 
+    facebookLoginStatus: state.facebookLoginStatus,
+    facebookLoginRenderStatus: state.facebookLoginRenderStatus,
     signupStatus: state.signupStatus, 
-    token: state.token
+    token: state.token,
+    userInfo: state.userInfo
   };
 }
 

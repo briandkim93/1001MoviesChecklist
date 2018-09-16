@@ -5,6 +5,8 @@ import ToggleLoginReducer from './ToggleLoginReducer';
 import TogglePasswordResetRequestReducer from './TogglePasswordResetRequestReducer';
 import SignupStatusReducer from './SignupStatusReducer';
 import LoginStatusReducer from './LoginStatusReducer';
+import FacebookLoginStatusReducer from './FacebookLoginStatusReducer';
+import FacebookLoginRenderStatusReducer from './FacebookLoginRenderStatusReducer';
 import TokenReducer from './TokenReducer';
 import UserInfoReducer from './UserInfoReducer';
 import EmailVerifyRequestStatusReducer from './EmailVerifyRequestStatusReducer';
@@ -22,6 +24,8 @@ const rootReducer = combineReducers({
   displayPasswordResetRequest: TogglePasswordResetRequestReducer,
   signupStatus: SignupStatusReducer,
   loginStatus: LoginStatusReducer,
+  facebookLoginStatus: FacebookLoginStatusReducer,
+  facebookLoginRenderStatus: FacebookLoginRenderStatusReducer,
   token: TokenReducer,
   userInfo: UserInfoReducer,
   emailVerifyRequestStatus: EmailVerifyRequestStatusReducer,

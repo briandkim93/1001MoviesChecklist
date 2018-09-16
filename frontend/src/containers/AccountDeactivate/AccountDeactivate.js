@@ -106,7 +106,12 @@ class AccountDeactivate extends Component {
           {!this.props.token && (this.state.response.status === 1
             ? (
               <div>
-                {this.state.response.message}
+                <div>
+                  {this.state.response.message}
+                </div>
+                <div>
+                  Log in at any time to reactivate your account.
+                </div>
               </div>
             )
             : (

@@ -72,42 +72,38 @@ class PasswordResetRequest extends Component {
     }
   }
   render() {
-    if (this.props.displayPasswordResetRequest) {
-      return (
-        <div className="row justify-content-center">
-          <form className="absolute-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
-            <div>
-              <button type="button" className="close" onClick={this.props.closePasswordResetRequest}>
-                <span>&times;</span>
-              </button>
-            </div>
-            <h2 className="mb-1">Reset Password</h2>
-            <hr />
-            {this.state.response.status === 1
-              ? (  
-                <div>
+    return (
+      <div className={`row justify-content-center ${!this.props.displayPasswordResetRequest && "d-none"}`}>
+        <form className="absolute-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+          <div>
+            <button type="button" className="close" onClick={this.props.closePasswordResetRequest}>
+              <span>&times;</span>
+            </button>
+          </div>
+          <h2 className="mb-1">Reset Password</h2>
+          <hr />
+          {this.state.response.status === 1
+            ? (  
+              <div>
+                {this.state.response.message}
+              </div>
+            )
+            : (
+              <div>
+                <div className="form-group">
+                  <label htmlFor="reset-email">Email:</label>
+                  <input type="email" className="form-control" id="reset-email" value={this.state.email} onChange={this.handleInputChange} />
+                </div>
+                <div className="text-danger small">
                   {this.state.response.message}
                 </div>
-              )
-              : (
-                <div>
-                  <div className="form-group">
-                    <label htmlFor="reset-email">Email:</label>
-                    <input type="email" className="form-control" id="reset-email" value={this.state.email} onChange={this.handleInputChange} />
-                  </div>
-                  <div className="text-danger small">
-                    {this.state.response.message}
-                  </div>
-                  <button type="submit" className="btn btn-primary float-right">Send</button>
-                </div>
-              )
-            }
-          </form>
-        </div>
-      );
-    } else {
-      return <div></div>;
-    }
+                <button type="submit" className="btn btn-primary float-right">Send</button>
+              </div>
+            )
+          }
+        </form>
+      </div>
+    );
   }
 }
 

@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import './EmailVerifyRequest.css';
 import { sendEmailVerifyLink } from '../../actions';
 
 class EmailVerifyRequest extends Component {
@@ -55,7 +54,7 @@ class EmailVerifyRequest extends Component {
         <div className="col-11 center-block p-3">
           <h1 className="mb-1">Account Settings</h1>
           <hr />
-          {this.props.token
+          {(this.props.token && (this.props.userInfo.provider !== 'facebook'))
             ? (
               <div>
                 <div>
@@ -69,9 +68,9 @@ class EmailVerifyRequest extends Component {
             : (
               <div>
                 <div>
-                  You must be logged in to view this page.
+                  You do not have access to this page.
                 </div>
-                <div>
+                <div className="text-center">
                   <Link to='/'>Back to Homepage</Link>
                 </div>
               </div>
@@ -86,7 +85,8 @@ class EmailVerifyRequest extends Component {
 function mapStateToProps(state) {
   return {
     emailVerifyRequestStatus: state.emailVerifyRequestStatus, 
-    token: state.token
+    token: state.token,
+    userInfo: state.userInfo
   };
 }
 

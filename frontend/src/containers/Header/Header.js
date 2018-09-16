@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import logo from '../../logo.png';
-import { toggleSignup, closeSignup, toggleLogin, closeLogin, closePasswordResetRequest, logout } from '../../actions';
+import { toggleSignup, closeSignup, toggleLogin, closeLogin, closePasswordResetRequest, logout, facebookLogout } from '../../actions';
 
 class Header extends Component {
   constructor(props) {
@@ -28,7 +28,21 @@ class Header extends Component {
   }
 
   handleLogout() {
-    this.props.logout(this.props.token);
+    if (this.props.userInfo.provider === 'local') {
+      this.props.logout(this.props.token);
+    } else if (this.props.userInfo.provider === 'facebook') {
+      this.props.facebookLogout(this.props.token);
+      window.FB.logout(function(response) {
+        return;
+      });
+    } else if (this.props.userInfo.provider === 'facebook-local') {
+      this.props.logout(this.props.token);
+      if (window.FB) {
+        window.FB.logout(function(response) {
+          return;
+        });
+      }
+    }
   }
 
   render() {
@@ -43,8 +57,8 @@ class Header extends Component {
           {this.props.token
               ? (
                 <div className="navbar-nav ml-auto">
-                  <span><Link className="nav-link btn" to='/account/settings'>Account</Link></span>
-                  <span><Link className="nav-link btn" to='/' onClick={this.handleLogout}>Logout</Link></span>
+                  <span>{this.props.userInfo.provider !== 'facebook' && <Link className="nav-link btn" to='/account/settings'>Account</Link>}</span>
+                  <span onClick={this.handleLogout}><Link className="nav-link btn" to='/'>Logout</Link></span>
                 </div>
               )
               : (
@@ -63,7 +77,8 @@ class Header extends Component {
 
 function mapStateToProps(state) {
   return {
-    token: state.token
+    token: state.token,
+    userInfo: state.userInfo
   };
 }
 
@@ -75,6 +90,7 @@ function mapDispatchToProps(dispatch) {
     closeLogin: closeLogin,
     closePasswordResetRequest: closePasswordResetRequest,
     logout: logout,
+    facebookLogout: facebookLogout
   }, dispatch);
 }
 

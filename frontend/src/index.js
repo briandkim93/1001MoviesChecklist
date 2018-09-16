@@ -24,13 +24,15 @@ const persistConfig = {
     'displayReset',
     'signupStatus',
     'loginStatus',
+    'facebookLoginStatus',
+    'facebookLoginRenderStatus',
     'emailVerifyRequestStatus',
     'emailVerifyStatus',
     'passwordResetRequestStatus',
     'passwordResetStatus',
+    'confirmCredentialsStatus',
     'passwordChangeStatus',
     'emailChangeStatus',
-    'confirmCredentialsStatus',
     'accountDeactivateStatus'
   ]
 }

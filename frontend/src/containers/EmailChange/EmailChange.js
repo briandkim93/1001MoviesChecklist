@@ -93,6 +93,13 @@ class EmailChange extends Component {
             message: this.props.emailChangeStatus.data.email[0]
           }
         });
+      } else {
+        this.setState({
+          response: {
+            status: 0, 
+            message: 'Sorry, we were unable to change your email address at this time.'
+          }
+        });
       }
     }
   }
@@ -103,7 +110,7 @@ class EmailChange extends Component {
         <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
           <h1 className="mb-1">Account Settings</h1>
           <hr />
-          {this.props.token && (this.state.response.status === 1
+          {(this.props.token && (this.props.userInfo.provider !== 'facebook')) && (this.state.response.status === 1
             ? (
               <div>
                 {this.state.response.message}
@@ -126,10 +133,10 @@ class EmailChange extends Component {
               </div>
             )
           )}
-          {!this.props.token && 
+          {(!this.props.token || (this.props.userInfo.provider === 'facebook')) && 
             (
               <div>
-                You must be logged in to view this page.
+                You do not have access to this page.
               </div>
             )
           }

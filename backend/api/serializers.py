@@ -81,7 +81,6 @@ class AccountSerializer(serializers.ModelSerializer):
                 instance.email_verified = False
                 email_verification_code = self.create_verification_code(validated_data['email'])
                 instance.email_verification_code = email_verification_code
-                print(instance.email_verification_code)
                 message = render_to_string('email_verification_message.txt', {'email_verification_code': email_verification_code})
                 send_mail(
                     'Welcome to 1001 Movies Checklist',

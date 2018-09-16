@@ -157,7 +157,6 @@ class ConvertTokenFBView(ConvertTokenView):
                 request._request.POST[key] = value
             url, headers, body, status = self.create_token_response(request._request)
             response = Response(data=json.loads(body), status=status)
-            print(response.data)
             account = AccessToken.objects.get(token=response.data['access_token']).user
             account.facebook_id = request.data['facebook_id']
             account.email_verified = True

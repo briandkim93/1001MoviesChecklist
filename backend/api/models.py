@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -29,6 +30,8 @@ class Account(AbstractUser):
     email_verification_code = models.CharField(max_length=255)
     completed_movies = models.ManyToManyField('Movie', blank=True)
     active = models.BooleanField(default=True)
+    facebook_id = models.CharField(max_length=30, blank=True)
+    provider = models.CharField(max_length=30, blank=True)
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)

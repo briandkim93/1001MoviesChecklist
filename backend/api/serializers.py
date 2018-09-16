@@ -30,8 +30,10 @@ class AccountSerializer(serializers.ModelSerializer):
             'date_joined', 
             'last_login', 
             'is_superuser', 
-            'is_staff', 
-            'active'
+            'is_staff',
+            'active',
+            'facebook_id',
+            'provider'
         )
         read_only_fields = (
             'id', 
@@ -40,9 +42,14 @@ class AccountSerializer(serializers.ModelSerializer):
             'date_joined', 
             'last_login', 
             'is_superuser', 
-            'is_staff'
+            'is_staff',
+            'facebook_id',
         )
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {
+            'password': {
+                'write_only': True
+            }
+        }
 
     def create_verification_code(self, email):
         salt = token_bytes(32).hex()
@@ -54,9 +61,10 @@ class AccountSerializer(serializers.ModelSerializer):
         account = Account(
             username=validated_data['username'], 
             email=validated_data['email'], 
-            email_verification_code=email_verification_code
+            email_verification_code=email_verification_code,
         )
         account.set_password(validated_data['password'])
+        account.provider = 'local'
         account.save()
         message = render_to_string('email_verification_message.txt', {'email_verification_code': email_verification_code})
         send_mail(
@@ -75,6 +83,14 @@ class AccountSerializer(serializers.ModelSerializer):
                 instance.email_verified = False
                 email_verification_code = self.create_verification_code(validated_data['email'])
                 instance.email_verification_code = email_verification_code
+                message = render_to_string('email_verification_message.txt', {'email_verification_code': email_verification_code})
+                send_mail(
+                    'Welcome to 1001 Movies Checklist',
+                    message,
+                    'no-reply@1001movieschecklist.com',
+                    (validated_data['email'], ),
+                    fail_silently=True
+                )
         except KeyError:
             pass;
         try:
@@ -141,7 +157,7 @@ class EmailVerifyConfirmSerializer(serializers.Serializer):
             raise serializers.ValidationError({'token': ['Invalid username or password.']})
         return data
 
-# Source: django-rest-auth (https://github.com/Tivix/django-rest-auth)
+# Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
@@ -164,7 +180,7 @@ class PasswordResetSerializer(serializers.Serializer):
             raise serializers.ValidationError(_('Invalid email address'))
         return value
 
-# Source: django-rest-auth (https://github.com/Tivix/django-rest-auth)
+# Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
 class PasswordResetConfirmSerializer(serializers.Serializer):
     new_password1 = serializers.CharField(max_length=128)
     new_password2 = serializers.CharField(max_length=128)

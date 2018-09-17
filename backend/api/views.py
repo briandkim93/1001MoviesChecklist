@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.debug import sensitive_post_parameters
 
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -15,7 +15,7 @@ from knox.models import AuthToken
 from knox.settings import knox_settings
 from knox.views import LoginView as KnoxLoginView
 
-from oauth2_provider.models import AccessToken
+from oauth2_provider.models import AccessToken, RefreshToken
 
 from rest_framework_social_oauth2.views import ConvertTokenView
 
@@ -24,24 +24,22 @@ from .models import Account, Movie
 from .permissions import AccountListPermission, AccountDetailPermission, MoviePermission, SendVerificationEmailPermission
 from .serializers import AccountSerializer, MovieSerializer, EmailVerifySerializer, EmailVerifyConfirmSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer
 
-class AccountListView(ListCreateAPIView):
+class AccountListView(generics.ListCreateAPIView):
     serializer_class = AccountSerializer
     queryset = Account.objects.all()
     permission_classes = (AccountListPermission, )
 
-class AccountDetailView(RetrieveUpdateDestroyAPIView):
+class AccountDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = AccountSerializer
+    queryset = Account.objects.all()
     permission_classes = (AccountDetailPermission, )
 
-    def get_queryset(self):
-        return Account.objects.all().filter(username=self.request.user)
-
-class MovieListView(ListCreateAPIView):
+class MovieListView(generics.ListCreateAPIView):
     serializer_class = MovieSerializer
     queryset = Movie.objects.all()
     permission_classes = (MoviePermission, )
 
-class MovieDetailView(RetrieveUpdateDestroyAPIView):
+class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MovieSerializer
     queryset = Movie.objects.all()
     permission_classes = (MoviePermission, )
@@ -63,62 +61,6 @@ class LoginView(APIView):
             'user': UserSerializer(request.user, context=context).data,
             'token': token,
         })
-
-class EmailVerifyView(GenericAPIView):
-    serializer_class = EmailVerifySerializer
-    permission_classes = (SendVerificationEmailPermission, )
-
-    def post(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"detail": _("Verification email has been sent.")})
-
-class EmailVerifyConfirmView(GenericAPIView):
-    serializer_class = EmailVerifyConfirmSerializer
-    permission_classes = (AllowAny, )
-
-    def post(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"detail": _("Email has been verified.")})
-
-# Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
-sensitive_post_parameters_m = method_decorator(
-    sensitive_post_parameters(
-        'password', 
-        'old_password', 
-        'new_password1', 
-        'new_password2'
-    )
-)
-
-# Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
-class PasswordResetView(GenericAPIView):
-    serializer_class = PasswordResetSerializer
-    permission_classes = (AllowAny, )
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"detail": _("Password reset email has been sent.")})
-
-# Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
-class PasswordResetConfirmView(GenericAPIView):
-    serializer_class = PasswordResetConfirmSerializer
-    permission_classes = (AllowAny, )
-
-    @sensitive_post_parameters_m
-    def dispatch(self, *args, **kwargs):
-        return super(PasswordResetConfirmView, self).dispatch(*args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"detail": _("Password has been reset with the new password.")})
 
 # Source: django-rest-framework-social-oauth2 1.1.0 (https://github.com/RealmTeam/django-rest-framework-social-oauth2)
 class ConvertTokenFBView(ConvertTokenView):
@@ -155,9 +97,16 @@ class ConvertTokenFBView(ConvertTokenView):
             request._request.POST = request._request.POST.copy()
             for key, value in request.data.items():
                 request._request.POST[key] = value
-            url, headers, body, status = self.create_token_response(request._request)
-            response = Response(data=json.loads(body), status=status)
-            account = AccessToken.objects.get(token=response.data['access_token']).user
+            body = self.create_token_response(request._request)[2]
+            exchange_token = json.loads(body)['access_token']
+            refresh_token = json.loads(body)['refresh_token']
+
+            account = AccessToken.objects.get(token=exchange_token).user
+            token = AuthToken.objects.create(account)
+            user_logged_in.send(sender=account.__class__, request=request, user=account)
+
+            AccessToken.objects.get(token=exchange_token).delete()
+            RefreshToken.objects.get(token=refresh_token).delete()
             account.facebook_id = request.data['facebook_id']
             account.email_verified = True
             account.active = True
@@ -171,7 +120,64 @@ class ConvertTokenFBView(ConvertTokenView):
                 'date_joined': account.date_joined,
                 'provider': account.provider 
             }
-            response.data['user'] = user_info
-            for k, v in headers.items():
-                response[k] = v
+            response = Response({
+                'access_token': token,
+                'user': user_info,
+            })
             return response
+
+class EmailVerifyView(generics.GenericAPIView):
+    serializer_class = EmailVerifySerializer
+    permission_classes = (SendVerificationEmailPermission, )
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"detail": _("Verification email has been sent.")})
+
+class EmailVerifyConfirmView(generics.GenericAPIView):
+    serializer_class = EmailVerifyConfirmSerializer
+    permission_classes = (AllowAny, )
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"detail": _("Email has been verified.")})
+
+# Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
+sensitive_post_parameters_m = method_decorator(
+    sensitive_post_parameters(
+        'password', 
+        'old_password', 
+        'new_password1', 
+        'new_password2'
+    )
+)
+
+# Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
+class PasswordResetView(generics.GenericAPIView):
+    serializer_class = PasswordResetSerializer
+    permission_classes = (AllowAny, )
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"detail": _("Password reset email has been sent.")})
+
+# Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
+class PasswordResetConfirmView(generics.GenericAPIView):
+    serializer_class = PasswordResetConfirmSerializer
+    permission_classes = (AllowAny, )
+
+    @sensitive_post_parameters_m
+    def dispatch(self, *args, **kwargs):
+        return super(PasswordResetConfirmView, self).dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"detail": _("Password has been reset with the new password.")})

@@ -22,5 +22,5 @@ urlpatterns = [
     path('api/auth/logout/', knox_views.LogoutView.as_view(), name='knox_logout'),
     
     path('api/auth/social/convert-token/', ConvertTokenFBView.as_view(), name='convert_token'),
-    path('api/auth/social/revoke-token/', rest_framework_social_oauth2_views.RevokeTokenView.as_view(), name='revoke_token'),
+    path('api/auth/social/revoke-token/', rest_framework_social_oauth2_views.RevokeTokenView.as_view(), name='revoke_token')
 ]

@@ -8,10 +8,7 @@ class AccountListPermission(BasePermission):
 
 class AccountDetailPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.method == 'DELETE':
-            return False
-        else:
-            return request.user.id == obj.id
+        return request.user.id == obj.id
 
 class MoviePermission(BasePermission):
     def has_permission(self, request, view):

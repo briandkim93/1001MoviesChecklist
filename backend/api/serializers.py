@@ -1,3 +1,10 @@
+try:
+    from hmac import compare_digest
+except ImportError:
+    def compare_digest(a, b):
+        return a == b
+
+import binascii
 from hashlib import sha256
 from secrets import token_bytes
 
@@ -6,11 +13,17 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode as uid_decoder
 from django.utils.translation import ugettext as _
 
+from rest_framework import exceptions
 from rest_framework import serializers
+
+from knox.crypto import hash_token
+from knox.models import AuthToken
+from knox.settings import CONSTANTS, knox_settings
 
 from .models import Account, Movie
 
@@ -111,6 +124,37 @@ class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = '__all__'
+
+class RefreshTokenSerializer(serializers.Serializer):
+    token = serializers.CharField(max_length=255)
+
+    # Source: django-rest-knox v3.2.x (https://github.com/James1345/django-rest-knox)
+    # Replace with built-in AUTO_REFRESH setting upon django-rest-knox v3.2.x release
+    def refresh_credentials(self, token):
+        msg = _('Invalid token.')
+        for auth_token in AuthToken.objects.filter(
+                token_key=token[:CONSTANTS.TOKEN_KEY_LENGTH]):
+            try:
+                digest = hash_token(token, auth_token.salt)
+            except (TypeError, binascii.Error):
+                raise exceptions.AuthenticationFailed(msg)
+            if compare_digest(digest, auth_token.digest):
+                self.renew_token(auth_token)
+                return
+        raise exceptions.AuthenticationFailed(msg)
+
+    # Source: django-rest-knox v3.2.x (https://github.com/James1345/django-rest-knox)
+    # Replace with built-in AUTO_REFRESH setting upon django-rest-knox v3.2.x release
+    def renew_token(self, auth_token):
+        current_expiry = auth_token.expires
+        new_expiry = timezone.now() + knox_settings.TOKEN_TTL
+        auth_token.expires = new_expiry
+        MIN_REFRESH_INTERVAL = 60
+        if (new_expiry - current_expiry).total_seconds() > MIN_REFRESH_INTERVAL:
+            auth_token.save(update_fields=('expires',))
+
+    def save(self):
+        self.refresh_credentials(self.data.get('token'))
 
 class EmailVerifySerializer(serializers.Serializer):
     def save(self):

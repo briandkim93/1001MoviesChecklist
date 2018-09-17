@@ -35,7 +35,7 @@ REST_FRAMEWORK = {
 
 REST_KNOX = {
     'USER_SERIALIZER': 'api.serializers.AccountSerializer',
-    'TOKEN_TTL': timedelta(hours=10)
+    'TOKEN_TTL': timedelta(days=1)
 }
 
 AUTHENTICATION_BACKENDS = (

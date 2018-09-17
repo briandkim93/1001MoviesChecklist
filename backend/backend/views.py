@@ -14,5 +14,6 @@ def api_root(request, format=None):
         'knox_login': reverse('api:knox_login', request=request, format=format),
         'knox_logout': reverse('api:knox_logout', request=request, format=format),
         'social_convert_token': reverse('api:convert_token', request=request, format=format),
-        'social_revoke_token': reverse('api:revoke_token', request=request, format=format)
+        'social_revoke_token': reverse('api:revoke_token', request=request, format=format),
+        'refresh_token': reverse('api:refresh_token', request=request, format=format)
     })

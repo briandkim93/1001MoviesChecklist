@@ -22,32 +22,32 @@ from rest_framework_social_oauth2.views import ConvertTokenView
 from .authentications import BasicAuthentication403
 from .models import Account, Movie
 from .permissions import AccountListPermission, AccountDetailPermission, MoviePermission
-from .serializers import AccountSerializer, MovieSerializer, EmailVerifySerializer, EmailVerifyConfirmSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer
+from api import serializers
 
 class AccountListView(generics.ListCreateAPIView):
-    serializer_class = AccountSerializer
+    serializer_class = serializers.AccountSerializer
     queryset = Account.objects.all()
     permission_classes = (AccountListPermission, )
 
 class AccountDetailView(generics.RetrieveUpdateAPIView):
-    serializer_class = AccountSerializer
+    serializer_class = serializers.AccountSerializer
     queryset = Account.objects.all()
     permission_classes = (AccountDetailPermission, )
 
 class MovieListView(generics.ListCreateAPIView):
-    serializer_class = MovieSerializer
+    serializer_class = serializers.MovieSerializer
     queryset = Movie.objects.all()
     permission_classes = (MoviePermission, )
 
 class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = MovieSerializer
+    serializer_class = serializers.MovieSerializer
     queryset = Movie.objects.all()
     permission_classes = (MoviePermission, )
 
 # Source: django-rest-knox v3.1.5 (https://github.com/James1345/django-rest-knox)
 class LoginView(APIView):
     authentication_classes = (BasicAuthentication403, )
-    
+
     def post(self, request, format=None):
         token = AuthToken.objects.create(request.user)
         user_logged_in.send(sender=request.user.__class__, request=request, user=request.user)
@@ -125,8 +125,20 @@ class ConvertTokenFBView(ConvertTokenView):
             })
             return response
 
+# Replace with built-in AUTO_REFRESH setting upon django-rest-knox v3.2.x release
+class RefreshTokenView(generics.CreateAPIView):
+    serializer_class = serializers.RefreshTokenSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({
+            'token': 'Token has been refreshed.',
+        })
+
 class EmailVerifyView(generics.GenericAPIView):
-    serializer_class = EmailVerifySerializer
+    serializer_class = serializers.EmailVerifySerializer
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -135,7 +147,7 @@ class EmailVerifyView(generics.GenericAPIView):
         return Response({"detail": _("Verification email has been sent.")})
 
 class EmailVerifyConfirmView(generics.GenericAPIView):
-    serializer_class = EmailVerifyConfirmSerializer
+    serializer_class = serializers.EmailVerifyConfirmSerializer
     permission_classes = (AllowAny, )
 
     def post(self, request):
@@ -156,7 +168,7 @@ sensitive_post_parameters_m = method_decorator(
 
 # Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
 class PasswordResetView(generics.GenericAPIView):
-    serializer_class = PasswordResetSerializer
+    serializer_class = serializers.PasswordResetSerializer
     permission_classes = (AllowAny, )
 
     def post(self, request, *args, **kwargs):
@@ -167,7 +179,7 @@ class PasswordResetView(generics.GenericAPIView):
 
 # Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
 class PasswordResetConfirmView(generics.GenericAPIView):
-    serializer_class = PasswordResetConfirmSerializer
+    serializer_class = serializers.PasswordResetConfirmSerializer
     permission_classes = (AllowAny, )
 
     @sensitive_post_parameters_m

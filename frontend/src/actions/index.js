@@ -119,17 +119,6 @@ export function logout(token) {
   };
 }
 
-export function facebookLogout(token) {
-  const request = axios({
-    method: 'post',
-    url: `${API_BASE_URL}auth/social/revoke-token/?client_id=${SOCIAL_CLIENT_ID}&client_secret=${SOCIAL_CLIENT_SECRET}&token=${token}`
-  });
-  return {
-    type: ACTION_TYPES.FACEBOOK_LOGOUT,
-    payload: request
-  };
-}
-
 export function sendEmailVerifyLink(token) {
   const request = axios({
     method: 'post',

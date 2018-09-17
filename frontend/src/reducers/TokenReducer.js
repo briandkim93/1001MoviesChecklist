@@ -16,8 +16,6 @@ function TokenReducer(state=null, action) {
       }
     case ACTION_TYPES.LOGOUT:
       return null;
-    case ACTION_TYPES.FACEBOOK_LOGOUT:
-      return null;
     case ACTION_TYPES.DEACTIVATE_ACCOUNT:
       if (action.payload.status === 200) {
         return null;

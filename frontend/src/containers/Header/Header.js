@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import logo from '../../logo.png';
-import { toggleSignup, closeSignup, toggleLogin, closeLogin, closePasswordResetRequest, logout, facebookLogout } from '../../actions';
+import { toggleSignup, closeSignup, toggleLogin, closeLogin, closePasswordResetRequest, logout } from '../../actions';
 
 class Header extends Component {
   constructor(props) {
@@ -28,20 +28,11 @@ class Header extends Component {
   }
 
   handleLogout() {
-    if (this.props.userInfo.provider === 'local') {
-      this.props.logout(this.props.token);
-    } else if (this.props.userInfo.provider === 'facebook') {
-      this.props.facebookLogout(this.props.token);
+    this.props.logout(this.props.token);
+    if (this.props.userInfo.provider === 'facebook' || this.props.userInfo.provider === 'facebook-local') {
       window.FB.logout(function(response) {
         return;
       });
-    } else if (this.props.userInfo.provider === 'facebook-local') {
-      this.props.logout(this.props.token);
-      if (window.FB) {
-        window.FB.logout(function(response) {
-          return;
-        });
-      }
     }
   }
 
@@ -89,8 +80,7 @@ function mapDispatchToProps(dispatch) {
     toggleLogin: toggleLogin,
     closeLogin: closeLogin,
     closePasswordResetRequest: closePasswordResetRequest,
-    logout: logout,
-    facebookLogout: facebookLogout
+    logout: logout
   }, dispatch);
 }
 

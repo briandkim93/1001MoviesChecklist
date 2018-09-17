@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { confirmCredentials, deactivateAccount } from '../../actions';
+import { confirmCredentials, deactivateAccount, logout } from '../../actions';
 
 class AccountDeactivate extends Component {
   constructor(props) {
@@ -50,6 +50,12 @@ class AccountDeactivate extends Component {
       if (this.props.confirmCredentialsStatus.data.context === 'accountDeactivate') {
         if (this.props.confirmCredentialsStatus.status === 200) {
           this.props.deactivateAccount(this.props.userInfo['uid'], this.props.token);
+          this.props.logout(this.props.token);
+          if (this.props.userInfo.provider === 'facebook' || this.props.userInfo.provider === 'facebook-local') {
+            window.FB.logout(function(response) {
+              return;
+            });
+          }
         } else {
           this.setState({
             response: {
@@ -150,7 +156,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     confirmCredentials: confirmCredentials, 
-    deactivateAccount: deactivateAccount
+    deactivateAccount: deactivateAccount,
+    logout: logout
   }, dispatch);
 }
 

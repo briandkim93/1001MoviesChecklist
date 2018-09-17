@@ -126,13 +126,10 @@ class EmailVerifySerializer(serializers.Serializer):
         )
 
     def validate(self, data):
-        try:
-            request = self.context.get("request")
-            account = Account.objects.get(username=request.user)
-            if account.email_verified:
-                raise serializers.ValidationError({'email_verified': _('This email has already been verified.')})
-        except Account.DoesNotExist:
-            raise serializers.ValidationError({'token': ['Authentication credentials were not provided.']})
+        request = self.context.get("request")
+        account = Account.objects.get(username=request.user)
+        if account.email_verified:
+            raise serializers.ValidationError({'email_verified': _('This email has already been verified.')})
         return data
 
 class EmailVerifyConfirmSerializer(serializers.Serializer):

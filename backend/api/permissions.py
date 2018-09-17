@@ -16,7 +16,3 @@ class MoviePermission(BasePermission):
             return True
         if request.method in SAFE_METHODS:
             return True
-
-class SendVerificationEmailPermission(BasePermission):
-    def has_object_permission(self, request, view, obj):
-        return request.user.id == obj.id

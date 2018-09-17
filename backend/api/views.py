@@ -7,7 +7,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 
 from rest_framework import status
 from rest_framework import generics
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -21,7 +21,7 @@ from rest_framework_social_oauth2.views import ConvertTokenView
 
 from .authentications import BasicAuthentication403
 from .models import Account, Movie
-from .permissions import AccountListPermission, AccountDetailPermission, MoviePermission, SendVerificationEmailPermission
+from .permissions import AccountListPermission, AccountDetailPermission, MoviePermission
 from .serializers import AccountSerializer, MovieSerializer, EmailVerifySerializer, EmailVerifyConfirmSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer
 
 class AccountListView(generics.ListCreateAPIView):
@@ -47,8 +47,7 @@ class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
 # Source: django-rest-knox v3.1.5 (https://github.com/James1345/django-rest-knox)
 class LoginView(APIView):
     authentication_classes = (BasicAuthentication403, )
-    permission_classes = (IsAuthenticated,)
-
+    
     def post(self, request, format=None):
         token = AuthToken.objects.create(request.user)
         user_logged_in.send(sender=request.user.__class__, request=request, user=request.user)
@@ -128,7 +127,6 @@ class ConvertTokenFBView(ConvertTokenView):
 
 class EmailVerifyView(generics.GenericAPIView):
     serializer_class = EmailVerifySerializer
-    permission_classes = (SendVerificationEmailPermission, )
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)

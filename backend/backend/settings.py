@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from .confidential import SECRET_KEY, MYSQL_SETTINGS, SOCIAL_AUTH_FACEBOOK_KEY, SOCIAL_AUTH_FACEBOOK_SECRET
 
@@ -31,6 +32,7 @@ REST_FRAMEWORK = {
 
 REST_KNOX = {
     'USER_SERIALIZER': 'api.serializers.AccountSerializer',
+    'TOKEN_TTL': timedelta(hours=10)
 }
 
 AUTHENTICATION_BACKENDS = (

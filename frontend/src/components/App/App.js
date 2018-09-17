@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Header from '../../containers/Header/Header';
 import Signup from '../../containers/Signup/Signup';
 import Login from '../../containers/Login/Login';
+import FacebookLoginSDK from '../../containers/FacebookLoginSDK/FacebookLoginSDK';
 import PasswordResetRequest from '../../containers/PasswordResetRequest/PasswordResetRequest';
 import Main from '../Main/Main';
 
@@ -16,6 +17,7 @@ class App extends Component {
         <div className="absolute-form-container position-relative">
           <Signup />
           <Login />
+          <FacebookLoginSDK />
           <PasswordResetRequest />
         </div>
         <Main />

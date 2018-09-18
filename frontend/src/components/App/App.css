@@ -1,3 +1,7 @@
+html, body {
+  min-width: 320px;
+}
+
 .absolute-form {
   z-index: 1000000;
 }

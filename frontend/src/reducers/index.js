@@ -19,6 +19,8 @@ import PasswordChangeStatusReducer from './authentication/PasswordChangeStatusRe
 import EmailChangeStatusReducer from './authentication/EmailChangeStatusReducer';
 import AccountDeactivateStatusReducer from './authentication/AccountDeactivateStatusReducer';
 
+import MoviesChecklistReducer from './MoviesChecklistReducer';
+
 const rootReducer = combineReducers({
   displaySignup: ToggleSignupReducer,
   displayLogin: ToggleLoginReducer,
@@ -37,7 +39,9 @@ const rootReducer = combineReducers({
   confirmCredentialsStatus: ConfirmCredentialsStatusReducer,
   passwordChangeStatus: PasswordChangeStatusReducer,
   emailChangeStatus: EmailChangeStatusReducer,
-  accountDeactivateStatus: AccountDeactivateStatusReducer
+  accountDeactivateStatus: AccountDeactivateStatusReducer,
+
+  moviesChecklist: MoviesChecklistReducer
 });
 
 export default rootReducer;

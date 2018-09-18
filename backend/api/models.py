@@ -35,7 +35,7 @@ class Account(AbstractUser):
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
-    image_path = models.FilePathField(path='{}/backend/static/images/movie-posters'.format(settings.BASE_DIR))
+    image_filename = models.CharField(max_length=255)
     summary = models.TextField(max_length=1000)
     release_year = models.CharField(max_length=4)
     length = models.CharField(max_length=8)

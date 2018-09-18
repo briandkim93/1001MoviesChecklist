@@ -19,10 +19,10 @@ from oauth2_provider.models import AccessToken, RefreshToken
 
 from rest_framework_social_oauth2.views import ConvertTokenView
 
+from . import serializers
 from .authentications import BasicAuthentication403
 from .models import Account, Movie
 from .permissions import AccountListPermission, AccountDetailPermission, MoviePermission
-from api import serializers
 
 class AccountListView(generics.ListCreateAPIView):
     serializer_class = serializers.AccountSerializer

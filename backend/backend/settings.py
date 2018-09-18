@@ -129,6 +129,12 @@ STATIC_URL = '/static/'
 # DEVELOPMENT SETTINGS #
 DEBUG = True
 INSTALLED_APPS += ['corsheaders']
-CORS_ORIGIN_WHITELIST = ('http://localhost:3000/', )
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = (
+    'https://stackpath.bootstrapcdn.com/', 
+    'http://localhost:3000/', 
+    'https://www.facebook.com/'
+)
 MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware', 'django.middleware.common.CommonMiddleware']
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

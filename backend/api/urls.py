@@ -3,7 +3,7 @@ from django.urls import include, path
 from knox import views as knox_views
 from rest_framework_social_oauth2 import views as rest_framework_social_oauth2_views
 
-from api import views
+from . import views
 
 urlpatterns = [
     path('api/movie/', views.MovieListView.as_view(), name='movie_list'),

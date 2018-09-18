@@ -22,6 +22,8 @@ function TokenReducer(state=null, action) {
       } else {
         return state;
       }
+    case ACTION_TYPES.CLEAR_STATE:
+      return null;
     default:
       return state;
   }

@@ -8,6 +8,7 @@ import LoginStatusReducer from './LoginStatusReducer';
 import FacebookLoginStatusReducer from './FacebookLoginStatusReducer';
 import FacebookLoginRenderStatusReducer from './FacebookLoginRenderStatusReducer';
 import TokenReducer from './TokenReducer';
+import RefreshTokenStatusReducer from './RefreshTokenStatusReducer';
 import UserInfoReducer from './UserInfoReducer';
 import EmailVerifyRequestStatusReducer from './EmailVerifyRequestStatusReducer';
 import EmailVerifyStatusReducer from './EmailVerifyStatusReducer';
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   facebookLoginStatus: FacebookLoginStatusReducer,
   facebookLoginRenderStatus: FacebookLoginRenderStatusReducer,
   token: TokenReducer,
+  refreshTokenStatus: RefreshTokenStatusReducer,  
   userInfo: UserInfoReducer,
   emailVerifyRequestStatus: EmailVerifyRequestStatusReducer,
   emailVerifyStatus: EmailVerifyStatusReducer,

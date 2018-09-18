@@ -104,6 +104,26 @@ export function facebookLogin(accessToken, facebook_id, email) {
   };
 }
 
+export function refreshToken(token) {
+  const request = axios({
+    method: 'post',
+    url: `${API_BASE_URL}auth/refresh-token/`,
+    headers: {
+      'Authorization': `Token ${token}`
+    },
+    data: {
+      token: token
+    }
+  })
+  .catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.REFRESH_TOKEN,
+    payload: request
+  };
+}
+
 export function logout(token) {
   const request = axios({
     method: 'post',
@@ -267,5 +287,11 @@ export function deactivateAccount(uid, token) {
   return {
     type: ACTION_TYPES.DEACTIVATE_ACCOUNT,
     payload: request
+  };
+}
+
+export function clearState() {
+  return {
+    type: ACTION_TYPES.CLEAR_STATE
   };
 }

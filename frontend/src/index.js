@@ -28,6 +28,7 @@ const persistConfig = {
     'loginStatus',
     'facebookLoginStatus',
     'facebookLoginRenderStatus',
+    'refreshTokenStatus',
     'emailVerifyRequestStatus',
     'emailVerifyStatus',
     'passwordResetRequestStatus',

@@ -154,11 +154,11 @@ class RefreshTokenSerializer(serializers.Serializer):
             auth_token.save(update_fields=('expires',))
 
     def save(self):
-        self.refresh_credentials(self.data.get('token'))
+        self.refresh_credentials(self.data['token'])
 
 class EmailVerifySerializer(serializers.Serializer):
     def save(self):
-        request = self.context.get("request")
+        request = self.context.get(request)
         account = Account.objects.get(username=request.user)
         message = render_to_string('email_verification_message.txt', {'email_verification_code': account.email_verification_code})
         send_mail(
@@ -170,7 +170,7 @@ class EmailVerifySerializer(serializers.Serializer):
         )
 
     def validate(self, data):
-        request = self.context.get("request")
+        request = self.context.get(request)
         account = Account.objects.get(username=request.user)
         if account.email_verified:
             raise serializers.ValidationError({'email_verified': _('This email has already been verified.')})
@@ -182,17 +182,17 @@ class EmailVerifyConfirmSerializer(serializers.Serializer):
     email_verification_code = serializers.CharField(max_length=255)
     
     def save(self):
-        account = Account.objects.get(email_verification_code=self.data.get('email_verification_code'))
+        account = Account.objects.get(email_verification_code=self.data['email_verification_code'])
         account.email_verified = True
         account.email_verification_code = ''
         account.save()
     
     def validate(self, data):
         try:
-            account = Account.objects.get(email_verification_code=self.initial_data.get('email_verification_code'))
+            account = Account.objects.get(email_verification_code=self.initial_data['email_verification_code'])
         except Account.DoesNotExist:
             raise serializers.ValidationError({'email_verification_code': ['Invalid verification code.']})
-        if account.username != data.get('username') or not account.check_password(data.get('password')):
+        if account.username != data['username'] or not account.check_password(data['password']):
             raise serializers.ValidationError({'token': ['Invalid username or password.']})
         return data
 
@@ -203,7 +203,7 @@ class PasswordResetSerializer(serializers.Serializer):
     password_reset_form_class = PasswordResetForm
 
     def save(self):
-        request = self.context.get('request')
+        request = self.context['request']
         opts = {
             'from_email': 'no-reply@1001movieschecklist.com',
             'email_template_name': 'password_reset_message.txt',

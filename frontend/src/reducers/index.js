@@ -1,23 +1,23 @@
 import { combineReducers } from 'redux';
 
-import ToggleSignupReducer from './ToggleSignupReducer';
-import ToggleLoginReducer from './ToggleLoginReducer';
-import TogglePasswordResetRequestReducer from './TogglePasswordResetRequestReducer';
-import SignupStatusReducer from './SignupStatusReducer';
-import LoginStatusReducer from './LoginStatusReducer';
-import FacebookLoginStatusReducer from './FacebookLoginStatusReducer';
-import FacebookLoginRenderStatusReducer from './FacebookLoginRenderStatusReducer';
-import TokenReducer from './TokenReducer';
-import RefreshTokenStatusReducer from './RefreshTokenStatusReducer';
-import UserInfoReducer from './UserInfoReducer';
-import EmailVerifyRequestStatusReducer from './EmailVerifyRequestStatusReducer';
-import EmailVerifyStatusReducer from './EmailVerifyStatusReducer';
-import PasswordResetRequestStatusReducer from './PasswordResetRequestStatusReducer';
-import PasswordResetStatusReducer from './PasswordResetStatusReducer';
-import ConfirmCredentialsStatusReducer from './ConfirmCredentialsStatusReducer';
-import PasswordChangeStatusReducer from './PasswordChangeStatusReducer';
-import EmailChangeStatusReducer from './EmailChangeStatusReducer';
-import AccountDeactivateStatusReducer from './AccountDeactivateStatusReducer';
+import ToggleSignupReducer from './authentication/ToggleSignupReducer';
+import ToggleLoginReducer from './authentication/ToggleLoginReducer';
+import TogglePasswordResetRequestReducer from './authentication/TogglePasswordResetRequestReducer';
+import SignupStatusReducer from './authentication/SignupStatusReducer';
+import LoginStatusReducer from './authentication/LoginStatusReducer';
+import FacebookLoginStatusReducer from './authentication/FacebookLoginStatusReducer';
+import FacebookLoginRenderStatusReducer from './authentication/FacebookLoginRenderStatusReducer';
+import TokenReducer from './authentication/TokenReducer';
+import RefreshTokenStatusReducer from './authentication/RefreshTokenStatusReducer';
+import UserInfoReducer from './authentication/UserInfoReducer';
+import EmailVerifyRequestStatusReducer from './authentication/EmailVerifyRequestStatusReducer';
+import EmailVerifyStatusReducer from './authentication/EmailVerifyStatusReducer';
+import PasswordResetRequestStatusReducer from './authentication/PasswordResetRequestStatusReducer';
+import PasswordResetStatusReducer from './authentication/PasswordResetStatusReducer';
+import ConfirmCredentialsStatusReducer from './authentication/ConfirmCredentialsStatusReducer';
+import PasswordChangeStatusReducer from './authentication/PasswordChangeStatusReducer';
+import EmailChangeStatusReducer from './authentication/EmailChangeStatusReducer';
+import AccountDeactivateStatusReducer from './authentication/AccountDeactivateStatusReducer';
 
 const rootReducer = combineReducers({
   displaySignup: ToggleSignupReducer,

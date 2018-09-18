@@ -3,8 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 
 import Home from '../../containers/Home/Home';
 import AccountSettings from '../AccountSettings/AccountSettings';
-import EmailVerify from '../../containers/EmailVerify/EmailVerify';
-import PasswordReset from '../../containers/PasswordReset/PasswordReset';
+import EmailVerify from '../../containers/Authentication/EmailVerify/EmailVerify';
+import PasswordReset from '../../containers/Authentication/PasswordReset/PasswordReset';
 
 const Main = () => (
   <main>

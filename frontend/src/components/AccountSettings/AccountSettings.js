@@ -1,11 +1,11 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import AccountInfo from '../../containers/AccountInfo/AccountInfo';
-import PasswordChange from '../../containers/PasswordChange/PasswordChange';
-import EmailChange from '../../containers/EmailChange/EmailChange';
-import EmailVerifyRequest from '../../containers/EmailVerifyRequest/EmailVerifyRequest';
-import AccountDeactivate from '../../containers/AccountDeactivate/AccountDeactivate';
+import AccountInfo from '../../containers/Authentication/AccountInfo/AccountInfo';
+import PasswordChange from '../../containers/Authentication/PasswordChange/PasswordChange';
+import EmailChange from '../../containers/Authentication/EmailChange/EmailChange';
+import EmailVerifyRequest from '../../containers/Authentication/EmailVerifyRequest/EmailVerifyRequest';
+import AccountDeactivate from '../../containers/Authentication/AccountDeactivate/AccountDeactivate';
 
 const AccountSettings = () => (
   <Switch>

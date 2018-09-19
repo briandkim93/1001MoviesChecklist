@@ -77,7 +77,7 @@ class AlphabeticalLetterList extends Component {
               this.addPage, 
               this.handlePageChange, 
               {
-                link: '/alphabetical/list', 
+                link: `/alphabetical/${this.state.letter.toLowerCase()}`, 
                 currentPage: this.state.currentPage, 
                 totalPages: this.state.totalPages
               }

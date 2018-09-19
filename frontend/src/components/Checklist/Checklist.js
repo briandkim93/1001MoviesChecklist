@@ -19,6 +19,12 @@ class Checklist extends Component {
     };
   }
 
+  componentDidMount() {
+    this.setState({
+      letter: this.checkLetterParam()
+    });
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.moviesChecklistAll !== prevProps.moviesChecklistAll) {
       this.setState({
@@ -31,22 +37,22 @@ class Checklist extends Component {
     const hrefArray = window.location.href.split('/');
     const pageIndicator = hrefArray[hrefArray.length - 2];
     if (pageIndicator === 'list') {
-      return 'All';
+      return 'all';
     } else {
-      return pageIndicator;
+      return pageIndicator.toLowerCase();
     }
   }
 
   handleLetterChange(letter) {
-    this.setState({letter: letter});
+    this.setState({letter: letter.toLowerCase()});
   }
 
   createAlphabeticPaginationList() {
-    const letters = ['All', 'NO', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'Z'];
+    const letters = ['All', 'no', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'Z'];
     const alphabeticPaginationList = letters.map((letter, i) => {
       return (
-        <li key={`letter-${i + 1}`} className={`page-item ${this.state.letter === letter && 'active'}`} onClick={() => this.handleLetterChange(letter)}>
-          <Link className="page-link" to={`/alphabetical/${letter === 'All' ? 'list' : letter}/1`}>{letter === 'NO' ? '#' : letter}</Link>
+        <li key={`letter-${i + 1}`} className={`page-item ${this.state.letter === letter.toLowerCase() && 'active'}`} onClick={() => this.handleLetterChange(letter.toLowerCase())}>
+          <Link className="page-link" to={`/alphabetical/${letter === 'All' ? 'list' : letter.toLowerCase()}/1`}>{letter === 'no' ? '#' : letter}</Link>
         </li>
       );
     });

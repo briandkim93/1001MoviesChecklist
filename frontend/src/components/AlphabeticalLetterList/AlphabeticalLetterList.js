@@ -9,7 +9,7 @@ class AlphabeticalLetterList extends Component {
       {letter: this.props.match.params.letter}
     );
     this.state = {
-      letter: this.props.match.params.letter.toUpperCase(),
+      letter: this.props.match.params.letter.toLowerCase(),
       currentPage: parseInt(this.props.match.params.number, 10),
       totalPages: Math.ceil(moviesChecklistArray.length / 15),
       moviesChecklistHTML: this.props.createChecklistHTML(moviesChecklistArray)
@@ -36,8 +36,8 @@ class AlphabeticalLetterList extends Component {
         {letter: this.props.state.letter}
       );
       this.setState({
-        letter: this.props.state.letter,
-        currentPage: 1,
+        letter: this.props.state.letter.toLowerCase(),
+        currentPage: this.props.match.params.number,
         totalPages: Math.ceil(moviesChecklistArray.length / 15),
         moviesChecklistHTML: this.props.createChecklistHTML(moviesChecklistArray)
       });
@@ -45,8 +45,9 @@ class AlphabeticalLetterList extends Component {
   }
   
   filterMoviesChecklist(checklist, opts) {
+    opts.letter = opts.letter.toUpperCase();
     const moviesChecklistArray = checklist.filter(movie => {
-      if (opts.letter === 'NO' && /^\d+$/.test(movie.title[0])) {
+      if (opts.letter === 'no' && /^\d+$/.test(movie.title[0])) {
         return true;
       }
       if (movie.title[0] === 'À' && opts.letter === 'A') {
@@ -60,7 +61,7 @@ class AlphabeticalLetterList extends Component {
   addPage(paginationList, i) {
     paginationList.push(
       <li key={`page-${i + 1}`} className={`page-item ${parseInt(this.state.currentPage, 10) === i + 1 && 'active'}`} onClick={() => this.handlePageChange(i)}>
-        <Link className="page-link" to={`/alphabetical/${this.state.letter}/${i + 1}`}>{i + 1}</Link>
+        <Link className="page-link" to={`/alphabetical/${this.state.letter.toLowerCase()}/${i + 1}`}>{i + 1}</Link>
       </li>
     )
   }
@@ -95,8 +96,8 @@ class AlphabeticalLetterList extends Component {
             this.addPage, 
             this.handlePageChange, 
             {
-              link: `/alphabetical/${this.state.letter}`, 
-              letter: this.state.letter, 
+              link: `/alphabetical/${this.state.letter.toLowerCase()}`, 
+              letter: this.state.letter.toLowerCase(), 
               currentPage: this.state.currentPage, 
               totalPages: this.state.totalPages
             }

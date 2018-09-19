@@ -41,7 +41,7 @@ const rootReducer = combineReducers({
   emailChangeStatus: EmailChangeStatusReducer,
   accountDeactivateStatus: AccountDeactivateStatusReducer,
 
-  moviesChecklist: MoviesChecklistReducer
+  moviesChecklistAll: MoviesChecklistReducer
 });
 
 export default rootReducer;

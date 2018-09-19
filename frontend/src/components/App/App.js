@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import Header from '../../containers/Header/Header';
-import Signup from '../../containers/Authentication/Signup/Signup';
-import Login from '../../containers/Authentication/Login/Login';
-import FacebookLoginSDK from '../../containers/Authentication/FacebookLoginSDK/FacebookLoginSDK';
-import PasswordResetRequest from '../../containers/Authentication/PasswordResetRequest/PasswordResetRequest';
-import TokenAuthenticator from '../../containers/Authentication/TokenAuthenticator/TokenAuthenticator';
+import Header from '../Header/Header';
+import Signup from '../Authentication/Signup/Signup';
+import Login from '../Authentication/Login/Login';
+import FacebookLoginSDK from '../Authentication/FacebookLoginSDK/FacebookLoginSDK';
+import PasswordResetRequest from '../Authentication/PasswordResetRequest/PasswordResetRequest';
+import TokenAuthenticator from '../Authentication/TokenAuthenticator/TokenAuthenticator';
 import Main from '../Main/Main';
 
 import './App.css';

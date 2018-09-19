@@ -14,6 +14,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './components/App/App';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import reducers from './reducers';
 
 const persistConfig = {
@@ -36,7 +37,8 @@ const persistConfig = {
     'confirmCredentialsStatus',
     'passwordChangeStatus',
     'emailChangeStatus',
-    'accountDeactivateStatus'
+    'accountDeactivateStatus',
+    'moviesChecklistAll'
   ]
 }
 
@@ -48,7 +50,9 @@ ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
-        <App />
+        <ScrollToTop>
+          <App />
+        </ScrollToTop>
       </BrowserRouter>
     </PersistGate>
   </Provider>, 

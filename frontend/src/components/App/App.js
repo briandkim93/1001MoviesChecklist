@@ -6,7 +6,6 @@ import Login from '../../containers/Authentication/Login/Login';
 import FacebookLoginSDK from '../../containers/Authentication/FacebookLoginSDK/FacebookLoginSDK';
 import PasswordResetRequest from '../../containers/Authentication/PasswordResetRequest/PasswordResetRequest';
 import TokenAuthenticator from '../../containers/Authentication/TokenAuthenticator/TokenAuthenticator';
-import Menu from '../../containers/Menu/Menu';
 import Main from '../Main/Main';
 
 import './App.css';
@@ -23,7 +22,6 @@ class App extends Component {
           <PasswordResetRequest />
           <TokenAuthenticator />
         </div>
-        <Menu />
         <Main />
       </div>
     );

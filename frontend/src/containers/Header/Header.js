@@ -45,18 +45,18 @@ class Header extends Component {
           </button>
           <div className="collapse navbar-collapse" id="navbarCollapse">
           {this.props.token
-              ? (
-                <div className="navbar-nav ml-auto">
-                  <span>{this.props.userInfo.provider !== 'facebook' && <Link className="nav-link btn" to='/account/settings'>Account</Link>}</span>
-                  <span onClick={this.handleLogout}><Link className="nav-link btn" to='/'>Logout</Link></span>
-                </div>
-              )
-              : (
-                <div className="navbar-nav ml-auto">
-                  <span className="nav-link btn" onClick={this.handleToggleSignup}>Sign Up</span>
-                  <span className="nav-link btn" onClick={this.handleToggleLogin}>Login</span>
-                </div>
-              )
+            ? (
+              <div className="navbar-nav ml-auto">
+                <span>{this.props.userInfo.provider !== 'facebook' && <Link className="nav-link btn" to='/account/settings'>Account</Link>}</span>
+                <span onClick={this.handleLogout}><Link className="nav-link btn" to='/'>Logout</Link></span>
+              </div>
+            )
+            : (
+              <div className="navbar-nav ml-auto">
+                <span className="nav-link btn" onClick={this.handleToggleSignup}>Sign Up</span>
+                <span className="nav-link btn" onClick={this.handleToggleLogin}>Login</span>
+              </div>
+            )
           }
           </div>
         </nav>

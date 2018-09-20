@@ -31,13 +31,30 @@ class ChecklistContainer extends Component {
         moviesChecklistAll: this.props.moviesChecklistAll.slice(),
       });
     }
-    if (this.props.sortBy !== prevProps.sortBy) {
+    if (this.props.sortBy !== prevProps.sortBy || this.props.filterBy !== prevProps.filterBy) {
       let sortedMoviesChecklistArray = this.props.moviesChecklistAll.slice();
       if (this.props.sortBy === 'newest') {
         sortedMoviesChecklistArray.sort((a, b) => this.sortByYear(a, b, 'descending'));
       } else if (this.props.sortBy === 'oldest') {
         sortedMoviesChecklistArray.sort((a, b) => this.sortByYear(a, b, 'ascending'));
       }
+      sortedMoviesChecklistArray = sortedMoviesChecklistArray.filter(movie => {
+        if (!this.props.filterBy.genre) {
+          return true;
+        }
+        const genreArray = JSON.parse("[" + movie.genres.replace(/'/g, '\"') + "]")[0];
+        if (genreArray.includes(this.props.filterBy.genre)) {
+          return true;
+        }
+      });
+      sortedMoviesChecklistArray = sortedMoviesChecklistArray.filter(movie => {
+        if (!this.props.filterBy.year) {
+          return true;
+        }
+        if (movie.release_year === this.props.filterBy.year) {
+          return true;
+        }
+      });
       this.setState({
         moviesChecklistAll: sortedMoviesChecklistArray,
       });
@@ -97,10 +114,9 @@ class ChecklistContainer extends Component {
 
   createChecklistHTML(moviesChecklistArray, sortBy) {
     const checklistHTML = moviesChecklistArray.map(movie => {
-      const genreArray = movie.genres.substr(0, movie.genres.length - 1).substr(1).split(',');
-      const genres = genreArray.map((genre, index) => {
-        genre = genre.replace(/'/g, '')
-        if (index !== genreArray.length - 1) {
+      const genreArray = JSON.parse("[" + movie.genres.replace(/'/g, '\"') + "]")[0];
+      const formattedGenreArray = genreArray.map((genre, i) => {
+        if (i !== genreArray.length - 1) {
           return genre + ', ';
         } else {
           return genre;
@@ -111,7 +127,7 @@ class ChecklistContainer extends Component {
           <img className="movie-poster img-responsive mr-3" src={`/images/movie_posters/${movie.image_filename}`} alt={`Movie poster for ${movie.title}`} />
           <div className="media-body">
             <h5 className="mt-0 mb-1">{movie.title} ({movie.release_year})</h5>
-            <div>{genres}</div>
+            <div>{formattedGenreArray}</div>
             <div>{movie.length}</div>
             <div>{movie.summary} <cite>(☞ LETTERBOXD)</cite></div>
             <div><a href={movie.imdb_url} target="_blank">More Info</a></div>
@@ -219,6 +235,7 @@ class ChecklistContainer extends Component {
 function mapStateToProps(state) {
   return {
     moviesChecklistAll: state.moviesChecklistAll,
+    filterBy: state.filterBy,
     sortBy: state.sortBy
   };
 }

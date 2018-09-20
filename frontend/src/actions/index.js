@@ -22,3 +22,10 @@ export function updateSortBy(param) {
     payload: param
   }
 }
+
+export function updateFilterBy(param) {
+  return {
+    type: ACTION_TYPES.UPDATE_FILTER_BY,
+    payload: param
+  }
+}

@@ -21,6 +21,7 @@ import AccountDeactivateStatusReducer from './authentication/AccountDeactivateSt
 
 import MoviesChecklistReducer from './MoviesChecklistReducer';
 import SortByReducer from './SortByReducer';
+import FilterByReducer from './FilterByReducer';
 
 const rootReducer = combineReducers({
   displaySignup: ToggleSignupReducer,
@@ -43,7 +44,8 @@ const rootReducer = combineReducers({
   accountDeactivateStatus: AccountDeactivateStatusReducer,
 
   moviesChecklistAll: MoviesChecklistReducer,
-  sortBy: SortByReducer
+  sortBy: SortByReducer,
+  filterBy: FilterByReducer
 });
 
 export default rootReducer;

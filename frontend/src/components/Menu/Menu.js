@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
 import './Menu.css';
-import { updateSortBy } from '../../actions';
+import { updateFilterBy, updateSortBy } from '../../actions';
 
 class Menu extends Component {
   constructor(props) {
     super(props);
+
+    this.handleFilterSelect = this.handleFilterSelect.bind(this);
   }
 
   toInterfaceText(sortBy) {
@@ -30,18 +32,32 @@ class Menu extends Component {
     return pathname
   }
 
+  handleFilterSelect(event, category) {
+    this.props.updateFilterBy({[category]: event.target.textContent});
+  }
+
   createDropdownHTML(category, items) {
     const itemsHTML = items.map((item, i) => {
-      return <a key={`${category}-${i}`} className="dropdown-item">{item}</a>
+      return (
+        <li key={`${category}-${i + 1}`} className="dropdown-item" onClick={(event) => this.handleFilterSelect(event, category)}>
+          {item}
+        </li>
+      );
     });
+    itemsHTML.unshift(
+      <li key={`${category}-0`} className="dropdown-item" onClick={(event) => this.handleFilterSelect(event, category)}>
+        All
+      </li>
+    )
     return (
       <div>
         <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
-          {category[0].toUpperCase() + category.slice(1, category.length)}
+          {this.props.filterBy[category] ? this.props.filterBy[category] : category[0].toUpperCase() + category.slice(1, category.length) + 
+            ' (All)'}
         </button>
-        <div className="dropdown-menu scrollable-dropdown"> 
-          {itemsHTML}
-        </div>
+        <ul className="dropdown-menu scrollable-dropdown">
+          <Link to={this.getFirstPageLink(this.props.location.pathname)}>{itemsHTML}</Link>
+        </ul>
       </div>
     )
   }
@@ -58,17 +74,17 @@ class Menu extends Component {
                   <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
                     {this.toInterfaceText(this.props.sortBy)}
                   </button>
-                  <div className="dropdown-menu">
-                    <span className="dropdown-item btn" onClick={() => this.props.updateSortBy('alphabetical')}>
+                  <ul className="dropdown-menu">
+                    <li className="dropdown-item" onClick={() => this.props.updateSortBy('alphabetical')}>
                       <Link to={this.props.sortBy !== 'alphabetical' ? this.getFirstPageLink(this.props.location.pathname) : this.props.location.pathname}>Alphabetical</Link>
-                    </span>
-                    <span className="dropdown-item btn" onClick={() => this.props.updateSortBy('newest')}>
+                    </li>
+                    <li className="dropdown-item" onClick={() => this.props.updateSortBy('newest')}>
                       <Link to={this.props.sortBy !== 'newest' ? this.getFirstPageLink(this.props.location.pathname) : this.props.location.pathname}>Year (Newest)</Link>
-                    </span>
-                    <span className="dropdown-item btn" onClick={() => this.props.updateSortBy('oldest')}>
+                    </li>
+                    <li className="dropdown-item" onClick={() => this.props.updateSortBy('oldest')}>
                       <Link to={this.props.sortBy !== 'oldest' ? this.getFirstPageLink(this.props.location.pathname) : this.props.location.pathname}>Year (Oldest)</Link>
-                    </span>
-                  </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -88,12 +104,14 @@ class Menu extends Component {
 
 function mapStateToProps(state) {
   return {
+    filterBy: state.filterBy,
     sortBy: state.sortBy
   };
 }
 
 function mapStateToDispatch(dispatch) {
   return bindActionCreators({
+    updateFilterBy: updateFilterBy,
     updateSortBy: updateSortBy
   }, dispatch);
 }

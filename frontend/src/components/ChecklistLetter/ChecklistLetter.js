@@ -58,33 +58,40 @@ class LetterChecklist extends Component {
 
   render() {
     return (
-      <div>
-          {
-            this.state.totalPages > 1 &&
-            this.props.createNumericPaginationList(
-              this.state.currentPage, 
-              this.state.totalPages, 
-              this.addPage, 
-              this.handlePageChange, 
-              `/alphabetical/${this.state.letter.toLowerCase()}`
-            ) 
-          }
-        <div className="row justify-content-center">
-          <ul className="col-10 list-unstyled">
-            {this.state.moviesChecklistHTML.slice(this.state.currentPage * 15 - 15, this.state.currentPage * 15)}
-          </ul>
-        </div>
-        {
-          this.state.totalPages > 1 &&
-          this.props.createNumericPaginationList(
-            this.state.currentPage, 
-            this.state.totalPages, 
-            this.addPage, 
-            this.handlePageChange, 
-            `/alphabetical/${this.state.letter.toLowerCase()}`
-          )
-        }
-      </div>
+      (this.state.moviesChecklistHTML.length >= 1
+        ? (
+          <div>
+              {
+                this.state.totalPages > 1 &&
+                this.props.createNumericPaginationList(
+                  this.state.currentPage, 
+                  this.state.totalPages, 
+                  this.addPage, 
+                  this.handlePageChange, 
+                  `/alphabetical/${this.state.letter.toLowerCase()}`
+                ) 
+              }
+            <div className="row justify-content-center">
+              <ul className="col-10 list-unstyled">
+                {this.state.moviesChecklistHTML.slice(this.state.currentPage * 15 - 15, this.state.currentPage * 15)}
+              </ul>
+            </div>
+            {
+              this.state.totalPages > 1 &&
+              this.props.createNumericPaginationList(
+                this.state.currentPage, 
+                this.state.totalPages, 
+                this.addPage, 
+                this.handlePageChange, 
+                `/alphabetical/${this.state.letter.toLowerCase()}`
+              )
+            }
+          </div>
+        )
+        : (
+          <div>No Results Found</div>
+        )
+      )
     );
   }
 }

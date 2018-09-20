@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-class AlphabeticalLetterList extends Component {
+class LetterChecklist extends Component {
   constructor(props) {
     super(props);
     const moviesChecklistArray = this.filterMoviesChecklist(
@@ -20,24 +20,14 @@ class AlphabeticalLetterList extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.state.moviesChecklistAll !== prevProps.state.moviesChecklistAll) {
-      const moviesChecklistArray = this.filterMoviesChecklist(
-        this.props.state.moviesChecklistAll, 
-        {letter: this.props.state.letter}
-      );
-      this.setState({
-        totalPages: Math.ceil(moviesChecklistArray.length / 15),
-        moviesChecklistHTML: this.props.createChecklistHTML(moviesChecklistArray)
-      });
-    }
-    if (this.props.state.letter !== prevProps.state.letter) {
+    if (this.props.state !== prevProps.state) {
       const moviesChecklistArray = this.filterMoviesChecklist(
         this.props.state.moviesChecklistAll, 
         {letter: this.props.state.letter}
       );
       this.setState({
         letter: this.props.state.letter.toLowerCase(),
-        currentPage: this.props.match.params.number,
+        currentPage: parseInt(this.props.match.params.number, 10),
         totalPages: Math.ceil(moviesChecklistArray.length / 15),
         moviesChecklistHTML: this.props.createChecklistHTML(moviesChecklistArray)
       });
@@ -47,7 +37,7 @@ class AlphabeticalLetterList extends Component {
   filterMoviesChecklist(checklist, opts) {
     opts.letter = opts.letter.toUpperCase();
     const moviesChecklistArray = checklist.filter(movie => {
-      if (opts.letter === 'no' && /^\d+$/.test(movie.title[0])) {
+      if (opts.letter === 'NO' && /^\d+$/.test(movie.title[0])) {
         return true;
       }
       if (movie.title[0] === 'À' && opts.letter === 'A') {
@@ -60,7 +50,7 @@ class AlphabeticalLetterList extends Component {
 
   addPage(paginationList, i) {
     paginationList.push(
-      <li key={`page-${i + 1}`} className={`page-item ${parseInt(this.state.currentPage, 10) === i + 1 && 'active'}`} onClick={() => this.handlePageChange(i)}>
+      <li key={`page-${i + 1}`} className={`page-item ${this.state.currentPage === i + 1 && 'active'}`} onClick={() => this.handlePageChange(i)}>
         <Link className="page-link" to={`/alphabetical/${this.state.letter.toLowerCase()}/${i + 1}`}>{i + 1}</Link>
       </li>
     )
@@ -76,11 +66,7 @@ class AlphabeticalLetterList extends Component {
               this.state.totalPages, 
               this.addPage, 
               this.handlePageChange, 
-              {
-                link: `/alphabetical/${this.state.letter.toLowerCase()}`, 
-                currentPage: this.state.currentPage, 
-                totalPages: this.state.totalPages
-              }
+              `/alphabetical/${this.state.letter.toLowerCase()}`
             ) 
           }
         <div className="row justify-content-center">
@@ -95,12 +81,7 @@ class AlphabeticalLetterList extends Component {
             this.state.totalPages, 
             this.addPage, 
             this.handlePageChange, 
-            {
-              link: `/alphabetical/${this.state.letter.toLowerCase()}`, 
-              letter: this.state.letter.toLowerCase(), 
-              currentPage: this.state.currentPage, 
-              totalPages: this.state.totalPages
-            }
+            `/alphabetical/${this.state.letter.toLowerCase()}`
           )
         }
       </div>
@@ -108,4 +89,4 @@ class AlphabeticalLetterList extends Component {
   }
 }
 
-export default AlphabeticalLetterList
+export default LetterChecklist;

@@ -38,7 +38,8 @@ const persistConfig = {
     'passwordChangeStatus',
     'emailChangeStatus',
     'accountDeactivateStatus',
-    'moviesChecklistAll'
+    'moviesChecklistAll',
+    'sortBy'
   ]
 }
 

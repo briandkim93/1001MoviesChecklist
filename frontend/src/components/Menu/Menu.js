@@ -1,11 +1,34 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
+
+import { updateSortBy } from '../../actions';
 
 class Menu extends Component {
   constructor(props) {
     super(props);
   }
+
+  toInterfaceText(sortBy) {
+    if (sortBy === 'alphabetical') {
+      return 'Alphabetical';
+    } else if (sortBy === 'newest') {
+      return 'Year (Newest)';
+    } else if (sortBy === 'oldest') {
+      return 'Year (Oldest)';
+    }
+  }
+
+  getFirstPageLink(pathname) {
+    if (pathname[pathname.length + 1] === '/') {
+      pathname = pathname.slice(0, pathname.length + 1);
+    }
+    pathname = pathname.slice(0, pathname.lastIndexOf('/') + 1);
+    pathname = `${pathname}1`
+    return pathname
+  }
+
   render() {
     return (
       <div className="row justify-content-center">
@@ -16,12 +39,18 @@ class Menu extends Component {
                 <div className="btn-group">
                   <span className="text-muted btn" disabled="true">Sort By: </span>
                   <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
-                    Year (Newest)
+                    {this.toInterfaceText(this.props.sortBy)}
                   </button>
                   <div className="dropdown-menu">
-                    <a className="dropdown-item" href="#">Alphabetical</a>
-                    <a className="dropdown-item" href="#">Year (Newest)</a>
-                    <a className="dropdown-item" href="#">Year (Oldest)</a>
+                    <span className="dropdown-item btn" onClick={() => this.props.updateSortBy('alphabetical')}>
+                      <Link to={this.getFirstPageLink(this.props.location.pathname)}>Alphabetical</Link>
+                    </span>
+                    <span className="dropdown-item btn" onClick={() => this.props.updateSortBy('newest')}>
+                      <Link to={this.getFirstPageLink(this.props.location.pathname)}>Year (Newest)</Link>
+                    </span>
+                    <span className="dropdown-item btn" onClick={() => this.props.updateSortBy('oldest')}>
+                      <Link to={this.getFirstPageLink(this.props.location.pathname)}>Year (Oldest)</Link>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -68,14 +97,14 @@ class Menu extends Component {
 
 function mapStateToProps(state) {
   return {
-
+    sortBy: state.sortBy
   };
 }
 
-function mapStateToDispatch(disptach) {
+function mapStateToDispatch(dispatch) {
   return bindActionCreators({
-
-  });
+    updateSortBy: updateSortBy
+  }, dispatch);
 }
 
-export default connect(mapStateToProps, mapStateToDispatch)(Menu);
+export default withRouter(connect(mapStateToProps, mapStateToDispatch)(Menu));

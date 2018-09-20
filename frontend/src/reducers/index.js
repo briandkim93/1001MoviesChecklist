@@ -20,6 +20,7 @@ import EmailChangeStatusReducer from './authentication/EmailChangeStatusReducer'
 import AccountDeactivateStatusReducer from './authentication/AccountDeactivateStatusReducer';
 
 import MoviesChecklistReducer from './MoviesChecklistReducer';
+import SortByReducer from './SortByReducer';
 
 const rootReducer = combineReducers({
   displaySignup: ToggleSignupReducer,
@@ -41,7 +42,8 @@ const rootReducer = combineReducers({
   emailChangeStatus: EmailChangeStatusReducer,
   accountDeactivateStatus: AccountDeactivateStatusReducer,
 
-  moviesChecklistAll: MoviesChecklistReducer
+  moviesChecklistAll: MoviesChecklistReducer,
+  sortBy: SortByReducer
 });
 
 export default rootReducer;

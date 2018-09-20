@@ -15,3 +15,10 @@ export function fetchMovies() {
     payload: request
   };
 }
+
+export function updateSortBy(param) {
+  return {
+    type: ACTION_TYPES.UPDATE_SORT_BY,
+    payload: param
+  }
+}

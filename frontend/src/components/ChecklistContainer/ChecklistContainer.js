@@ -58,7 +58,7 @@ class ChecklistContainer extends Component {
   checkLetterParam() {
     const hrefArray = window.location.href.split('/');
     const pageIndicator = hrefArray[hrefArray.length - 2];
-    if (pageIndicator === 'list') {
+    if (pageIndicator === 'checklist') {
       return 'all';
     } else {
       return pageIndicator.toLowerCase();
@@ -83,7 +83,7 @@ class ChecklistContainer extends Component {
     const alphabeticPaginationList = letters.map((letter, i) => {
       return (
         <li key={`letter-${i + 1}`} className={`page-item ${this.state.letter === letter.toLowerCase() && 'active'}`} onClick={() => this.handleLetterChange(letter.toLowerCase())}>
-          <Link className="page-link" to={`/alphabetical/${letter === 'All' ? 'list' : letter.toLowerCase()}/1`}>{letter === 'no' ? '#' : letter}</Link>
+          <Link className="page-link" to={`/checklist${letter === 'All' ? '' : '/' + letter.toLowerCase()}/1`}>{letter === 'no' ? '#' : letter}</Link>
         </li>
       );
     });
@@ -205,18 +205,8 @@ class ChecklistContainer extends Component {
         <Menu />
         {this.createAlphabeticPaginationList()}
         <Switch>
-          <Redirect 
-            from='/alphabetical/' 
-            to={{pathname: '/alphabetical/list/1', state: this.state}} 
-            exact 
-          />
-          <Redirect 
-            from='/alphabetical/list' 
-            to={{pathname: '/alphabetical/list/1', state: this.state}} 
-            exact 
-          />
           <Route 
-            exact path="/alphabetical/list/:number" 
+            exact path="/checklist/:number" 
             render={
               (props) => <Checklist {...props} 
                 state={this.state}
@@ -227,7 +217,7 @@ class ChecklistContainer extends Component {
             } 
           />
           <Route 
-            exact path="/alphabetical/:letter/:number" 
+            exact path="/checklist/:letter/:number" 
             render={
               (props) => <ChecklistLetter {...props} 
                 state={this.state} 

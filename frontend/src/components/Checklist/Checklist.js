@@ -28,7 +28,7 @@ class Checklist extends Component {
   addPage(paginationList, i) {
     paginationList.push(
       <li key={`page-${i + 1}`} className={`page-item ${this.state.currentPage === i + 1 && 'active'}`} onClick={() => this.handlePageChange(i)}>
-        <Link className="page-link" to={`/alphabetical/list/${i + 1}`}>{i + 1}</Link>
+        <Link className="page-link" to={`/checklist/${i + 1}`}>{i + 1}</Link>
       </li>
     )
   }
@@ -45,7 +45,7 @@ class Checklist extends Component {
                 this.state.totalPages, 
                 this.addPage, 
                 this.handlePageChange, 
-                '/alphabetical/list'
+                '/checklist'
               )
             }
             <div className="row justify-content-center">
@@ -60,7 +60,7 @@ class Checklist extends Component {
                 this.state.totalPages, 
                 this.addPage, 
                 this.handlePageChange, 
-                '/alphabetical/list'
+                '/checklist'
               )
             }
           </div>

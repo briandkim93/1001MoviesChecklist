@@ -9,8 +9,8 @@ import PasswordReset from '../Authentication/PasswordReset/PasswordReset';
 const Main = () => (
   <main>
     <Switch>
-      <Redirect from='/' to='alphabetical/' exact />
-      <Route path='/alphabetical/' component={ChecklistContainer} />
+      <Redirect from='/' to='checklist/' exact />
+      <Route path='/checklist/' component={ChecklistContainer} />
       <Route path='/account/settings' component={AccountSettings} />
       <Route path='/verify/:email_verification_code' component={EmailVerify} />
       <Route path='/reset/:uid/:token' component={PasswordReset} />

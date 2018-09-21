@@ -52,7 +52,7 @@ class LetterChecklist extends Component {
   addPage(paginationList, i) {
     paginationList.push(
       <li key={`page-${i + 1}`} className={`page-item ${this.state.currentPage === i + 1 && 'active'}`} onClick={() => this.handlePageChange(i)}>
-        <Link className="page-link" to={`/alphabetical/${this.state.letter.toLowerCase()}/${i + 1}`}>{i + 1}</Link>
+        <Link className="page-link" to={`/checklist/${this.state.letter.toLowerCase()}/${i + 1}`}>{i + 1}</Link>
       </li>
     )
   }
@@ -69,7 +69,7 @@ class LetterChecklist extends Component {
                   this.state.totalPages, 
                   this.addPage, 
                   this.handlePageChange, 
-                  `/alphabetical/${this.state.letter.toLowerCase()}`
+                  `/checklist/${this.state.letter.toLowerCase()}`
                 ) 
               }
             <div className="row justify-content-center">
@@ -84,7 +84,7 @@ class LetterChecklist extends Component {
                 this.state.totalPages, 
                 this.addPage, 
                 this.handlePageChange, 
-                `/alphabetical/${this.state.letter.toLowerCase()}`
+                `/checklist/${this.state.letter.toLowerCase()}`
               )
             }
           </div>

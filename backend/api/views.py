@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth.signals import user_logged_in
+from django.core.serializers import serialize
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.debug import sensitive_post_parameters
@@ -75,23 +76,8 @@ class ConvertTokenFBView(ConvertTokenView):
             if account.email == request.data['email']:
                 account.email_verified = True
             account.provider = 'facebook-local'
-            account.active = True
-            account.save()
             token = AuthToken.objects.create(account)
             user_logged_in.send(sender=account.__class__, request=request, user=account)
-            user_info = {
-                'id': account.id,
-                'username': account.username,
-                'email': account.email,
-                'email_verified': account.email_verified,
-                'date_joined': account.date_joined,
-                'provider': account.provider 
-            }
-            response = Response({
-                'access_token': token,
-                'user': user_info,
-            })
-            return response
         except (KeyError, Account.DoesNotExist):
             request._request.POST = request._request.POST.copy()
             for key, value in request.data.items():
@@ -108,22 +94,26 @@ class ConvertTokenFBView(ConvertTokenView):
             RefreshToken.objects.get(token=refresh_token).delete()
             account.facebook_id = request.data['facebook_id']
             account.email_verified = True
-            account.active = True
             account.provider = 'facebook'
-            account.save()
-            user_info = {
-                'id': account.id,
-                'username': account.username,
-                'email': account.email,
-                'email_verified': account.email_verified,
-                'date_joined': account.date_joined,
-                'provider': account.provider 
-            }
-            response = Response({
-                'access_token': token,
-                'user': user_info,
-            })
-            return response
+        account.active = True
+        account.save()
+        completed_movies = []
+        for movie in account.completed_movies.all():
+            completed_movies += [movie.id]
+        user_info = {
+            'id': account.id,
+            'username': account.username,
+            'email': account.email,
+            'email_verified': account.email_verified,
+            'date_joined': account.date_joined,
+            'provider': account.provider,
+            'completed_movies': completed_movies
+        }
+        response = Response({
+            'access_token': token,
+            'user': user_info,
+        })
+        return response
 
 # Replace with built-in AUTO_REFRESH setting upon django-rest-knox v3.2.x release
 class RefreshTokenView(generics.CreateAPIView):

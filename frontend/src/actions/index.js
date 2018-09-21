@@ -29,3 +29,24 @@ export function updateFilterBy(param) {
     payload: param
   }
 }
+
+export function updateCompletedMovies(uid, token, movieId, method) {
+  const request = axios({
+    method: 'patch',
+    url: `${API_BASE_URL}auth/account/${uid}/`,
+    headers: {
+      'Authorization': `Token ${token}`,
+    },
+    data: {
+      completed_movies: movieId,
+      completed_movies_method: method
+    }
+  })
+  .catch(error => {
+    return error.response;
+  });
+  return {
+    type: ACTION_TYPES.UPDATE_COMPLETED_MOVIES,
+    payload: request
+  };
+}

@@ -88,7 +88,8 @@ class AccountSerializer(serializers.ModelSerializer):
         return account
 
     def update(self, instance, validated_data):
-        try: 
+        request_data = self.context.get('request').data
+        try:
             if instance.email != validated_data['email']:
                 instance.email = validated_data['email']
                 instance.email_verified = False
@@ -111,6 +112,14 @@ class AccountSerializer(serializers.ModelSerializer):
         try: 
             if instance.active != validated_data['active']:
                 instance.active = validated_data['active']
+        except KeyError:
+            pass;
+        try: 
+            if instance.completed_movies != validated_data['completed_movies']:
+                if request_data['completed_movies_method'] == 'add':
+                    instance.completed_movies.add(validated_data['completed_movies'][0])
+                elif request_data['completed_movies_method'] == 'delete':
+                    instance.completed_movies.remove(validated_data['completed_movies'][0])
         except KeyError:
             pass;
         instance.save()
@@ -158,7 +167,7 @@ class RefreshTokenSerializer(serializers.Serializer):
 
 class EmailVerifySerializer(serializers.Serializer):
     def save(self):
-        request = self.context.get(request)
+        request = self.context['request']
         account = Account.objects.get(username=request.user)
         message = render_to_string('email_verification_message.txt', {'email_verification_code': account.email_verification_code})
         send_mail(
@@ -170,7 +179,7 @@ class EmailVerifySerializer(serializers.Serializer):
         )
 
     def validate(self, data):
-        request = self.context.get(request)
+        request = self.context['request']
         account = Account.objects.get(username=request.user)
         if account.email_verified:
             raise serializers.ValidationError({'email_verified': _('This email has already been verified.')})

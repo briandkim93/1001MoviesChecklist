@@ -7,7 +7,8 @@ import './ChecklistContainer.css';
 import Menu from '../Menu/Menu';
 import Checklist from '../Checklist/Checklist';
 import ChecklistLetter from '../ChecklistLetter/ChecklistLetter';
-import { fetchMovies } from '../../actions/'
+import { toggleSignup, closeLogin, closePasswordResetRequest } from '../../actions/authentication'
+import { fetchMovies, updateCompletedMovies } from '../../actions/'
 
 class ChecklistContainer extends Component {
   constructor(props) {
@@ -17,6 +18,9 @@ class ChecklistContainer extends Component {
       moviesChecklistAll: this.props.moviesChecklistAll.slice(),
       letter: this.checkLetterParam()
     };
+
+    this.handleStatusChange = this.handleStatusChange.bind(this);
+    this.createChecklistHTML = this.createChecklistHTML.bind(this);
   }
 
   componentDidMount() {
@@ -39,21 +43,11 @@ class ChecklistContainer extends Component {
         sortedMoviesChecklistArray.sort((a, b) => this.sortByYear(a, b, 'ascending'));
       }
       sortedMoviesChecklistArray = sortedMoviesChecklistArray.filter(movie => {
-        if (!this.props.filterBy.genre) {
-          return true;
-        }
-        const genreArray = JSON.parse("[" + movie.genres.replace(/'/g, '\"') + "]")[0];
-        if (genreArray.includes(this.props.filterBy.genre)) {
-          return true;
-        }
+        const genreArray = JSON.parse("[" + movie.genres.replace(/'/g, '"') + "]")[0];
+        return !this.props.filterBy.genre || genreArray.includes(this.props.filterBy.genre);
       });
       sortedMoviesChecklistArray = sortedMoviesChecklistArray.filter(movie => {
-        if (!this.props.filterBy.year) {
-          return true;
-        }
-        if (movie.release_year === this.props.filterBy.year) {
-          return true;
-        }
+        return !this.props.filterBy.year || movie.release_year === this.props.filterBy.year;
       });
       this.setState({
         moviesChecklistAll: sortedMoviesChecklistArray,
@@ -112,9 +106,21 @@ class ChecklistContainer extends Component {
     }
   }
 
+  handleStatusChange(movieId) {
+    let method;
+    if (this.props.token) {
+      this.props.userInfo.completedMovies.includes(movieId) ? method = 'delete' : method = 'add';
+    } else {
+      this.props.toggleSignup();
+      this.props.closeLogin();
+      this.props.closePasswordResetRequest();
+    }
+    this.props.updateCompletedMovies(this.props.userInfo.uid, this.props.token, [movieId], method);
+  }
+
   createChecklistHTML(moviesChecklistArray, sortBy) {
     const checklistHTML = moviesChecklistArray.map(movie => {
-      const genreArray = JSON.parse("[" + movie.genres.replace(/'/g, '\"') + "]")[0];
+      const genreArray = JSON.parse("[" + movie.genres.replace(/'/g, '"') + "]")[0];
       const formattedGenreArray = genreArray.map((genre, i) => {
         if (i !== genreArray.length - 1) {
           return genre + ', ';
@@ -127,6 +133,11 @@ class ChecklistContainer extends Component {
           <img className="movie-poster img-responsive mr-3" src={`/images/movie_posters/${movie.image_filename}`} alt={`Movie poster for ${movie.title}`} />
           <div className="media-body">
             <h5 className="mt-0 mb-1">{movie.title} ({movie.release_year})</h5>
+            <div>
+              <button type="button" className="btn btn-warning" onClick={() => this.handleStatusChange(movie.id)}>
+                {this.props.token && this.props.userInfo.completedMovies.includes(movie.id) ? 'Undo' : 'Mark as Complete'}
+              </button>
+            </div>
             <div>{formattedGenreArray}</div>
             <div>{movie.length}</div>
             <div>{movie.summary} <cite>(☞ LETTERBOXD)</cite></div>
@@ -236,13 +247,19 @@ function mapStateToProps(state) {
   return {
     moviesChecklistAll: state.moviesChecklistAll,
     filterBy: state.filterBy,
-    sortBy: state.sortBy
+    sortBy: state.sortBy,
+    token: state.token,
+    userInfo: state.userInfo
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchMovies: fetchMovies
+    toggleSignup: toggleSignup,
+    closeLogin: closeLogin,
+    closePasswordResetRequest: closePasswordResetRequest,
+    fetchMovies: fetchMovies,
+    updateCompletedMovies: updateCompletedMovies
   }, dispatch);
 }
 

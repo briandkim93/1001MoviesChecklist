@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 class LetterChecklist extends Component {
@@ -20,7 +21,7 @@ class LetterChecklist extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.state !== prevProps.state) {
+    if (this.props.state !== prevProps.state || this.props.userInfo.completedMovies !== prevProps.userInfo.completedMovies) {
       const moviesChecklistArray = this.filterMoviesChecklist(
         this.props.state.moviesChecklistAll, 
         {letter: this.props.state.letter}
@@ -96,4 +97,11 @@ class LetterChecklist extends Component {
   }
 }
 
-export default LetterChecklist;
+function mapStateToProps(state) {
+  return {
+    token: state.token,
+    userInfo: state.userInfo
+  };
+}
+
+export default connect(mapStateToProps)(LetterChecklist);

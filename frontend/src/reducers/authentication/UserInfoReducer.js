@@ -10,7 +10,8 @@ function UserInfoReducer(state={}, action) {
           email: action.payload.data.user.email,
           emailVerified: action.payload.data.user.email_verified,
           dateJoined: action.payload.data.user.date_joined,
-          provider: action.payload.data.user.provider
+          provider: action.payload.data.user.provider,
+          completedMovies: action.payload.data.user.completed_movies
         };
       } else {
         return state;
@@ -23,7 +24,8 @@ function UserInfoReducer(state={}, action) {
           email: action.payload.data.user.email,
           emailVerified: action.payload.data.user.email_verified,
           dateJoined: action.payload.data.user.date_joined,
-          provider: action.payload.data.user.provider
+          provider: action.payload.data.user.provider,
+          completedMovies: action.payload.data.user.completed_movies
         };
       } else {
         return state;
@@ -36,7 +38,8 @@ function UserInfoReducer(state={}, action) {
           email: state.email,
           emailVerified: true,
           dateJoined: state.dateJoined,
-          provider: state.provider
+          provider: state.provider,
+          completedMovies: state.completed_movies
         };
       } else {
         return state;
@@ -49,7 +52,22 @@ function UserInfoReducer(state={}, action) {
           email: action.payload.data.email,
           emailVerified: false,
           dateJoined: state.dateJoined,
-          provider: state.provider
+          provider: state.provider,
+          completedMovies: state.completed_movies
+        };
+      } else {
+        return state;
+      }
+    case ACTION_TYPES.UPDATE_COMPLETED_MOVIES:
+      if (action.payload.status === 200) {
+        return {
+          uid: state.uid,
+          username: state.username,
+          email: state.email,
+          emailVerified: state.emailVerified,
+          dateJoined: state.dateJoined,
+          provider: state.provider,
+          completedMovies: action.payload.data.completed_movies
         };
       } else {
         return state;

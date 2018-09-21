@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 class Checklist extends Component {
@@ -15,7 +16,7 @@ class Checklist extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.state !== prevProps.state) {
+    if (this.props.state !== prevProps.state || this.props.userInfo.completedMovies !== prevProps.userInfo.completedMovies) {
       this.setState({
         currentPage: parseInt(this.props.match.params.number, 10),
         totalPages: Math.ceil(this.props.state.moviesChecklistAll.length / 35),
@@ -71,5 +72,11 @@ class Checklist extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    token: state.token,
+    userInfo: state.userInfo
+  };
+}
 
-export default Checklist;
+export default connect(mapStateToProps)(Checklist);

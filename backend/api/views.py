@@ -111,7 +111,7 @@ class ConvertTokenFBView(ConvertTokenView):
         }
         response = Response({
             'access_token': token,
-            'user': user_info,
+            'user': user_info
         })
         return response
 
@@ -123,8 +123,22 @@ class RefreshTokenView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        account = request.user
+        completed_movies = []
+        for movie in account.completed_movies.all():
+            completed_movies += [movie.id]
+        user_info = {
+            'id': account.id,
+            'username': account.username,
+            'email': account.email,
+            'email_verified': account.email_verified,
+            'date_joined': account.date_joined,
+            'provider': account.provider,
+            'completed_movies': completed_movies
+        }
         return Response({
-            'token': 'Token has been refreshed.',
+            'token': _('Token has been refreshed.'),
+            'user': user_info
         })
 
 class EmailVerifyView(generics.GenericAPIView):
@@ -134,7 +148,9 @@ class EmailVerifyView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"detail": _("Verification email has been sent.")})
+        return Response({
+            'detail': _('Verification email has been sent.')
+        })
 
 class EmailVerifyConfirmView(generics.GenericAPIView):
     serializer_class = serializers.EmailVerifyConfirmSerializer
@@ -144,7 +160,9 @@ class EmailVerifyConfirmView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"detail": _("Email has been verified.")})
+        return Response({
+            'detail': _('Email has been verified.')
+        })
 
 # Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
 sensitive_post_parameters_m = method_decorator(
@@ -165,7 +183,9 @@ class PasswordResetView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"detail": _("Password reset email has been sent.")})
+        return Response({
+            'detail': _('Password reset email has been sent.')
+        })
 
 # Source: django-rest-auth v0.9.3 (https://github.com/Tivix/django-rest-auth)
 class PasswordResetConfirmView(generics.GenericAPIView):
@@ -180,4 +200,6 @@ class PasswordResetConfirmView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"detail": _("Password has been reset with the new password.")})
+        return Response({
+            'detail': _('Password has been reset with the new password.')
+        })

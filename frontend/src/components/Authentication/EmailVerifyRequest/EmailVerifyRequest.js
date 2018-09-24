@@ -33,7 +33,7 @@ class EmailVerifyRequest extends Component {
         } else if (this.props.emailVerifyRequestStatus.status === 400 && this.props.emailVerifyRequestStatus.data.hasOwnProperty('email_verified')) {
           setTimeout(() => this.setState({
             response: {
-              status: 0, 
+              status: 2, 
               message: 'This email address has already been verified.'
             }
           }), 500);
@@ -52,26 +52,36 @@ class EmailVerifyRequest extends Component {
     return (
       <div className="row justify-content-center mt-3">
         <div className="col-11 center-block p-3">
-          <h1 className="mb-1">Account Settings</h1>
-          <hr />
+          <div className="text-center">
+            <h1 className="font-weight-light text-warning mb-1">Account Settings</h1>
+            <h4 className="font-weight-light text-white-50 mb-1">Verification Link Request</h4>
+          </div>
+          <hr className="border-black" />
           {(this.props.token && (this.props.userInfo.provider !== 'facebook'))
             ? (
-              <div>
-                <div>
-                  {this.state.response.message ? this.state.response.message : <div className="loader"></div>}
+              <div className="text-white-50 text-center">
+                <div className="justify-content-center d-flex my-2">
+                  {this.state.response.message ? this.state.response.message : <div className="loader my-3" />}
                 </div>
+                {this.state.response.status === 1 && <div className="mb-5">Please check your inbox to continue.</div>}
+                {this.state.response.status === 0 && this.state.response.message && <div className="mb-5">Please try again at a later time.</div>}
                 <div className="text-center">
-                  <Link to='/account/settings'>Back to Settings</Link>
+                  <Link className="text-link text-warning" to='/account/settings'>Back to Settings</Link>
                 </div>
               </div>
             )
             : (
-              <div>
-                <div>
-                  You do not have access to this page.
+              <div className="text-white-50">
+                <div className="text-center">
+                  <div className="my-2">
+                    You do not have access to this page.
+                  </div>
+                  <div className="mb-5">
+                    Please login to continue.
+                  </div>
                 </div>
                 <div className="text-center">
-                  <Link to='/'>Back to Homepage</Link>
+                  <Link className="text-link text-warning" to='/'>Back to Homepage</Link>
                 </div>
               </div>
             )

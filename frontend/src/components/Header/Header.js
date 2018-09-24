@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { toggleSignup, closeSignup, toggleLogin, closeLogin, closePasswordResetRequest, logout } from '../../actions/authentication';
 
@@ -37,29 +37,46 @@ class Header extends Component {
 
   render() {
     return (
-      <div className="row">
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark col-12">
-          <span className="navbar-brand"><Link to='/'><img className="mr-3" src="/images/logo.png" alt="1001 Movies Checklist Logo" /></Link>Movies Checklist</span>
+      <div className="row bg-black">
+        <nav className="col-12 navbar navbar-expand-sm navbar-dark bg-black">
+          <span className="navbar-brand">
+            <Link className="text-link mr-3" to='/'>
+              <img className="align-middle" src="/images/logo.png" alt="1001 Movies Checklist Logo" />
+            </Link>
+            <h1 className="d-inline-block align-middle mb-0">Movies Checklist</h1>
+          </span>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
-            <span className="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon" />
           </button>
-          <div className="collapse navbar-collapse" id="navbarCollapse">
+          <div id="navbarCollapse" className="collapse navbar-collapse">
           {this.props.token
             ? (
               <div className="navbar-nav ml-auto">
-                <span>{this.props.userInfo.provider !== 'facebook' && <Link className="nav-link btn" to='/account/settings'>Account</Link>}</span>
-                <span onClick={this.handleLogout}><Link className="nav-link btn" to='/'>Logout</Link></span>
+                <span>{this.props.userInfo.provider !== 'facebook' && <Link className="nav-link btn border-0 text-link" to='/account/settings'>Account</Link>}</span>
+                <span onClick={this.handleLogout}><Link className="nav-link btn border-0 text-link" to='/'>Logout</Link></span>
               </div>
             )
             : (
               <div className="navbar-nav ml-auto">
-                <span className="nav-link btn" onClick={this.handleToggleSignup}>Sign Up</span>
-                <span className="nav-link btn" onClick={this.handleToggleLogin}>Login</span>
+                <span className="nav-link btn border-0" onClick={this.handleToggleSignup}>Sign Up</span>
+                <span className="nav-link btn border-0" onClick={this.handleToggleLogin}>Login</span>
               </div>
             )
           }
           </div>
         </nav>
+        <h6 className="w-100 text-center text-sm-left text-white-50 ml-3 pb-3">
+          Based on <i>1001 Movies You Must See Before You Die (7th Edition)</i>
+        </h6>
+        {this.props.location.pathname.includes('checklist')
+          ? (
+            <hr className="w-100 border-dark my-0" />
+          )
+          : (
+            <div className="navbar-gradient w-100" />
+          )
+        }
+
       </div>
     );     
   }
@@ -83,4 +100,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

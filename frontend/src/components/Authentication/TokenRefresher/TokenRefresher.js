@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { clearState, refreshToken } from '../../../actions/authentication';
 
-class TokenAuthenticator extends Component {
+class TokenRefresher extends Component {
   componentDidMount() {
     if (this.props.token) {
       this.props.refreshToken(this.props.token);
@@ -13,14 +13,15 @@ class TokenAuthenticator extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.refreshTokenStatus !== prevProps.refreshTokenStatus) {
-      if (this.props.refreshTokenStatus.status !== 200) {
+      if (this.props.refreshTokenStatus.status === 200) {
+      } else {
         this.props.clearState();
       }
     }
   }
 
   render() {
-    return <div></div>;
+    return <div />;
   }
 }
 
@@ -38,4 +39,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TokenAuthenticator);
+export default connect(mapStateToProps, mapDispatchToProps)(TokenRefresher);

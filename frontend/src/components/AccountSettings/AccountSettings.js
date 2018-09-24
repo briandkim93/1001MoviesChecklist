@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import './AccountSettings.css';
 import AccountInfo from '../Authentication/AccountInfo/AccountInfo';
 import PasswordChange from '../Authentication/PasswordChange/PasswordChange';
 import EmailChange from '../Authentication/EmailChange/EmailChange';

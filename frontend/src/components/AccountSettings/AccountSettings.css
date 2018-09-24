@@ -1,0 +1,12 @@
+.account-settings-form {
+  max-width: 800px;
+}
+
+.account-settings-input {
+  color: #f8f9fa !important;
+  background-color: #555555 !important;
+}
+
+.account-settings-input:focus {
+  box-shadow: none !important;
+}

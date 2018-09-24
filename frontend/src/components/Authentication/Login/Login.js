@@ -43,7 +43,7 @@ class Login extends Component {
       this.setState({
         response: {
           status: 0, 
-          message: 'Please do not leave any empty fields.'
+          message: 'Please do not leave any blank fields.'
         }
       });
     }
@@ -101,39 +101,62 @@ class Login extends Component {
   render() {
     return (
       <div className={`row justify-content-center ${!this.props.displayLogin && "d-none"}`}>
-        <form className="absolute-form login-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+        <form className="popup-form login-form col-11 col-sm-6 center-block position-absolute bg-light p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
           <div>
             <button type="button" className="close" onClick={this.props.closeLogin}>
               <span>&times;</span>
             </button>
           </div>
-          <h2 className="mb-1">Log In</h2>
+          <h3 className="font-weight-light text-center mb-1">
+            Login to Your Account
+          </h3>
           <hr />
           <div className="form-group">
             <label htmlFor="login-username">Username:</label>
-            <input type="text" className="form-control" id="login-username" value={this.state.username} onChange={this.handleInputChange} />
+            <input 
+              id="login-username" 
+              className="form-control shadow-sm" 
+              type="text" 
+              value={this.state.username} 
+              onChange={this.handleInputChange} 
+            />
           </div>
           <div className="form-group">
             <label htmlFor="login-password">Password:</label>
-            <input type="password" className="form-control" id="login-password" value={this.state.password} onChange={this.handleInputChange} />
+            <input 
+              id="login-password" 
+              className="form-control shadow-sm" 
+              type="password" 
+              value={this.state.password} 
+              onChange={this.handleInputChange} 
+            />
           </div>
           <div className="text-danger small">
             {this.state.response.message}
           </div>
           <div>
-            <span className="text-primary btn btn-link btn-sm p-0" onClick={this.handleTogglePasswordResetRequest}>(Forgot Username or Password?)</span>
+            <span className="btn btn-link btn-sm text-primary p-0" onClick={this.handleTogglePasswordResetRequest}>(Forgot Username or Password?)</span>
           </div>
           <div className="w-100 overflow-auto mt-2">
-            <button type="submit" className="btn btn-primary float-right">Login</button>
+            <button type="submit" className="btn btn-warning float-right">Login</button>
           </div>
-          <div className="clear-both">
-            <p className="form-seperator w-100 font-weight-bold text-center my-4">
+          <div>
+            <p className="popup-form-seperator my-4">
               <span className="bg-light px-1">OR</span>
             </p>
           </div>
-          {this.props.facebookLoginRenderStatus ? <div className="loader fbsdk-loader position-absolute"></div> : ''}
+          {this.props.facebookLoginRenderStatus ? <div className="loader loader-fbsdk position-absolute" /> : ''}
           <div className="text-center">
-            <div className="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" data-scope="email" />
+            <div 
+              className="fb-login-button" 
+              data-max-rows="1" 
+              data-size="large" 
+              data-button-type="login_with" 
+              data-show-faces="false" 
+              data-auto-logout-link="false" 
+              data-use-continue-as="false" 
+              data-scope="email" 
+            />
           </div>
         </form>
       </div>

@@ -1,4 +1,4 @@
-.scrollable-dropdown {
-  max-height: 255px;
-  overflow-y: scroll;
+.menu-dropdown-item:hover {
+  color: #000000 !important;
+  background-color: #ffbb33;
 }

@@ -30,6 +30,20 @@ function UserInfoReducer(state={}, action) {
       } else {
         return state;
       }
+    case ACTION_TYPES.REFRESH_TOKEN:
+      if (action.payload.status === 200) {
+        return {
+          uid: action.payload.data.user.id,
+          username: action.payload.data.user.username,
+          email: action.payload.data.user.email,
+          emailVerified: action.payload.data.user.email_verified,
+          dateJoined: action.payload.data.user.date_joined,
+          provider: action.payload.data.user.provider,
+          completedMovies: action.payload.data.user.completed_movies
+        };
+      } else {
+        return state;
+      }
     case ACTION_TYPES.CONFIRM_EMAIL_VERIFY:
       if (action.payload.status === 200) {
         return {
@@ -39,7 +53,7 @@ function UserInfoReducer(state={}, action) {
           emailVerified: true,
           dateJoined: state.dateJoined,
           provider: state.provider,
-          completedMovies: state.completed_movies
+          completedMovies: state.completedMovies
         };
       } else {
         return state;
@@ -53,7 +67,7 @@ function UserInfoReducer(state={}, action) {
           emailVerified: false,
           dateJoined: state.dateJoined,
           provider: state.provider,
-          completedMovies: state.completed_movies
+          completedMovies: state.completedMovies
         };
       } else {
         return state;

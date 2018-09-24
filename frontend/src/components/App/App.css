@@ -1,48 +1,117 @@
 html, body {
-  min-width: 320px;
+  min-width: 520px;
+
+  background-color: #333333;
 }
 
-.absolute-form {
+.bg-black {
+  background-color: #222222;
+}
+
+.bg-dark-grey {
+  background-color: #333333;
+}
+
+.border-black {
+  border-color: #222222 !important;
+}
+
+.btn:focus, .page-link:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.form-control:focus {
+  outline: none !important;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  width: 20px;
+  height: 20px;
+
+  -webkit-animation: spin 1s linear infinite;
+          animation: spin 1s linear infinite;
+
+  border: 3px solid #dddddd;
+  border-top: 3px solid #000000;
+  border-radius: 50%;
+}
+
+.loader-lg {
+  width: 50px;
+  height: 50px;
+
+  border: 8px solid #dddddd;
+  border-top: 8px solid #000000;
+  border-radius: 50%;
+}
+
+.loader-fbsdk {
+  left: 50%;
+
+  margin-left: -10px;
+}
+
+.navbar-gradient {
+  height: 20px;
+
+  background: linear-gradient(#111111, #333333);
+  background-color: #222222;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.popup-form {
   z-index: 1000000;
 }
 
-.clear-both {
-  clear: both;
-}
-
-.form-seperator {
+.popup-form-seperator {
   font-size: 0.9rem;
+  font-weight: bold;
   line-height: 0.1em;
+
+  width: 100%;
+
+  text-align: center;
 
   color: #aaaaaa;
   border-bottom: 1px solid #cccccc;
 }
 
-.loader {
-  border: 3px solid #dddddd;
-  border-radius: 50%;
-  border-top: 3px solid #000000;
-  width: 20px;
-  height: 20px;
-  -webkit-animation: spin 1s linear infinite;
-  animation: spin 1s linear infinite;
+.scrollable-dropdown {
+  overflow-y: scroll;
+
+  max-height: 255px;
 }
 
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+.text-link {
+  text-decoration: none !important;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.text-violet {
+  color: #707fc2;
 }
 
-.fbsdk-loader {
-  left: 50%;
-  margin-left: -10px;
-}
-
-.overflow-auto {
-  overflow: auto;
+.text-violet:hover {
+  color: #43549d;
 }

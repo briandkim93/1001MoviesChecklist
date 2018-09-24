@@ -87,20 +87,38 @@ class AccountDeactivate extends Component {
   
   render() {
     return (
+      <div>
       <div className="row justify-content-center mt-3">
-        <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
-          <h1 className="mb-1">Account Settings</h1>
+        <form className="col-11 center-block text-white-50 p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+          <div className="font-weight-light text-center">
+            <h1 className="text-warning mb-1">
+              Account Settings
+            </h1>
+            <h4 className="text-white-50 mb-1">
+              Deactivation
+            </h4>
+          </div>
           <hr />
           {this.props.token && this.state.response.status === 0 &&
             (
               <div>          
                 <div className="form-group">
                   <label htmlFor="deactivate-username">Username:</label>
-                  <input type="text" className="form-control" id="deactivate-username" value={this.state.username} onChange={this.handleInputChange} />
+                  <input 
+                    type="text" 
+                    className="account-settings-input form-control border-dark" 
+                    id="deactivate-username" value={this.state.username} 
+                    onChange={this.handleInputChange} 
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="deactivate-password">Password:</label>
-                  <input type="password" className="form-control" id="deactivate-password" value={this.state.password} onChange={this.handleInputChange} />
+                  <input 
+                    type="password" 
+                    className="account-settings-input form-control border-dark" 
+                    id="deactivate-password" value={this.state.password} 
+                    onChange={this.handleInputChange} 
+                  />
                 </div>
                 <div className="text-danger small">
                   {this.state.response.status === 0 && this.state.response.message}
@@ -111,34 +129,40 @@ class AccountDeactivate extends Component {
           }
           {!this.props.token && (this.state.response.status === 1
             ? (
-              <div>
-                <div>
+              <div className="text-center">
+                <div className="my-2">
                   {this.state.response.message}
                 </div>
-                <div>
+                <div className="mb-5">
                   Log in at any time to reactivate your account.
                 </div>
               </div>
             )
             : (
-              <div>
-                You must be logged in to view this page.
+              <div className="text-center">
+                <div className="my-2">
+                  You do not have access to this page.
+                </div>
+                <div className="mb-5">
+                  Please login to continue.
+                </div>
               </div>
             )
           )}
         </form>
-        {this.props.token
-          ? (
-            <div>
-              <Link to='/account/settings'>Back to Settings</Link>
-            </div>
-          )
-          : (
-            <div>
-              <Link to='/'>Back to Homepage</Link>
-            </div>
-          )
-        }
+      </div>
+        <div className="row justify-content-center">
+          <div className="col-11 center-block text-center">
+            {this.props.token
+              ? (
+                <Link className="text-link text-warning" to='/account/settings'>Back to Settings</Link>
+              )
+              : (
+                <Link className="text-link text-warning" to='/'>Back to Homepage</Link>
+              )
+            }
+          </div>
+        </div>
       </div>
     );
   }

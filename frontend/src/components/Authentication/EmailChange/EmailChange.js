@@ -106,53 +106,88 @@ class EmailChange extends Component {
   
   render() {
     return (
-      <div className="row justify-content-center mt-3">
-        <form className="col-11 center-block p-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
-          <h1 className="mb-1">Account Settings</h1>
-          <hr />
-          {(this.props.token && (this.props.userInfo.provider !== 'facebook')) && (this.state.response.status === 1
-            ? (
-              <div>
-                {this.state.response.message}
-              </div>
-            )
-            : (
-              <div>
-                <div className="form-group">
-                  <label htmlFor="change-email1">New Email:</label>
-                  <input type="email" className="form-control" id="change-email1" value={this.state.email1} onChange={this.handleInputChange} />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="change-email2">Confirm New Email:</label>
-                  <input type="email" className="form-control" id="change-email2" value={this.state.email2} onChange={this.handleInputChange} />
-                </div>
-                <div className="text-danger small">
-                  {this.state.response.message}
-                </div>
-                <button type="submit" className="btn btn-primary float-right">Confirm</button>
-              </div>
-            )
-          )}
-          {(!this.props.token || (this.props.userInfo.provider === 'facebook')) && 
-            (
-              <div>
-                You do not have access to this page.
-              </div>
-            )
-          }
-        </form>
-        {this.props.token
-          ? (
-            <div>
-              <Link to='/account/settings'>Back to Settings</Link>
+      <div>
+        <div className="row justify-content-center mt-3">
+          <form 
+            className="account-settings-form col-11 center-block text-white-50 p-3" 
+            encType='multipart/form-data' 
+            onSubmit={this.handleFormSubmit}
+          >
+            <div className="text-center">
+              <h1 className="font-weight-light text-warning mb-1">
+                Account Settings
+              </h1>
+              <h4 className="font-weight-light text-white-50 mb-1">
+                Change Email
+              </h4>
             </div>
-          )
-          : (
-            <div>
-              <Link to='/'>Back to Homepage</Link>
-            </div>
-          )
-        }
+            <hr className="border-black" />
+            {(this.props.token && (this.props.userInfo.provider !== 'facebook')) && (this.state.response.status === 1
+              ? (
+                <div className="text-center">
+                  <div className="my-2">
+                    {this.state.response.message}
+                  </div>
+                  <div className="mb-5">
+                    Please check your inbox to verify your new email address.
+                  </div>
+                </div>
+              )
+              : (
+                <div>
+                  <div className="form-group">
+                    <label htmlFor="change-email1">New Email:</label>
+                    <input 
+                      id="change-email1" 
+                      className="account-settings-input form-control border-black" 
+                      type="email" 
+                      value={this.state.email1} 
+                      onChange={this.handleInputChange} 
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="change-email2">Confirm New Email:</label>
+                    <input 
+                      id="change-email2" 
+                      className="account-settings-input form-control border-black" 
+                      type="email" 
+                      value={this.state.email2} 
+                      onChange={this.handleInputChange} 
+                    />
+                  </div>
+                  <div className="text-danger small">
+                    {this.state.response.message}
+                  </div>
+                  <button type="submit" className="btn btn-warning float-right">Confirm</button>
+                </div>
+              )
+            )}
+            {(!this.props.token || (this.props.userInfo.provider === 'facebook')) && 
+              (
+                <div className="text-center">
+                  <div className="my-2">
+                    You do not have access to this page.
+                  </div>
+                  <div className="mb-5">
+                    Please login to continue.
+                  </div>
+                </div>
+              )
+            }
+          </form>
+        </div>
+        <div className="row justify-content-center">
+          <div className="col-11 center-block text-center">
+            {this.props.token
+              ? (
+                <Link className="text-link text-warning" to='/account/settings'>Back to Settings</Link>
+              )
+              : (
+                <Link className="text-link text-warning" to='/'>Back to Homepage</Link>
+              )
+            }
+          </div>
+        </div>
       </div>
     );
   }

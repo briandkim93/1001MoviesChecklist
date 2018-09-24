@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 class LetterChecklist extends Component {
   constructor(props) {
@@ -13,15 +12,16 @@ class LetterChecklist extends Component {
       letter: this.props.match.params.letter.toLowerCase(),
       currentPage: parseInt(this.props.match.params.number, 10),
       totalPages: Math.ceil(moviesChecklistArray.length / 15),
-      moviesChecklistHTML: this.props.createChecklistHTML(moviesChecklistArray)
+      moviesChecklistHTML: this.props.createChecklistHTML(moviesChecklistArray),
+      displayLoader: true
     };
 
-    this.addPage = this.addPage.bind(this);
+    this.createNumericPaginationList = this.props.createNumericPaginationList.bind(this);
     this.handlePageChange = this.props.handlePageChange.bind(this);
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.state !== prevProps.state || this.props.userInfo.completedMovies !== prevProps.userInfo.completedMovies) {
+    if (this.props.state !== prevProps.state || this.props.filterBy !== prevProps.filterBy) {
       const moviesChecklistArray = this.filterMoviesChecklist(
         this.props.state.moviesChecklistAll, 
         {letter: this.props.state.letter}
@@ -30,7 +30,8 @@ class LetterChecklist extends Component {
         letter: this.props.state.letter.toLowerCase(),
         currentPage: parseInt(this.props.match.params.number, 10),
         totalPages: Math.ceil(moviesChecklistArray.length / 15),
-        moviesChecklistHTML: this.props.createChecklistHTML(moviesChecklistArray)
+        moviesChecklistHTML: this.props.createChecklistHTML(moviesChecklistArray),
+        displayLoader: false
       });
     }
   }
@@ -49,14 +50,6 @@ class LetterChecklist extends Component {
     return moviesChecklistArray;
   }
 
-  addPage(paginationList, i) {
-    paginationList.push(
-      <li key={`page-${i + 1}`} className={`page-item ${this.state.currentPage === i + 1 && 'active'}`} onClick={() => this.handlePageChange(i)}>
-        <Link className="page-link" to={`/checklist/${this.state.letter.toLowerCase()}/${i + 1}`}>{i + 1}</Link>
-      </li>
-    )
-  }
-
   render() {
     return (
       (this.state.moviesChecklistHTML.length >= 1
@@ -64,25 +57,25 @@ class LetterChecklist extends Component {
           <div>
               {
                 this.state.totalPages > 1 &&
-                this.props.createNumericPaginationList(
+                this.createNumericPaginationList(
                   this.state.currentPage, 
                   this.state.totalPages, 
-                  this.addPage, 
+                  'letter',
                   this.handlePageChange, 
                   `/checklist/${this.state.letter.toLowerCase()}`
                 ) 
               }
             <div className="row justify-content-center">
-              <ul className="col-10 list-unstyled">
+              <ul className="col-11 list-unstyled">
                 {this.state.moviesChecklistHTML.slice(this.state.currentPage * 15 - 15, this.state.currentPage * 15)}
               </ul>
             </div>
             {
               this.state.totalPages > 1 &&
-              this.props.createNumericPaginationList(
+              this.createNumericPaginationList(
                 this.state.currentPage, 
                 this.state.totalPages, 
-                this.addPage, 
+                'letter',
                 this.handlePageChange, 
                 `/checklist/${this.state.letter.toLowerCase()}`
               )
@@ -90,7 +83,27 @@ class LetterChecklist extends Component {
           </div>
         )
         : (
-          <div>No Results Found</div>
+          <div className="row justify-content-center">
+            <div className="col-11 text-center">
+              {this.state.displayLoader && !Object.keys(this.props.filterBy).length 
+                ? (
+                  <div className="justify-content-center d-flex my-5">
+                    <div className="loader loader-lg" />
+                  </div>
+                  )
+                : (
+                  <div className="text-white-50">
+                    <div className="mb-2">
+                      No Results Found
+                    </div>
+                    <div>
+                      Please Try Using A Different Filter Group
+                    </div>
+                  </div>
+                  )
+              }
+            </div>
+          </div>
         )
       )
     );
@@ -99,6 +112,7 @@ class LetterChecklist extends Component {
 
 function mapStateToProps(state) {
   return {
+    filterBy: state.filterBy,
     token: state.token,
     userInfo: state.userInfo
   };

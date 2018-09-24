@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import './PasswordResetRequest.css';
 import { closePasswordResetRequest, sendPasswordResetLink } from '../../../actions/authentication';
 
 class PasswordResetRequest extends Component {
@@ -58,7 +59,7 @@ class PasswordResetRequest extends Component {
         this.setState({
           response: {
             status: 1, 
-            message: 'Email sent successfully. Check your inbox for a password reset link.'
+            message: 'Email sent successfully.'
           }
         });
       } else {
@@ -74,33 +75,50 @@ class PasswordResetRequest extends Component {
   render() {
     return (
       <div className={`row justify-content-center ${!this.props.displayPasswordResetRequest && "d-none"}`}>
-        <form className="absolute-form col-11 col-sm-6 center-block position-absolute bg-light border p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+        <form 
+          className="popup-form password-reset-request-form col-11 col-sm-6 center-block position-absolute bg-light p-3 mt-3" 
+          encType='multipart/form-data' 
+          onSubmit={this.handleFormSubmit}
+        >
           <div>
-            <button type="button" className="close" onClick={this.props.closePasswordResetRequest}>
+            <button className="close" type="button" onClick={this.props.closePasswordResetRequest}>
               <span>&times;</span>
             </button>
           </div>
-          <h2 className="mb-1">Reset Password</h2>
+          <h3 className="font-weight-light text-center mb-1">
+            Reset Password
+          </h3>
           <hr />
-          {this.state.response.status === 1
-            ? (  
-              <div>
+          <div className={`${this.state.response.status === 0 && "d-none"}`}>
+            <div className="text-center">
+              <h3 className="font-weight-light mb-2 mt-4">
+                {this.state.response.message}
+              </h3>
+              <h6 className="font-weight-light mb-4">
+                Please login to continue.
+              </h6>
+            </div>
+          </div>
+          <div className={`${this.state.response.status === 1 && "d-none"}`}>
+            <div>
+              <div className="form-group">
+                <label htmlFor="reset-email">Email:</label>
+                <input 
+                  id="reset-email" 
+                  className="form-control shadow-sm" 
+                  type="email" 
+                  value={this.state.email} 
+                  onChange={this.handleInputChange} 
+                />
+              </div>
+              <div className="text-danger small">
                 {this.state.response.message}
               </div>
-            )
-            : (
-              <div>
-                <div className="form-group">
-                  <label htmlFor="reset-email">Email:</label>
-                  <input type="email" className="form-control" id="reset-email" value={this.state.email} onChange={this.handleInputChange} />
-                </div>
-                <div className="text-danger small">
-                  {this.state.response.message}
-                </div>
-                <button type="submit" className="btn btn-primary float-right">Send</button>
-              </div>
-            )
-          }
+              <button type="submit" className="btn btn-warning float-right">
+                Send
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     );

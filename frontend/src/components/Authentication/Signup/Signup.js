@@ -33,58 +33,68 @@ class Signup extends Component {
   validate(username, email, password1, password2) {
     if (username !== '' && email !== '' && password1 !== '' && password2 !== '') {
       if (username.match(/^[\w._]+$/)) {
-        if (username.length <= 30) {
-          if (email.length <= 254) {
-            if (password1.length >= 8) {
-              if (password1.length <= 128) {
-                if (password1 === password2) {
-                  return {
-                    response: {
-                      status: 2
-                    }
-                  };
-                } else if (password1 !== password2) {
+        if (!password1.match(/^\d+$/) && !password1.match(/^[a-zA-Z_.]+$/)) {
+          if (username.length <= 30) {
+            if (email.length <= 254) {
+              if (password1.length >= 8) {
+                if (password1.length <= 128) {
+                  if (password1 === password2) {
+                    return {
+                      response: {
+                        status: 2
+                      }
+                    };
+                  } else if (password1 !== password2) {
+                    return {
+                      response: {
+                        status: 0, 
+                        position: 4, 
+                        message: 'Passwords did not match, please try again.'
+                      }
+                    };
+                  }
+                } else if (password1.length > 128) {
                   return {
                     response: {
                       status: 0, 
-                      position: 4, 
-                      message: 'Passwords did not match, please try again.'
+                      position: 3, 
+                      message: 'Password must not exceed 128 characters.'
                     }
                   };
                 }
-              } else if (password1.length > 128) {
+              } else if (password1.length < 8) {
                 return {
                   response: {
                     status: 0, 
                     position: 3, 
-                    message: 'Password must not exceed 128 characters.'
+                    message: 'Password must be at least 8 characters.'
                   }
                 };
               }
-            } else if (password1.length < 8) {
+            } else if (email.length > 254) {
               return {
                 response: {
                   status: 0, 
-                  position: 3, 
-                  message: 'Password must be at least 8 characters.'
+                  position: 2, 
+                  message: 'Email must not exceed 254 characters.'
                 }
               };
             }
-          } else if (email.length > 254) {
+          } else if (username.length > 30) {
             return {
               response: {
                 status: 0, 
-                position: 2, 
-                message: 'Email must not exceed 254 characters.'
+                position: 1, 
+                message: 'Username must not exceed 30 characters.'
               }
             };
           }
-        } else if (username.length > 30) {
+        } else if (password1.match(/^\d+$/) || password1.match(/^[a-zA-Z_.]+$/)) {
           return {
             response: {
               status: 0, 
-              position: 1, 
-              message: 'Username must not exceed 30 characters.'
+              position: 3, 
+              message: 'Password must contain at least one number and one letter.'
             }
           };
         }

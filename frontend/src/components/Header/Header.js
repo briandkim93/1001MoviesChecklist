@@ -11,7 +11,12 @@ class Header extends Component {
     
     this.handleToggleSignup = this.handleToggleSignup.bind(this);
     this.handleToggleLogin = this.handleToggleLogin.bind(this);
+    this.handleEsc = this.handleEsc.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener("keydown", this.handleEsc, false);
   }
   
   handleToggleSignup() {
@@ -22,6 +27,12 @@ class Header extends Component {
 
   handleToggleLogin() {
     this.props.toggleLogin();
+    this.props.closeSignup();
+    this.props.closePasswordResetRequest();
+  }
+
+  handleEsc() {
+    this.props.closeLogin();
     this.props.closeSignup();
     this.props.closePasswordResetRequest();
   }

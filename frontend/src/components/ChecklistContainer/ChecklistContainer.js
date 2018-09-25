@@ -24,9 +24,10 @@ class ChecklistContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.moviesChecklistAll !== prevProps.moviesChecklistAll) {
+    if (this.props.moviesChecklistAll !== prevProps.moviesChecklistAll || this.props.location.pathname !== prevProps.location.pathname) {
       this.setState({
         moviesChecklistAll: this.props.moviesChecklistAll.slice(),
+        letter: this.checkLetterParam()
       });
     }
     if (this.props.sortBy !== prevProps.sortBy || this.props.filterBy !== prevProps.filterBy) {

@@ -17,7 +17,7 @@ class Checklist extends Component {
 
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.state !== prevProps.state || this.props.userInfo.completedMovies !== prevProps.userInfo.completedMovies) {
+    if (this.props.state !== prevProps.state || this.props.userInfo.completedMovies !== prevProps.userInfo.completedMovies || this.props.location.pathname !== prevProps.location.pathname) {
       this.setState({
         currentPage: parseInt(this.props.match.params.number, 10),
         totalPages: Math.ceil(this.props.state.moviesChecklistAll.length / 35),

@@ -21,7 +21,7 @@ class LetterChecklist extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.state !== prevProps.state || this.props.userInfo.completedMovies !== prevProps.userInfo.completedMovies) {
+    if (this.props.state !== prevProps.state || this.props.userInfo.completedMovies !== prevProps.userInfo.completedMovies || this.props.location.pathname !== prevProps.location.pathname) {
       const moviesChecklistArray = this.filterMoviesChecklist(
         this.props.state.moviesChecklistAll, 
         {letter: this.props.state.letter}

@@ -67,7 +67,9 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'backend/templates')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'backend/templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,7 +122,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'backend/static')
+    os.path.join(BASE_DIR, 'backend/static'),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -138,3 +140,11 @@ CORS_ORIGIN_WHITELIST = (
 )
 MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware', 'django.middleware.common.CommonMiddleware']
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# PRODUCTION SETTINGS #
+# DEBUG = False
+# TEMPLATES[0]['DIRS'] += ['../frontend/build']
+# STATICFILES_DIRS += [
+#     '../frontend/build/static',
+#     '../frontend/build/images'
+# ]

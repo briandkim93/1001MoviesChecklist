@@ -16,7 +16,7 @@ html, body {
   border-color: #222222 !important;
 }
 
-.btn:focus, .page-link:focus {
+.btn:focus, .close:focus, .page-link:focus {
   outline: none !important;
   box-shadow: none !important;
 }
@@ -83,6 +83,9 @@ html, body {
 
 .popup-form {
   z-index: 1000000;
+
+  min-width: 450px;
+  max-width: 450px;
 }
 
 .popup-form-seperator {
@@ -114,4 +117,16 @@ html, body {
 
 .text-violet:hover {
   color: #43549d;
+}
+
+@media (max-width: 500px) {
+  .popup-container {
+    width: 100vh;
+  }
+  .popup-form {
+    left: 5%;
+
+    min-width: 90% !important;
+    max-width: 90% !important;
+  }
 }

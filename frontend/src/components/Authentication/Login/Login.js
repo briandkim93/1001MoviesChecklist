@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import './Login.css';
-import { toggleSignup, closeSignup, closeLogin, togglePasswordResetRequest, closePasswordResetRequest, login } from '../../../actions/authentication';
+import { toggleSignup, closeSignup, closeLogin, togglePasswordResetRequest, login } from '../../../actions/authentication';
 
 class Login extends Component {
   constructor(props) {
@@ -101,7 +101,11 @@ class Login extends Component {
   render() {
     return (
       <div className={`row justify-content-center ${!this.props.displayLogin && "d-none"}`}>
-        <form className="popup-form login-form col-11 col-sm-6 center-block position-absolute bg-light p-3 mt-3" encType='multipart/form-data' onSubmit={this.handleFormSubmit}>
+        <form 
+          className="popup-form login-form col-11 col-sm-6 center-block position-fixed bg-light p-3 mt-3" 
+          encType='multipart/form-data' 
+          onSubmit={this.handleFormSubmit}
+        >
           <div>
             <button type="button" className="close" onClick={this.props.closeLogin}>
               <span>&times;</span>
@@ -180,8 +184,7 @@ function mapDispatchToProps(dispatch) {
     toggleSignup: toggleSignup, 
     closeSignup: closeSignup, 
     closeLogin: closeLogin, 
-    togglePasswordResetRequest: togglePasswordResetRequest, 
-    closePasswordResetRequest: closePasswordResetRequest, 
+    togglePasswordResetRequest: togglePasswordResetRequest,
     login: login
   }, dispatch);
 }

@@ -15,7 +15,7 @@ class App extends Component {
     return (
       <div className="container-fluid">
         <Header />
-        <div className="position-relative">
+        <div className="popup-container position-relative">
           <Signup />
           <Login />
           <FacebookLoginSDK />

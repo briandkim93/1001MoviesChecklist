@@ -204,7 +204,7 @@ class Signup extends Component {
     return (
       <div className={`row justify-content-center ${!this.props.displaySignup && "d-none"}`}>
         <form 
-          className={`popup-form signup-form col-11 col-sm-6 center-block position-absolute bg-light p-3 mt-3 ${this.state.response.status === 1 && 'signup-form-success'}`} 
+          className={`popup-form signup-form col-11 col-sm-6 center-block position-fixed bg-light p-3 mt-3 ${this.state.response.status === 1 && 'signup-form-success'}`} 
           encType='multipart/form-data' 
           onSubmit={this.handleFormSubmit}
         >

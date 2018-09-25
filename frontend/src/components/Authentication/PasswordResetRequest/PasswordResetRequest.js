@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import './PasswordResetRequest.css';
 import { closePasswordResetRequest, sendPasswordResetLink } from '../../../actions/authentication';
 
 class PasswordResetRequest extends Component {
@@ -76,7 +75,7 @@ class PasswordResetRequest extends Component {
     return (
       <div className={`row justify-content-center ${!this.props.displayPasswordResetRequest && "d-none"}`}>
         <form 
-          className="popup-form password-reset-request-form col-11 col-sm-6 center-block position-absolute bg-light p-3 mt-3" 
+          className="popup-form password-reset-request-form col-11 col-sm-6 center-block position-fixed bg-light p-3 mt-3" 
           encType='multipart/form-data' 
           onSubmit={this.handleFormSubmit}
         >

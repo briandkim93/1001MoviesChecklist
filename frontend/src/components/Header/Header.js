@@ -41,7 +41,7 @@ class Header extends Component {
         <nav className="col-12 navbar navbar-expand-sm navbar-dark bg-black">
           <span className="navbar-brand">
             <Link className="text-link mr-3" to='/'>
-              <img className="align-middle" src="/images/logo.png" alt="1001 Movies Checklist Logo" />
+              <img className="align-middle" src="/static/logo.png" alt="1001 Movies Checklist Logo" />
             </Link>
             <h1 className="d-inline-block align-middle mb-0">Movies Checklist</h1>
           </span>

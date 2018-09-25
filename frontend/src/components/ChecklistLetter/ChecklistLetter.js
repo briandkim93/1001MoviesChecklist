@@ -20,7 +20,7 @@ class LetterChecklist extends Component {
     this.handlePageChange = this.props.handlePageChange.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.state !== prevProps.state || this.props.filterBy !== prevProps.filterBy) {
       const moviesChecklistArray = this.filterMoviesChecklist(
         this.props.state.moviesChecklistAll, 
@@ -33,6 +33,14 @@ class LetterChecklist extends Component {
         moviesChecklistHTML: this.props.createChecklistHTML(moviesChecklistArray),
         displayLoader: false
       });
+    }
+    if (this.state !== prevState) {
+      if (this.state.currentPage < 1 || this.state.currentPage > this.state.totalPages || !this.state.currentPage) {
+        this.setState({
+          currentPage: 1
+        });
+        this.props.history.push(`/checklist/${this.state.letter}/1`)
+      }
     }
   }
   

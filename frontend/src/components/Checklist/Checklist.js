@@ -16,7 +16,7 @@ class Checklist extends Component {
   }
 
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.state !== prevProps.state || this.props.filterBy !== prevProps.filterBy) {
       this.setState({
         currentPage: parseInt(this.props.match.params.number, 10),
@@ -24,6 +24,14 @@ class Checklist extends Component {
         moviesChecklistHTML: this.props.createChecklistHTML(this.props.state.moviesChecklistAll),
         displayLoader: false
       });
+    }
+    if (this.state !== prevState) {
+      if (this.state.currentPage < 1 || this.state.currentPage > this.state.totalPages || !this.state.currentPage) {
+        this.setState({
+          currentPage: 1
+        });
+        this.props.history.push('/checklist/1')
+      }
     }
   }
 

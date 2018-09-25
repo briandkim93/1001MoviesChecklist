@@ -143,7 +143,7 @@ class ChecklistContainer extends Component {
           <li className="media my-2">
             <img 
               className={`movie-poster btn img-responsive mr-3 ${this.props.token && this.props.userInfo.completedMovies.includes(movie.id) && 'movie-poster-transparent'}`} 
-              src={`/images/movie_posters/${movie.image_filename}`} 
+              src={`/static/movie_posters/${movie.image_filename}`} 
               alt={`Movie poster for ${movie.title}`} 
               onClick={() => this.handleStatusChange(movie.id)}
             />

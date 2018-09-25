@@ -17,15 +17,15 @@ class Checklist extends Component {
 
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.state !== prevProps.state || this.props.filterBy !== prevProps.filterBy) {
+    if (this.props.state !== prevProps.state || this.props.userInfo.completedMovies !== prevProps.userInfo.completedMovies) {
       this.setState({
         currentPage: parseInt(this.props.match.params.number, 10),
         totalPages: Math.ceil(this.props.state.moviesChecklistAll.length / 35),
         moviesChecklistHTML: this.props.createChecklistHTML(this.props.state.moviesChecklistAll),
-        displayLoader: false
+        // displayLoader: false
       });
     }
-    if (this.state !== prevState) {
+    if (this.state.currentPage !== prevState.currentPage || this.state.totalPages !== prevState.totalPages) {
       if (this.state.currentPage < 1 || this.state.currentPage > this.state.totalPages || !this.state.currentPage) {
         this.setState({
           currentPage: 1

@@ -21,7 +21,7 @@ class LetterChecklist extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.state !== prevProps.state || this.props.filterBy !== prevProps.filterBy) {
+    if (this.props.state !== prevProps.state || this.props.userInfo.completedMovies !== prevProps.userInfo.completedMovies) {
       const moviesChecklistArray = this.filterMoviesChecklist(
         this.props.state.moviesChecklistAll, 
         {letter: this.props.state.letter}
@@ -31,10 +31,9 @@ class LetterChecklist extends Component {
         currentPage: parseInt(this.props.match.params.number, 10),
         totalPages: Math.ceil(moviesChecklistArray.length / 15),
         moviesChecklistHTML: this.props.createChecklistHTML(moviesChecklistArray),
-        displayLoader: false
       });
     }
-    if (this.state !== prevState) {
+    if (this.state.currentPage !== prevState.currentPage || this.state.totalPages !== prevState.totalPages) {
       if (this.state.currentPage < 1 || this.state.currentPage > this.state.totalPages || !this.state.currentPage) {
         this.setState({
           currentPage: 1

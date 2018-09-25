@@ -143,8 +143,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # PRODUCTION SETTINGS #
 # DEBUG = False
-# TEMPLATES[0]['DIRS'] += ['../frontend/build']
+# TEMPLATES[0]['DIRS'] += [os.path.join(BASE_DIR, 'frontend')]
 # STATICFILES_DIRS += [
-#     '../frontend/build/static',
-#     '../frontend/build/images'
+#     os.path.join(BASE_DIR, 'frontend/static'),
+#     os.path.join(BASE_DIR, 'frontend/images')
 # ]

@@ -22,7 +22,6 @@ class Checklist extends Component {
         currentPage: parseInt(this.props.match.params.number, 10),
         totalPages: Math.ceil(this.props.state.moviesChecklistAll.length / 35),
         moviesChecklistHTML: this.props.createChecklistHTML(this.props.state.moviesChecklistAll),
-        // displayLoader: false
       });
     }
     if (this.state.currentPage !== prevState.currentPage || this.state.totalPages !== prevState.totalPages) {

@@ -15,7 +15,7 @@ class ChecklistContainer extends Component {
     super(props);
     this.props.fetchMovies();
     this.state = {
-      moviesChecklistAll: this.props.moviesChecklistAll.slice(),
+      moviesChecklistAll: this.props.moviesChecklistAll.slice().sort((a, b) => a.id - b.id),
       letter: this.checkLetterParam()
     };
 
@@ -26,7 +26,7 @@ class ChecklistContainer extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.moviesChecklistAll !== prevProps.moviesChecklistAll || this.props.location.pathname !== prevProps.location.pathname) {
       this.setState({
-        moviesChecklistAll: this.props.moviesChecklistAll.slice(),
+        moviesChecklistAll: this.props.moviesChecklistAll.slice().sort((a, b) => a.id - b.id),
         letter: this.checkLetterParam()
       });
     }
@@ -129,7 +129,7 @@ class ChecklistContainer extends Component {
     }
   }
 
-  createChecklistHTML(moviesChecklistArray, sortBy) {
+  createChecklistHTML(moviesChecklistArray) {
     const checklistHTML = moviesChecklistArray.map(movie => {
       const genreArray = JSON.parse("[" + movie.genres.replace(/'/g, '"') + "]")[0];
       const formattedGenreArray = genreArray.map((genre, i) => {
@@ -144,24 +144,24 @@ class ChecklistContainer extends Component {
           <li className="media my-2">
             <img 
               className={`movie-poster btn img-responsive mr-3 ${this.props.token && this.props.userInfo.completedMovies.includes(movie.id) && 'movie-poster-transparent'}`} 
-              src={`/static/movie_posters/${movie.image_filename}`} 
+              src={`/images/movie_posters/${movie.image_filename}`} 
               alt={`Movie poster for ${movie.title}`} 
               onClick={() => this.handleStatusChange(movie.id)}
             />
             <div className={`col-12 media-body ${this.props.token && this.props.userInfo.completedMovies.includes(movie.id) ? 'text-secondary': 'text-white-50'}`}>
-              <h5 className={`movie-title col-12 col-sm-9 d-inline-block text-center text-sm-left mb-1 mt-0 pl-0 pr-1 ${this.props.token && this.props.userInfo.completedMovies.includes(movie.id) ? 'text-secondary': 'text-white'}`}>
+              <h5 className={`movie-title col-12 col-sm-9 d-inline-block text-center text-sm-left mb-1 mt-0 p-0 pr-sm-3 ${this.props.token && this.props.userInfo.completedMovies.includes(movie.id) ? 'text-secondary': 'text-white'}`}>
                 {movie.title} ({movie.release_year})
               </h5>
               <div className="col-12 col-sm-3 d-inline-block align-top text-center text-sm-right p-0">
                 {this.props.token && this.props.userInfo.completedMovies.includes(movie.id) 
                   ? (
                     <button className="btn btn-sm checklist-btn checklist-undo-btn btn-outline-secondary font-weight-bold my-3 my-sm-0" type="button" onClick={() => this.handleStatusChange(movie.id)}>
-                      Undo
+                      UNCHECK
                     </button>
                     )
                   : (
                     <button className="btn btn-sm checklist-btn btn-warning font-weight-bold my-3 my-sm-0" type="button" onClick={() => this.handleStatusChange(movie.id)}>
-                      Complete
+                      CHECK OFF
                     </button>
                   )
                 }

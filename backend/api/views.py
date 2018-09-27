@@ -8,6 +8,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 
 from rest_framework import status
 from rest_framework import generics
+from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -21,7 +22,6 @@ from oauth2_provider.models import AccessToken, RefreshToken
 from rest_framework_social_oauth2.views import ConvertTokenView
 
 from . import serializers
-from .authentications import BasicAuthentication403
 from .models import Account, Movie
 from .permissions import AccountListPermission, AccountDetailPermission, MoviePermission
 
@@ -47,7 +47,7 @@ class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 # Source: django-rest-knox v3.1.5 (https://github.com/James1345/django-rest-knox)
 class LoginView(APIView):
-    authentication_classes = (BasicAuthentication403, )
+    authentication_classes = (BasicAuthentication, )
 
     def post(self, request, format=None):
         token = AuthToken.objects.create(request.user)

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const PageNotFound = () => {
     return (
       <div className="text-center text-warning">
-        <img className="my-4" src="/static/404.png" alt="404 Error Logo" />
+        <img className="my-4" src="/images/404.png" alt="404 Error Logo" />
         <h1>
           Page Not Found
         </h1>

@@ -1,11 +1,16 @@
 import os
 from datetime import timedelta
 
-from .confidential import SECRET_KEY, MYSQL_SETTINGS, SOCIAL_AUTH_FACEBOOK_KEY, SOCIAL_AUTH_FACEBOOK_SECRET
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-ALLOWED_HOSTS = []
+SECRET_KEY = os.environ['SECRET_KEY']
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ['SOCIAL_AUTH_FACEBOOK_KEY']
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']
+
+ALLOWED_HOSTS = [
+    'www.backend.1001movieschecklist.com',
+    'backend.1001movieschecklist.com',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,6 +24,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'social_django',
     'rest_framework_social_oauth2',
+    'corsheaders',
     'api',
 ]
 
@@ -52,7 +58,12 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 
 AUTH_USER_MODEL = 'api.Account'
 
+CORS_ORIGIN_REGEX_WHITELIST = (
+    r'^(https?://)?(\w+\.)?1001movieschecklist\.com$', 
+)
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -93,12 +104,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': MYSQL_SETTINGS['NAME'],
-        'USER': MYSQL_SETTINGS['USER'],
-        'PASSWORD': MYSQL_SETTINGS['PASSWORD'],
-        'HOST': MYSQL_SETTINGS['HOST'],
-        'PORT': MYSQL_SETTINGS['PORT'],
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['RDS_DB_NAME'],
+        'USER': os.environ['RDS_USERNAME'],
+        'PASSWORD': os.environ['RDS_PASSWORD'],
+        'HOST': os.environ['RDS_HOSTNAME'],
+        'PORT': os.environ['RDS_PORT'],
     }
 }
 
@@ -128,23 +139,6 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-# DEVELOPMENT SETTINGS #
-DEBUG = True
-INSTALLED_APPS += ['corsheaders']
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    'https://stackpath.bootstrapcdn.com/', 
-    'http://localhost:3000/', 
-    'https://www.facebook.com/'
-)
-MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware', 'django.middleware.common.CommonMiddleware']
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django_ses.SESBackend'
 
-# PRODUCTION SETTINGS #
-# DEBUG = False
-# TEMPLATES[0]['DIRS'] += [os.path.join(BASE_DIR, 'frontend')]
-# STATICFILES_DIRS += [
-#     os.path.join(BASE_DIR, 'frontend/static'),
-#     os.path.join(BASE_DIR, 'frontend/images')
-# ]
+DEBUG = False

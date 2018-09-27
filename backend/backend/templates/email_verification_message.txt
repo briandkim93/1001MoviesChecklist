@@ -1,9 +1,10 @@
 {% load i18n %}{% autoescape off %}
 {% blocktrans %}
-Thanks for using 1001 Movies Checklist!
+You're receiving this email because you've created a user account.
 {% endblocktrans %}
 {% trans "Please go to the following page and verify your email address:" %} 
 {% block email_verification_link %}
-http://localhost:3000/verify/{{email_verification_code}}/
+https://1001movieschecklist.com/verify/{{email_verification_code}}/
 {% endblock %}
+{% trans "Thanks for using 1001 Movies Checklist!" %} 
 {% endautoescape %}

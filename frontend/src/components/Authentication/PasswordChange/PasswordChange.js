@@ -177,7 +177,6 @@ class PasswordChange extends Component {
                   <div className="form-group">
                     <label htmlFor="change-password1">New Password:</label>
                     <input 
-                      type="password"
                       id="change-password1"  
                       className="account-settings-input form-control border-black" 
                       type="password"

@@ -7,6 +7,10 @@
   background-color: #ffaa11 !important;
 }
 
+.checklist-container-transparent {
+  opacity: 0.1;
+}
+
 .checklist-page-item {
   width: 35px;
 }
@@ -77,5 +81,38 @@
 
   .movie-title {
     font-size: 2.0rem;
+  }
+}
+
+@media (max-height: 850px) {
+  .checklist-container-transparent {
+    overflow: hidden;
+
+    max-height: 710px !important;
+  }
+
+  @media (min-width: 576px) {
+    .checklist-container-transparent {
+      max-height: 720px !important;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .checklist-container-transparent {
+      max-height: 785px !important;
+    }
+  }
+
+
+  @media (min-width: 992px) {
+    .checklist-container-transparent {
+      max-height: 800px !important;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .checklist-container-transparent {
+      max-height: 785px !important;
+    }
   }
 }

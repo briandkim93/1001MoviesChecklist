@@ -93,9 +93,12 @@ class PasswordResetRequest extends Component {
               <h3 className="font-weight-light mb-2 mt-4">
                 {this.state.response.message}
               </h3>
-              <h6 className="font-weight-light mb-4">
-                Please login to continue.
+              <h6 className="font-weight-light mb-3">
+                Please check your inbox to continue.
               </h6>
+              <p className="small mb-4">
+                It may take a few minutes to send.
+              </p>
             </div>
           </div>
           <div className={`${this.state.response.status === 1 && "d-none"}`}>

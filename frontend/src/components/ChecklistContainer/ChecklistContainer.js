@@ -296,32 +296,34 @@ class ChecklistContainer extends Component {
     return (
       <div>
         <Menu />
-        {this.createAlphabeticPaginationList()}
-        <hr className="border-black" />
-        <Switch>
-          <Route 
-            exact path="/checklist/:number" 
-            render={
-              (props) => <Checklist {...props} 
-                state={this.state}
-                createNumericPaginationList={this.createNumericPaginationList}
-                handlePageChange={this.handlePageChange}
-                createChecklistHTML={this.createChecklistHTML}
-              />
-            } 
-          />
-          <Route 
-            exact path="/checklist/:letter/:number" 
-            render={
-              (props) => <ChecklistLetter {...props} 
-                state={this.state} 
-                createNumericPaginationList={this.createNumericPaginationList}
-                handlePageChange={this.handlePageChange}
-                createChecklistHTML={this.createChecklistHTML}
-              />
-            } 
-          />
-        </Switch>
+        <div className={`${(this.props.displaySignup || this.props.displayLogin || this.props.displayPasswordResetRequest) ? 'checklist-container-transparent' : ''}`}>
+          {this.createAlphabeticPaginationList()}
+          <hr className="border-black" />
+          <Switch>
+            <Route 
+              exact path="/checklist/:number" 
+              render={
+                (props) => <Checklist {...props} 
+                  state={this.state}
+                  createNumericPaginationList={this.createNumericPaginationList}
+                  handlePageChange={this.handlePageChange}
+                  createChecklistHTML={this.createChecklistHTML}
+                />
+              } 
+            />
+            <Route 
+              exact path="/checklist/:letter/:number" 
+              render={
+                (props) => <ChecklistLetter {...props} 
+                  state={this.state} 
+                  createNumericPaginationList={this.createNumericPaginationList}
+                  handlePageChange={this.handlePageChange}
+                  createChecklistHTML={this.createChecklistHTML}
+                />
+              } 
+            />
+          </Switch>
+        </div>
       </div>
     );
   }
@@ -329,6 +331,9 @@ class ChecklistContainer extends Component {
 
 function mapStateToProps(state) {
   return {
+    displaySignup: state.displaySignup,
+    displayLogin: state.displayLogin,
+    displayPasswordResetRequest: state.displayPasswordResetRequest,
     moviesChecklistAll: state.moviesChecklistAll,
     filterBy: state.filterBy,
     sortBy: state.sortBy,

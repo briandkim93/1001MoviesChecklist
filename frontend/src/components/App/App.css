@@ -120,13 +120,16 @@ html, body {
 }
 
 @media (max-width: 500px) {
-  .popup-container {
-    width: 100vh;
-  }
   .popup-form {
     left: 5%;
 
     min-width: 90% !important;
     max-width: 90% !important;
+  }
+}
+
+@media (max-height: 850px) {
+  .popup-form {
+    position: absolute !important;
   }
 }

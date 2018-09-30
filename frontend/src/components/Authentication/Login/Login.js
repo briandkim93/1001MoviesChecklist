@@ -38,7 +38,7 @@ class Login extends Component {
   handleFormSubmit(event) {
     event.preventDefault();
     if (this.state.username !== '' && this.state.password !== '') {
-      this.props.login(this.state.username, this.state.password);
+      this.props.login(this.state.username.toLowerCase(), this.state.password);
     } else {
       this.setState({
         response: {

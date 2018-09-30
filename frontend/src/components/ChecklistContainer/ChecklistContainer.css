@@ -45,6 +45,15 @@
   font-size: 1.2rem;
 }
 
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 5px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
 @media (min-width: 768px) {
   .checklist-page-item {
     width: 50px;

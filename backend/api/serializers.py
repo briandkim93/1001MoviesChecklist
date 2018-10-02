@@ -79,7 +79,7 @@ class AccountSerializer(serializers.ModelSerializer):
         account.save()
         message = render_to_string('email_verification_message.txt', {'email_verification_code': email_verification_code})
         send_mail(
-            'Welcome to 1001 Movies Checklist!',
+            'Verify Your New 1001 Movies Checklist Email Address',
             message,
             'no-reply@1001movieschecklist.com',
             (validated_data['email'], ),
@@ -171,7 +171,7 @@ class EmailVerifySerializer(serializers.Serializer):
         account = Account.objects.get(username=request.user)
         message = render_to_string('email_verification_message.txt', {'email_verification_code': account.email_verification_code})
         send_mail(
-            'Verify Your 1001 Movies Checklist Account',
+            'Verify Your 1001 Movies Checklist Email Address',
             message,
             'no-reply@1001movieschecklist.com',
             (account.email, ),

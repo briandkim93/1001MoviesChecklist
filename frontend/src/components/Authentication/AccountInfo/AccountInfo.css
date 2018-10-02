@@ -1,3 +1,47 @@
-.account-info-field {
+.account-info-description {
   width: 150px;
+}
+
+.account-info-email {
+  max-width: 200px;
+}
+
+.account-info-username {
+  max-width: 245px;
+}
+
+@media (min-width: 576px) {
+  .account-info-email {
+    max-width: 255px;
+  }
+
+  .account-info-username {
+    max-width: 300px;
+  }
+}
+
+@media (min-width: 672px) {
+  .account-info-email {
+    max-width: 345px;
+  }
+
+  .account-info-username {
+    max-width: 390px;
+  }
+}
+
+@media (min-width: 768px) {
+  .account-info-email {
+    max-width: 435px;
+  }
+
+  .account-info-username {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .account-info-email {
+    max-width: 500px;
+  }
 }

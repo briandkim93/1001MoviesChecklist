@@ -29,45 +29,45 @@ class AccountInfo extends Component {
               <div>
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item bg-dark-grey">
-                    <div className="account-info-field d-inline-block text-right">
+                    <div className="account-info-description d-inline-block text-right pr-4 pr-sm-0">
                       Username:
                     </div>
-                    <div className="d-inline-block text-center pl-5">
+                    <div className="account-info-username d-inline-block text-center text-truncate align-bottom pl-0 pl-sm-5">
                       {this.props.userInfo.username}
                     </div>
                   </li>
                   <li className="list-group-item bg-dark-grey border-black">
-                    <div className="account-info-field d-inline-block text-right">
+                    <div className="account-info-description d-inline-block text-right pr-4 pr-sm-0">
                       Password:
                     </div>
-                    <div className="d-inline-block text-center pl-5">
+                    <div className="d-inline-block text-center pl-0 pl-sm-5">
                       ••••••••
                     </div>
                     <Link to='/account/settings/password' className='float-right text-link text-violet small'>Change</Link>
                   </li>
                   <li className="list-group-item bg-dark-grey border-black">
-                    <div className="account-info-field d-inline-block text-right">
+                    <div className="account-info-description d-inline-block text-right pr-4 pr-sm-0">
                       Email:
                     </div>
-                    <div className="d-inline-block text-center pl-5">
+                    <div className="account-info-email d-inline-block text-center text-truncate align-bottom pl-0 pl-sm-5">
                       {this.props.userInfo.email}
                     </div>
                     <Link to='/account/settings/email' className='float-right text-link text-violet small'>Change</Link>
                   </li>
                   <li className="list-group-item bg-dark-grey border-black">
-                    <div className="account-info-field d-inline-block text-right">
+                    <div className="account-info-description d-inline-block text-right pr-4 pr-sm-0">
                       Email Verified:
                     </div>
-                    <div className="d-inline-block text-center pl-5">
+                    <div className="d-inline-block text-center pl-0 pl-sm-5">
                       {this.props.userInfo.emailVerified ? 'Yes' : 'No'}
                     </div>
                     <Link to='/account/settings/verify' className='float-right text-link text-violet small'>Resend</Link>
                   </li>
                   <li className="list-group-item bg-dark-grey border-black">
-                    <div className="account-info-field d-inline-block text-right">
+                    <div className="account-info-description d-inline-block text-right pr-4 pr-sm-0">
                       Date Joined:
                     </div>
-                    <div className="d-inline-block text-center pl-5">
+                    <div className="d-inline-block text-center pl-0 pl-sm-5">
                       {this.props.userInfo.dateJoined.slice(0, 10)}
                     </div>
                   </li>

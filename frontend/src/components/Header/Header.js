@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
+import './Header.css';
 import { toggleSignup, closeSignup, toggleLogin, closeLogin, closePasswordResetRequest, logout } from '../../actions/authentication';
 
 class Header extends Component {
@@ -65,14 +66,14 @@ class Header extends Component {
           {this.props.token
             ? (
               <div className="navbar-nav ml-auto">
-                <span>{this.props.userInfo.provider !== 'facebook' && <Link className="nav-link btn border-0 text-link" to='/account/settings'>Account</Link>}</span>
-                <span onClick={this.handleLogout}><Link className="nav-link btn border-0 text-link" to='/'>Logout</Link></span>
+                <span>{this.props.userInfo.provider !== 'facebook' && <Link className="nav-auth nav-link btn border-0 text-link" to='/account/settings'>Account</Link>}</span>
+                <span onClick={this.handleLogout}><Link className="nav-auth nav-link btn border-0 text-link" to='/'>Logout</Link></span>
               </div>
             )
             : (
               <div className="navbar-nav ml-auto">
-                <span className="nav-link btn border-0" onClick={this.handleToggleSignup}>Sign Up</span>
-                <span className="nav-link btn border-0" onClick={this.handleToggleLogin}>Login</span>
+                <span className="nav-auth nav-link btn border-0" onClick={this.handleToggleSignup}>Sign Up</span>
+                <span className="nav-auth nav-link btn border-0" onClick={this.handleToggleLogin}>Login</span>
               </div>
             )
           }

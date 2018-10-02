@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import ACTION_TYPES from './types';
-import API_BASE_URL from '../apiInfo';
+import API_BASE_URL from './apiInfo';
 
 import { SOCIAL_CLIENT_ID, SOCIAL_CLIENT_SECRET } from '../confidential';
 

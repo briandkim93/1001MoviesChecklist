@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import ACTION_TYPES from './types';
-import API_BASE_URL from '../apiInfo';
+import API_BASE_URL from './apiInfo';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 

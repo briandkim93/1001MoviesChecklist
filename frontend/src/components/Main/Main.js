@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import ChecklistContainer from '../ChecklistContainer/ChecklistContainer';
-import AccountSettings from '../AccountSettings/AccountSettings';
+import AccountSettings from '../Authentication/AccountSettings/AccountSettings';
 import EmailVerify from '../Authentication/EmailVerify/EmailVerify';
 import PasswordReset from '../Authentication/PasswordReset/PasswordReset';
 import PageNotFound from '../PageNotFound/PageNotFound';

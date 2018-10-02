@@ -90,6 +90,8 @@ class AccountSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         request_data = self.context.get('request').data
         try:
+            if (instance.email == validated_data['email']):
+                raise serializers.ValidationError({'email': ['This is your current email address.']})
             if instance.email != validated_data['email']:
                 instance.email = validated_data['email']
                 instance.email_verified = False

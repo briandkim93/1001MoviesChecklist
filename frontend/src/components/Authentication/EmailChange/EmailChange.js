@@ -32,11 +32,20 @@ class EmailChange extends Component {
     if (email1 !== '' && email2 !== '') {
       if (email1.length <= 254) {
         if (email1 === email2) {
-          return {
-            response: {
-              status: 2,
-            }
-          };
+          if (email1 !== this.props.userInfo.email) {
+            return {
+              response: {
+                status: 2,
+              }
+            };
+          } else if (email1 === this.props.userInfo.email) {
+            return {
+              response: {
+                status: 0, 
+                message: 'This is your current email address.'
+              }
+            };
+          }
         } else if (email1 !== email2) {
           return {
             response: {
@@ -70,6 +79,7 @@ class EmailChange extends Component {
       this.props.changeEmail(this.state.email1, this.props.userInfo['uid'], this.props.token);
     } else {
       this.setState({
+        email2: '',
         response: validation_response
       });
     }
@@ -88,6 +98,7 @@ class EmailChange extends Component {
         });
       } else if (this.props.emailChangeStatus.status === 400 && this.props.emailChangeStatus.data.hasOwnProperty('email')) {
         this.setState({
+          email2: '',
           response: {
             status: 0, 
             message: this.props.emailChangeStatus.data.email[0]
@@ -95,6 +106,7 @@ class EmailChange extends Component {
         });
       } else {
         this.setState({
+          email2: '',
           response: {
             status: 0, 
             message: 'Sorry, we were unable to change your email address at this time.'

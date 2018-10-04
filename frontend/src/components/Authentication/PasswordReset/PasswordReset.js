@@ -97,7 +97,6 @@ class PasswordReset extends Component {
             message: 'Password reset successfully!'
           }
         });
-        setTimeout(() => window.location = '/checklist/1', 4000);
       } else if (this.props.passwordResetStatus.status === 400 && this.props.passwordResetStatus.data.hasOwnProperty('new_password1')) {
         this.setState({
           response: {
@@ -152,7 +151,7 @@ class PasswordReset extends Component {
               : (
                 <div>
                   <div className="form-group">
-                    <label htmlFor="reset-password1">Password:</label>
+                    <label htmlFor="reset-password1">New Password:</label>
                     <input 
                       id="reset-password1" 
                       className="account-settings-input form-control border-black" 

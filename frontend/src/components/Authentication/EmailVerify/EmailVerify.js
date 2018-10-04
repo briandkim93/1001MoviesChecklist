@@ -54,7 +54,6 @@ class EmailVerify extends Component {
             message: 'Your email address has been successfully verified.'
           }
         });
-        setTimeout(() => window.location = '/checklist/1', 4000);
       } else if (this.props.emailVerifyStatus.status === 400 && this.props.emailVerifyStatus.data.hasOwnProperty('token')) {
         this.setState({
           response: {

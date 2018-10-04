@@ -1,8 +1,8 @@
 {% load i18n %}{% autoescape off %}
 {% blocktrans %}
-You're receiving this email because you've requested an email verification link.
+You're receiving this email because you have changed your email address.
 {% endblocktrans %}
-{% trans "Please go to the following page and verify your email address:" %} 
+{% trans "Please go to the following page and verify your new email address:" %} 
 {% block email_verification_link %}
 https://1001movieschecklist.com/verify/{{email_verification_code}}/
 {% endblock %}

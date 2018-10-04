@@ -1,3 +1,7 @@
 .nav-auth:focus {
   color: rgba(255, 255, 255, 0.5) !important;
 }
+
+.navbar-toggler:focus {
+  outline: none;
+}

@@ -24,7 +24,7 @@ class ChecklistContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    let sortedMoviesChecklistArray = this.props.moviesChecklistAll.slice();
+    let sortedMoviesChecklistArray = this.props.moviesChecklistAll.slice().sort((a, b) => a.id - b.id);
     if (this.props.sortBy === 'newest') {
       sortedMoviesChecklistArray.sort((a, b) => this.sortByYear(a, b, 'descending'));
     } else if (this.props.sortBy === 'oldest') {

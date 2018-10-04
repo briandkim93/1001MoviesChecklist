@@ -55,6 +55,7 @@ class AccountSerializer(serializers.ModelSerializer):
             'is_superuser', 
             'is_staff',
             'facebook_id',
+            'provider'
         )
         extra_kwargs = {
             'password': {

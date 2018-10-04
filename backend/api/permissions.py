@@ -1,16 +1,16 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
-class AccountListPermission(BasePermission):
+class IsAdminUserOrCreateOnlyPermission(BasePermission):
     def has_permission(self, request, view):
         if request.method == 'POST':
             return True
         return request.user.is_staff
 
-class AccountDetailPermission(BasePermission):
+class IsCurrentUserPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         return request.user.id == obj.id
 
-class MoviePermission(BasePermission):
+class IsAdminUserOrReadOnly(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_staff:
             return True

@@ -23,27 +23,27 @@ from rest_framework_social_oauth2.views import ConvertTokenView
 
 from . import serializers
 from .models import Account, Movie
-from .permissions import AccountListPermission, AccountDetailPermission, MoviePermission
+from .permissions import IsAdminUserOrCreateOnly, IsCurrentUser, IsAdminUserOrReadOnly
 
 class AccountListView(generics.ListCreateAPIView):
     serializer_class = serializers.AccountSerializer
     queryset = Account.objects.all()
-    permission_classes = (AccountListPermission, )
+    permission_classes = (IsAdminUserOrCreateOnly, )
 
 class AccountDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = serializers.AccountSerializer
     queryset = Account.objects.all()
-    permission_classes = (AccountDetailPermission, )
+    permission_classes = (IsCurrentUser, )
 
 class MovieListView(generics.ListCreateAPIView):
     serializer_class = serializers.MovieSerializer
     queryset = Movie.objects.all()
-    permission_classes = (MoviePermission, )
+    permission_classes = (IsAdminUserOrReadOnly, )
 
 class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.MovieSerializer
     queryset = Movie.objects.all()
-    permission_classes = (MoviePermission, )
+    permission_classes = (IsAdminUserOrReadOnly, )
 
 # Source: django-rest-knox v3.1.5 (https://github.com/James1345/django-rest-knox)
 class LoginView(APIView):

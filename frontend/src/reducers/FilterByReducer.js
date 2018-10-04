@@ -15,6 +15,12 @@ function FilterByReducer(state={}, action) {
         updatedState.year = action.payload.year;
       }
       return updatedState;
+    case ACTION_TYPES.LOGOUT:
+      return {};
+    case ACTION_TYPES.DEACTIVATE_ACCOUNT:
+      return {};
+    case ACTION_TYPES.CLEAR_STATE:
+      return {};
     default:
       return state;
   }

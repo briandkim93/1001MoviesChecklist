@@ -24,26 +24,26 @@ class ChecklistContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    let sortedMoviesChecklistArray = this.props.moviesChecklistAll.slice();
+    if (this.props.sortBy === 'newest') {
+      sortedMoviesChecklistArray.sort((a, b) => this.sortByYear(a, b, 'descending'));
+    } else if (this.props.sortBy === 'oldest') {
+      sortedMoviesChecklistArray.sort((a, b) => this.sortByYear(a, b, 'ascending'));
+    }
+    sortedMoviesChecklistArray = sortedMoviesChecklistArray.filter(movie => {
+      const genreArray = JSON.parse("[" + movie.genres.replace(/'/g, '"') + "]")[0];
+      return !this.props.filterBy.genre || genreArray.includes(this.props.filterBy.genre);
+    });
+    sortedMoviesChecklistArray = sortedMoviesChecklistArray.filter(movie => {
+      return !this.props.filterBy.year || movie.release_year === this.props.filterBy.year;
+    });
     if (this.props.moviesChecklistAll !== prevProps.moviesChecklistAll || this.props.location.pathname !== prevProps.location.pathname) {
       this.setState({
-        moviesChecklistAll: this.props.moviesChecklistAll.slice().sort((a, b) => a.id - b.id),
+        moviesChecklistAll: sortedMoviesChecklistArray,
         letter: this.checkLetterParam()
       });
     }
     if (this.props.sortBy !== prevProps.sortBy || this.props.filterBy !== prevProps.filterBy) {
-      let sortedMoviesChecklistArray = this.props.moviesChecklistAll.slice();
-      if (this.props.sortBy === 'newest') {
-        sortedMoviesChecklistArray.sort((a, b) => this.sortByYear(a, b, 'descending'));
-      } else if (this.props.sortBy === 'oldest') {
-        sortedMoviesChecklistArray.sort((a, b) => this.sortByYear(a, b, 'ascending'));
-      }
-      sortedMoviesChecklistArray = sortedMoviesChecklistArray.filter(movie => {
-        const genreArray = JSON.parse("[" + movie.genres.replace(/'/g, '"') + "]")[0];
-        return !this.props.filterBy.genre || genreArray.includes(this.props.filterBy.genre);
-      });
-      sortedMoviesChecklistArray = sortedMoviesChecklistArray.filter(movie => {
-        return !this.props.filterBy.year || movie.release_year === this.props.filterBy.year;
-      });
       this.setState({
         moviesChecklistAll: sortedMoviesChecklistArray,
       });

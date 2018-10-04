@@ -77,9 +77,9 @@ class AccountSerializer(serializers.ModelSerializer):
         account.set_password(validated_data['password'])
         account.provider = 'local'
         account.save()
-        message = render_to_string('email_verification_message.txt', {'email_verification_code': email_verification_code})
+        message = render_to_string('account_creation_message.txt', {'email_verification_code': email_verification_code})
         send_mail(
-            'Verify Your New 1001 Movies Checklist Email Address',
+            'Welcome to 1001 Movies Checklist',
             message,
             'no-reply@1001movieschecklist.com',
             (validated_data['email'], ),
@@ -97,9 +97,9 @@ class AccountSerializer(serializers.ModelSerializer):
                 instance.email_verified = False
                 email_verification_code = self.create_verification_code(validated_data['email'])
                 instance.email_verification_code = email_verification_code
-                message = render_to_string('email_verification_message.txt', {'email_verification_code': email_verification_code})
+                message = render_to_string('email_change_message.txt', {'email_verification_code': email_verification_code})
                 send_mail(
-                    'Welcome to 1001 Movies Checklist',
+                    'Verify Your New 1001 Movies Checklist Email Address',
                     message,
                     'no-reply@1001movieschecklist.com',
                     (validated_data['email'], ),
@@ -137,8 +137,6 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class RefreshTokenSerializer(serializers.Serializer):
-    token = serializers.CharField(max_length=255)
-
     # Source: django-rest-knox v3.2.x (https://github.com/James1345/django-rest-knox)
     # Replace with built-in AUTO_REFRESH setting upon django-rest-knox v3.2.x release
     def refresh_credentials(self, token):
@@ -165,7 +163,9 @@ class RefreshTokenSerializer(serializers.Serializer):
             auth_token.save(update_fields=('expires',))
 
     def save(self):
-        self.refresh_credentials(self.data['token'])
+        request = self.context['request']
+        token = request.META['HTTP_AUTHORIZATION'].split(' ')[1]
+        self.refresh_credentials(token)
 
 class EmailVerifySerializer(serializers.Serializer):
     def save(self):

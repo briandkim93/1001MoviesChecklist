@@ -110,9 +110,6 @@ export function refreshToken(token) {
     url: `${API_BASE_URL}auth/refresh-token/`,
     headers: {
       'Authorization': `Token ${token}`
-    },
-    data: {
-      token: token
     }
   })
   .catch(error => {
@@ -157,13 +154,15 @@ export function sendEmailVerifyLink(token) {
 }
 
 export function confirmEmailVerify(username, password, email_verification_code) {
-  const request = axios.post(
-    `${API_BASE_URL}auth/email/verify/confirm/`, {
+  const request = axios({
+    method: 'post',
+    url: `${API_BASE_URL}auth/email/verify/confirm/`, 
+    data: {
       username: username,
       password: password,
       email_verification_code: email_verification_code,
     }
-  )
+  })
   .catch(error => {
     return error.response;
   });
@@ -174,11 +173,13 @@ export function confirmEmailVerify(username, password, email_verification_code) 
 }
 
 export function sendPasswordResetLink(email) {
-  const request = axios.post(
-    `${API_BASE_URL}auth/password/reset/`, {
+  const request = axios({
+    method: 'post',
+    url: `${API_BASE_URL}auth/password/reset/`,
+    data: {
       email: email
     }
-  )
+  })
   .catch(error => {
     return error.response;
   });
@@ -189,14 +190,16 @@ export function sendPasswordResetLink(email) {
 }
 
 export function confirmResetPassword(password1, password2, uid, token) {
-  const request = axios.post(
-    `${API_BASE_URL}auth/password/reset/confirm/`, {
+  const request = axios({
+    method: 'post',
+    url: `${API_BASE_URL}auth/password/reset/confirm/`, 
+    data: {
       new_password1: password1,
       new_password2: password2,
       uid: uid,
       token: token,
     }
-  )
+  })
   .catch(error => {
     return error.response;
   });

@@ -119,7 +119,7 @@ class AccountDeactivate extends Component {
                   <div className="form-group">
                     <label htmlFor="deactivate-password">Password:</label>
                     <input 
-                      id="deactivate-password" value={this.state.password} 
+                      id="deactivate-password"
                       className="account-settings-input form-control border-black" 
                       type="password"
                       value={this.state.password} 

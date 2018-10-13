@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import './Signup.css';
-import { closeSignup, signup } from '../../../actions/authentication';
+import { closeSignup, toggleLogin, signup } from '../../../actions/authentication';
 
 class Signup extends Component {
   constructor(props) {
@@ -21,6 +21,7 @@ class Signup extends Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleToggleLogin = this.handleToggleLogin.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
@@ -28,6 +29,11 @@ class Signup extends Component {
     this.setState({
       [event.target.id.replace('signup-', '')]: event.target.value
     });
+  }
+
+  handleToggleLogin() {
+    this.props.closeSignup();
+    this.props.toggleLogin();
   }
 
   validate(username, email, password1, password2) {
@@ -202,9 +208,9 @@ class Signup extends Component {
 
   render() {
     return (
-      <div className={`row justify-content-center ${!this.props.displaySignup && "d-none"}`}>
+      <div className={`row justify-content-center ${!this.props.displaySignup ? 'd-none' : ''}`}>
         <form 
-          className={`popup-form signup-form col-11 col-sm-6 center-block position-fixed bg-light p-3 mt-3 ${this.state.response.status === 1 && 'signup-form-success'}`} 
+          className={`popup-form signup-form col-11 col-sm-6 center-block position-fixed bg-light p-3 ${this.state.response.status === 1 && 'signup-form-success'}`} 
           encType='multipart/form-data' 
           onSubmit={this.handleFormSubmit}
         >
@@ -220,7 +226,7 @@ class Signup extends Component {
             Create A Free Account Today
           </h6>
           <hr />
-          <div className={`${this.state.response.status === 0 && "d-none"}`}>
+          <div className={`${this.state.response.status === 0 ? 'd-none' : ''}`}>
             <div className="text-center">
               <h3 className="font-weight-light mb-2 mt-4">
                 {this.state.response.message}
@@ -230,7 +236,7 @@ class Signup extends Component {
               </h6>
             </div>
           </div>
-          <div className={`${this.state.response.status === 1 && "d-none"}`}>
+          <div className={`${this.state.response.status === 1 ? 'd-none' : ''}`}>
             <div className="form-group">
               <label htmlFor="signup-username">Username:</label>
               <input 
@@ -283,8 +289,11 @@ class Signup extends Component {
             <div className="text-danger small">
               {this.state.response.position === 4 && this.state.response.message}
             </div>
+            <div>
+              <span className="btn btn-link btn-sm text-primary p-0" onClick={this.handleToggleLogin}>(Already Have An Account?)</span>
+            </div>
             <div className="w-100 overflow-auto mt-2">
-              <button className="btn btn-warning float-right" type="submit">Sign Up</button>
+              <button className="btn btn-blue float-right" type="submit">Sign Up</button>
             </div>
             <div>
               <p className="popup-form-seperator w-100 font-weight-bold text-center my-4">
@@ -325,6 +334,7 @@ function mapPropsToState(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     closeSignup: closeSignup, 
+    toggleLogin: toggleLogin,
     signup: signup
   }, dispatch);
 }

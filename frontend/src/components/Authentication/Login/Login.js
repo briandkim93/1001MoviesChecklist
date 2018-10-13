@@ -100,7 +100,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div className={`row justify-content-center ${!this.props.displayLogin && "d-none"}`}>
+      <div className={`row justify-content-center ${!this.props.displayLogin ? 'd-none' : ''}`}>
         <form 
           className="popup-form login-form col-11 col-sm-6 center-block position-fixed bg-light p-3 mt-3" 
           encType='multipart/form-data' 

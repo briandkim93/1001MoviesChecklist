@@ -73,7 +73,7 @@ class PasswordResetRequest extends Component {
   }
   render() {
     return (
-      <div className={`row justify-content-center ${!this.props.displayPasswordResetRequest && "d-none"}`}>
+      <div className={`row justify-content-center ${!this.props.displayPasswordResetRequest ? 'd-none' : ''}`}>
         <form 
           className="popup-form password-reset-request-form col-11 col-sm-6 center-block position-fixed bg-light p-3 mt-3" 
           encType='multipart/form-data' 
@@ -88,7 +88,7 @@ class PasswordResetRequest extends Component {
             Reset Password
           </h3>
           <hr />
-          <div className={`${this.state.response.status === 0 && "d-none"}`}>
+          <div className={`${this.state.response.status === 0 ? 'd-none' : ''}`}>
             <div className="text-center">
               <h3 className="font-weight-light mb-2 mt-4">
                 {this.state.response.message}
@@ -101,7 +101,7 @@ class PasswordResetRequest extends Component {
               </p>
             </div>
           </div>
-          <div className={`${this.state.response.status === 1 && "d-none"}`}>
+          <div className={`${this.state.response.status === 1 ? 'd-none' : ''}`}>
             <div>
               <div className="form-group">
                 <label htmlFor="reset-email">Email:</label>

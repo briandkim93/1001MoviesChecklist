@@ -70,7 +70,9 @@ class ChecklistContainer extends Component {
    }
 
   handleLetterChange(letter) {
-    this.setState({letter: letter.toLowerCase()});
+    this.setState({
+      letter: letter.toLowerCase()
+    });
   }
 
   createAlphabeticPaginationList() {
@@ -79,7 +81,7 @@ class ChecklistContainer extends Component {
       return (
         <li 
           key={`letter-${i + 1}`} 
-          className={`checklist-page-item page-item ${this.state.letter === letter.toLowerCase() && 'bg-warning'}`} 
+          className={`checklist-page-item page-item ${this.state.letter === letter.toLowerCase() ? 'bg-warning' : ''}`} 
           onClick={() => this.handleLetterChange(letter.toLowerCase())}
         >
           <Link 
@@ -143,7 +145,7 @@ class ChecklistContainer extends Component {
         <div key={`movie-${movie.id}`}>
           <li className="media my-2">
             <img 
-              className={`movie-poster btn img-responsive mr-3 ${this.props.token && this.props.userInfo.completedMovies.includes(movie.id) && 'movie-poster-transparent'}`} 
+              className={`movie-poster btn img-responsive mr-3 ${this.props.token && this.props.userInfo.completedMovies.includes(movie.id) ? 'movie-poster-transparent' : ''}`} 
               src={`/images/movie_posters/${movie.image_filename}`} 
               alt={`Movie poster for ${movie.title}`} 
               onClick={() => this.handleStatusChange(movie.id)}

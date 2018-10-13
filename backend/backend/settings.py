@@ -1,16 +1,11 @@
 import os
 from datetime import timedelta
 
+from .confidential import POSTGRESQL_SETTINGS, SECRET_KEY, SOCIAL_AUTH_FACEBOOK_KEY, SOCIAL_AUTH_FACEBOOK_SECRET
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = os.environ['SECRET_KEY']
-SOCIAL_AUTH_FACEBOOK_KEY = os.environ['SOCIAL_AUTH_FACEBOOK_KEY']
-SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']
-
-ALLOWED_HOSTS = [
-    'www.backend.1001movieschecklist.com',
-    'backend.1001movieschecklist.com',
-]
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -58,8 +53,8 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 
 AUTH_USER_MODEL = 'api.Account'
 
-CORS_ORIGIN_REGEX_WHITELIST = (
-    r'^(https?://)?(\w+\.)?1001movieschecklist\.com$', 
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000',
 )
 
 MIDDLEWARE = [
@@ -105,11 +100,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['RDS_DB_NAME'],
-        'USER': os.environ['RDS_USERNAME'],
-        'PASSWORD': os.environ['RDS_PASSWORD'],
-        'HOST': os.environ['RDS_HOSTNAME'],
-        'PORT': os.environ['RDS_PORT'],
+        'NAME': POSTGRESQL_SETTINGS['NAME'],
+        'USER': POSTGRESQL_SETTINGS['USER'],
+        'PASSWORD': POSTGRESQL_SETTINGS['PASSWORD'],
+        'HOST': POSTGRESQL_SETTINGS['HOST'],
+        'PORT': POSTGRESQL_SETTINGS['PORT'],
     }
 }
 
@@ -139,6 +134,6 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-EMAIL_BACKEND = 'django_ses.SESBackend'
-
-DEBUG = False
+# DEVELOPMENT SETTINGS #
+DEBUG = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

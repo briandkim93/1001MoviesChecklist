@@ -26,7 +26,7 @@ class FacebookLoginSDK extends Component {
   loadFacebookLoginSDK() {
     window.fbAsyncInit = function() {
       window.FB.init({
-        appId      : process.env.SOCIAL_AUTH_FACEBOOK_KEY,
+        appId      : process.env.REACT_APP_SOCIAL_AUTH_FACEBOOK_KEY,
         cookie     : true,
         xfbml      : true,
         version    : 'v3.1'

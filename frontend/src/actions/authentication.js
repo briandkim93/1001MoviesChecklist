@@ -87,7 +87,7 @@ export function concludeFacebookLoginRender() {
 export function facebookLogin(accessToken, facebook_id, email) {
   const request = axios({
     method: 'post',
-    url: `${API_BASE_URL}auth/social/convert-token/?grant_type=convert_token&backend=facebook&client_id=${REACT_APP_SOCIAL_CLIENT_ID}&client_secret=${REACT_APP_SOCIAL_CLIENT_SECRET}&token=${accessToken}`,
+    url: `${API_BASE_URL}auth/social/convert-token/?grant_type=convert_token&backend=facebook&client_id=${process.env.REACT_APP_SOCIAL_CLIENT_ID}&client_secret=${process.env.REACT_APP_SOCIAL_CLIENT_SECRET}&token=${accessToken}`,
     data: {
       email: email,
       facebook_id: facebook_id

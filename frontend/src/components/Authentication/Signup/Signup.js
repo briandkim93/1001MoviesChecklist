@@ -293,7 +293,7 @@ class Signup extends Component {
               <span className="btn btn-link btn-sm text-primary p-0" onClick={this.handleToggleLogin}>(Already Have An Account?)</span>
             </div>
             <div className="w-100 overflow-auto mt-2">
-              <button className="btn btn-blue float-right" type="submit">Sign Up</button>
+              <button className="btn btn-warning float-right" type="submit">Sign Up</button>
             </div>
             <div>
               <p className="popup-form-seperator w-100 font-weight-bold text-center my-4">

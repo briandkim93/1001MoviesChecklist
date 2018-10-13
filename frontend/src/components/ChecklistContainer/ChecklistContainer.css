@@ -48,10 +48,16 @@
 ::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 5px;
+    height: 5px;
 }
+
 ::-webkit-scrollbar-thumb {
     border-radius: 2px;
     background-color: rgba(255, 255, 255, 0.5);
+}
+
+::-webkit-scrollbar-corner {
+  background: #333333;
 }
 
 @media (min-width: 768px) {

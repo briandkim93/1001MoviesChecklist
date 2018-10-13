@@ -1,10 +1,8 @@
 import axios from 'axios';
 
 import ACTION_TYPES from './types';
-import API_BASE_URL from './apiInfo';
 
-import { SOCIAL_CLIENT_ID, SOCIAL_CLIENT_SECRET } from '../confidential';
-
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 axios.defaults.xsrfCookieName = 'csrftoken';
 
 export function toggleSignup() {
@@ -89,7 +87,7 @@ export function concludeFacebookLoginRender() {
 export function facebookLogin(accessToken, facebook_id, email) {
   const request = axios({
     method: 'post',
-    url: `${API_BASE_URL}auth/social/convert-token/?grant_type=convert_token&backend=facebook&client_id=${SOCIAL_CLIENT_ID}&client_secret=${SOCIAL_CLIENT_SECRET}&token=${accessToken}`,
+    url: `${API_BASE_URL}auth/social/convert-token/?grant_type=convert_token&backend=facebook&client_id=${REACT_APP_SOCIAL_CLIENT_ID}&client_secret=${REACT_APP_SOCIAL_CLIENT_SECRET}&token=${accessToken}`,
     data: {
       email: email,
       facebook_id: facebook_id

@@ -1,7 +1,10 @@
 import os
 from datetime import timedelta
+from decouple import config
 
-from .confidential import POSTGRESQL_SETTINGS, SECRET_KEY, SOCIAL_AUTH_FACEBOOK_KEY, SOCIAL_AUTH_FACEBOOK_SECRET
+SECRET_KEY = config('SECRET_KEY')
+SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_AUTH_FACEBOOK_SECRET')
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -100,11 +103,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': POSTGRESQL_SETTINGS['NAME'],
-        'USER': POSTGRESQL_SETTINGS['USER'],
-        'PASSWORD': POSTGRESQL_SETTINGS['PASSWORD'],
-        'HOST': POSTGRESQL_SETTINGS['HOST'],
-        'PORT': POSTGRESQL_SETTINGS['PORT'],
+        'NAME': config('POSTGRESQL_NAME'),
+        'USER': config('POSTGRESQL_USER'),
+        'PASSWORD': config('POSTGRESQL_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

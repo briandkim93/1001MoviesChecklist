@@ -1,6 +1,7 @@
 html, body {
   min-width: 520px;
-
+  min-height: 812px;
+  
   background-color: #333333;
 }
 

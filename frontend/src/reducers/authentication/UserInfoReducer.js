@@ -95,7 +95,7 @@ function UserInfoReducer(state={}, action) {
         return state;
       }
     case ACTION_TYPES.CLEAR_STATE:
-      return null;
+      return {};
     default:
       return state;
   }
